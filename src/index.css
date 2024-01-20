@@ -1,13 +1,326 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body{
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+h1, h2{
+  color: #1B7B99;
+
+}
+.container {
+  overflow-x: auto;
+  /* margin: 20px; */
+  border: 4px solid #1B7B99;
+  border-radius: 10px;
+}
+.filter-container{
+  padding: 20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  padding: 12px;
+  text-align: left;
+  background: #1B7B99;
+  color: white;
+  /* border: 1px solid #ddd; */
+}
+
+tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background: #ECFAFE;
+}
+
+tbody tr:nth-child(odd) {
+  background: #F6FDFE;
+}
+
+td {
+  padding: 12px;
+  text-align: left;
+  /* border: 1px solid black; */
+}
+
+#mainContainer{
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+.openCloseCount{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  
+
+}
+.openCloseCount div{
+  color: white;
+  text-wrap: wrap;
+  padding: 30px 10px;
+  border: 1px solid white;
+  background-color: #1B7B99;
+  width: 70px
+}
+
+/* DataTable.css */
+/* .filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+} */
+
+.filter-container label {
+  margin-right: 10px;
+  width: 150px;
+  text-wrap: nowrap;
+}
+/* 
+.filter-container input {
+  width: 150px;
+  padding: 5px;
+  box-sizing: border-box;
+  margin-right: 10px;
+
+} */
+
+.filter-container button, .Analyze-btn, td button, .unique-alerts-btn, #analyze, #refresh {
+  padding: 10px 16px;
+  background-color: #1B7B99;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-wrap: nowrap;
+
+}
+
+.filter-container button:hover, .Analyze-btn:hover {
+  background-color: #155C80;
+}
+.Analyze-btn{
+  display: block;
+  margin: 20px auto;
+}
+
+a:visited{
+  color: blue;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.filter-item {
+  margin-right: 10px;
+}
+
+/* Style for the dropdown */
+select {
+  padding: 5px;
+  font-size: 14px;
+  margin-right: 15px;
+  margin-top: 5px;
+}
+.filter-container button{
+  margin-top: 20px;
+}
+
+/* Style the select element */
+.filter-container select {
+      
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+
+/* Add this CSS to your styles or component styles */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.popup {
+  background: #fff; /* White background for the popup */
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+}
+
+.download-btn,.unique-alerts-btn{
+  margin-left: 15px;
+}
+
+#analyze, #refresh{
+  margin-bottom: 10px;
+
+}
+.button-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+#data{
+  margin-top: 20px;
+}
+
+.chart-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 60px 100px;
+  z-index: 1000;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-height: 80%;
+  overflow-y: auto;
+}
+.charts {
+  background: #fff; /* White background for the popup */
+  padding: 50px 10px;
+  border-radius: 5px;
+  position: relative;
+  overflow-x: scroll;
+
+}
+.charts Chart{
+  margin-bottom: 20px;
+}
+
+.chart-modal button {
+  margin-top: 10px;
+}
+
+.unique-alerts-div {
+  position: fixed;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  max-height: 60%;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* .popup-header {
+  background: #f1f1f1;
+  padding: 10px;
+  text-align: right;
+} */
+
+.popup-header .close {
+  cursor: pointer;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.popup-content {
+  padding: 20px;
+}
+
+/* Add any other styles as needed */
+.openCloseCount #open-alerts{
+  background-color: rgb(157, 8, 8);
+  cursor: pointer;
+}
+
+.openCloseCount #close-alerts{
+  background-color: green;
+  cursor: pointer;
+}
+#loading{
+  width: 100%;
+  margin: 100px 600px;
+}
+
+#zone-dropdown select{
+  width: 40%;
+  display: block;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#unique-alerts{
+  height: 350px;
+  width: 40%;
+  overflow-y: scroll;
+  /* border: 1px solid black; */
+
+}
+#alerts-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+#priority-alerts{
+  width: 40%;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+#alerts-container h3{
+  text-align: center;
+  color: #155C80;
+}
+#unique-alerts ul li{
+  list-style: none;
+  padding: 10px 10px;
+  margin-left: 0;
+  border-bottom: 1px dashed black;
+}
+ul{
+  padding-left: 0;
+}
+#treemap-chart{
+  margin-top: 50px;
+}
+#refresh-status{
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
 }
