@@ -429,87 +429,87 @@
 import React, { useState, useEffect } from 'react';
 import { Oval } from 'react-loader-spinner';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import Papa from 'papaparse';
+// import axios from 'axios';
+// import Papa from 'papaparse';
 import PriorityTable from './PriorityTable';
 
-const SideContainer = ({ setSelectedStatus }) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [priorityCounts, setPriorityCounts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    // const [lastRefreshTime, setLastRefreshTime] = useState(null);
-    // const [refreshStatus, setRefreshStatus] = useState('');
+    // const [loading, setLoading] = useState(loading);
+
   
     const handleStatusClick = (status) => {
       setSelectedStatus(status);
     };
   
-    // const calculateTimeDifference = (lastRefreshTime) => {
-    //   const now = new Date();
-    //   const difference = now - lastRefreshTime;
-    //   const minutes = Math.floor(difference / (1000 * 60));
-    //   if (minutes === 0) {
-    //     return 'less than a minute ago';
-    //   } else if (minutes === 1) {
-    //     return 'one minute ago';
-    //   } else {
-    //     return `${minutes} minutes ago`;
-    //   }
-    // };
   
     useEffect(() => {
+      console.log('Before fetchData:', { loading, alertData });
+
       const fetchData = async () => {
         try {
-          const response = await axios.get('https://docs.google.com/spreadsheets/d/17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU/export?format=csv&id=17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU&gid=1316218754');
-          const parsedData = Papa.parse(response.data, { header: true });
-          const tableData = parsedData.data;
+          // const response = await axios.get('https://docs.google.com/spreadsheets/d/17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU/export?format=csv&id=17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU&gid=1316218754');
+          // const parsedData = Papa.parse(response.data, { header: true });
+          // const tableData = parsedData.data;
+          // console.log('Before setSelectedDate:', selectedDate);
+
+          // const response = await axios.post(
+          //   'http://127.0.0.1:5000/api/process_alerts',
+          //   // { date: '2024-01-13' },
+          //   {date: selectedDate},
+          //   {
+          //     headers: {
+          //       'Content-Type': 'application/json',
+          //     },
+          //   }
+          // );
+          // const alerts = response.data.alerts;
+          const alerts= alertData;
+          // console.log(alerts);
   
-          const totalOpenedCount = tableData.filter((row) => row.Status === 'open').length;
-          const totalClosedCount = tableData.filter((row) => row.Status === 'closed').length;
+          // const totalOpenedCount = tableData.filter((row) => row.Status === 'open').length;
+
+          // const totalClosedCount = tableData.filter((row) => row.Status === 'closed').length;
+
+          const totalOpenedCount = alerts.filter((alert)=>alert?.Status === 'open').length;
+          const totalClosedCount = alerts.filter((alert)=>alert?.Status === 'closed').length;
+
   
           const priorities = ['P1', 'P2', 'P3', 'P4', 'P5'];
           const priorityCounts = priorities.map((priority) => ({
             priority,
-            opened: tableData.filter((row) => row.Priority === priority && row.Status === 'open').length,
-            closed: tableData.filter((row) => row.Priority === priority && row.Status === 'closed').length,
+            // opened: tableData.filter((row) => row.Priority === priority && row.Status === 'open').length,
+            // closed: tableData.filter((row) => row.Priority === priority && row.Status === 'closed').length,
+             opened: alerts.filter((alert)=> alert?.Priority === priority && alert?.Status === 'open').length,
+            closed: alerts.filter((alert)=> alert?.Priority === priority && alert?.Status === 'closed').length,
+
           }));
   
           setTotalOpened(totalOpenedCount);
           setTotalClosed(totalClosedCount);
           setPriorityCounts(priorityCounts);
 
-            // Set lastRefreshTime here
-        // const now = new Date();
-        // setLastRefreshTime(now);
+          console.log('After fetchData:', { loading,  alertData });
+
+       
 
         } catch (error) {
           console.error('Error fetching data:', error);
         } finally {
-          setLoading(false);
+          // setLoading(false);
+          // console.log('After setSelectedDate:', selectedDate);
+          console.log('After finally:', { loading,  alertData });
+
+
         }
       };
   
       fetchData();
   
-    //   const fetchDataIntervalId = setInterval(() => {
-    //     fetchData();
-    //     console.log('refresh call')
-    //   }, 2000);
-  
-    //   // Set up interval to update refresh status every 500 milliseconds
-    //   const refreshStatusIntervalId = setInterval(() => {
-    //     if (lastRefreshTime) {
-    //       setRefreshStatus(calculateTimeDifference(lastRefreshTime));
-    //     }
-    //   }, 500);
-  
-    //   // Clean up the intervals when the component unmounts
-    //   return () => {
-    //     clearInterval(fetchDataIntervalId);
-    //     clearInterval(refreshStatusIntervalId);
-    //   };
-    }, []);
+
+    }, [ alertData, loading]);
   
     return (
       <>
@@ -523,19 +523,15 @@ const SideContainer = ({ setSelectedStatus }) => {
               </Link>
               <button id="refresh">Refresh</button>
             </div>
-            <div>
-              {/* {lastRefreshTime && (
-                <small id="refresh-status">Last refreshed {refreshStatus}</small>
-              )} */}
-            </div>
+           
             <div className="openCloseCount">
               <div id="open-alerts" onClick={() => handleStatusClick('open')}>
                 Open <br />
-                <strong>{totalOpened ? totalOpened : 'Loading...'}</strong>
+                <strong>{totalOpened}</strong>
               </div>
               <div id="close-alerts" onClick={() => handleStatusClick('closed')}>
                 Closed <br />
-                <strong>{totalClosed ? totalClosed : 'Loading...'}</strong>
+                <strong>{totalClosed}</strong>
               </div>
             </div>
             <PriorityTable priorityCounts={priorityCounts} />
@@ -546,3 +542,10 @@ const SideContainer = ({ setSelectedStatus }) => {
   };
   
   export default SideContainer;
+
+
+
+        
+
+         
+           

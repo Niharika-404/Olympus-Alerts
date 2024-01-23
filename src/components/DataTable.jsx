@@ -207,8 +207,8 @@ useEffect(() => {
         <div id="loading">
           <Oval type="Oval" color="#00BFFF" height={50} width={50} />
         </div>
-      ) :  (
-        <table>
+      ) :  (<div className='table-container'>
+        <table >
           <thead>
             <tr>
               <th>Date</th>
@@ -279,6 +279,7 @@ useEffect(() => {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

@@ -52,9 +52,13 @@ const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
       type: 'treemap',
     },
     title: {
-      text: `Treemap Chart - ${selectedZone}`,
+      text: `${selectedZone}`,
       align: 'center',
     },
+
+      
+      
+      
   };
 
   treemapChartOptions.legend = {
