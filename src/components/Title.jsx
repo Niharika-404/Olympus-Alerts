@@ -56,6 +56,7 @@ const Title = ({ onDateChange }) => {
         <h2>Alerts Dashboard</h2>
         {showDate && (
           <input
+            id='date-input'
             type='date'
             max={todayDate}
             defaultValue={todayDate}

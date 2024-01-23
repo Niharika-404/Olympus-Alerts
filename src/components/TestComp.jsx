@@ -1,39 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, {useState, useEffect } from 'react';
+// import axios from 'axios';
+import { Oval } from 'react-loader-spinner';
 
-const Test = ({selectedDate}) => {
+
+const Test = ({selectedDate, alertData, loading, filters}) => {
  
 
-  const [alertData, setAlertData] = useState([]);
-  const [loading, setLoading] = useState(true);
+//   const [alertData, setAlertData] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     ( async () => {
+//       try {
+//         console.log('Component rendered');
+//         // const response = await axios.post(
+//         //   'http://127.0.0.1:5000/api/process_alerts',
+//         // //   { date: '2024-01-13' },
+//         // {date: selectedDate},
+//         //   {
+//         //     headers: {
+//         //       'Content-Type': 'application/json',
+//         //     },
+//         //   }
+//         // );
+//         // const alerts = response.data.alerts;
+//         console.log('Raw response data:', alertData);
+  
+//         // setAlertData(alerts);
+//         // setLoading(false);
+//       } catch (error) {
+//         console.error('Error:', error);
+//         // setLoading(false);
+//       }
+//     })();
+  
+//   }, [selectedDate, alertData, loading]); // Add dependencies if needed
+  
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    ( async () => {
-      try {
-        console.log('Component rendered');
-        const response = await axios.post(
-          'http://127.0.0.1:5000/api/process_alerts',
-        //   { date: '2024-01-13' },
-        {date: selectedDate},
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
+    // Apply filters to alertData
+    const applyFilters = () => {
+      const filteredAlerts = alertData.filter((alert) => {
+        return (
+          (!filters.cluster || alert.Cluster.includes(filters.cluster)) &&
+          (!filters.namespace || alert.Namespace.includes(filters.namespace)) &&
+          (!filters.alertName || alert['Alert Name'].includes(filters.alertName)) &&
+          (!filters.zone || alert.Zone.includes(filters.zone)) &&
+          (!filters.priority || alert.Priority.includes(filters.priority)) &&
+          (!filters.status || alert.Status.includes(filters.status))
         );
-        const alerts = response.data.alerts;
-        console.log('Raw response data:', alerts);
-  
-        setAlertData(alerts);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error:', error);
-        setLoading(false);
-      }
-    })();
-  
-  }, [selectedDate]); // Add dependencies if needed
-  
+      });
+
+      setFilteredData(filteredAlerts);
+    };
+
+    applyFilters();
+  }, [selectedDate, alertData, loading, filters]);
 
   const handleShowAlert = (url) => {
     window.open(url, '_blank');
@@ -47,8 +70,8 @@ const Test = ({selectedDate}) => {
   return (
     <div>
       {loading ? (
-        <p>Loading...</p>
-      ) : alertData && alertData.length > 0 ? (
+        <Oval type="Oval" color="#00BFFF" height={50} width={50} />
+      ) :  filteredData && filteredData.length > 0 ? (
         <table>
           <thead>
             <tr>
@@ -87,7 +110,7 @@ const Test = ({selectedDate}) => {
             </tr>
           </thead>
           <tbody>
-            {alertData.map((alert) => (
+            {filteredData.map((alert) => (
               <tr key={`${alert?.['Tiny ID']}-${alert?.['Alert ID']}-${alert?.Cluster}`}>
 
                 <td>{alert?.Date ?? 'N/A'}</td>

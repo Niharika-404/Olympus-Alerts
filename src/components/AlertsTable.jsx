@@ -1,216 +1,163 @@
-import React, {useState, useEffect} from 'react';
-// import axios from 'axios';
-import Papa from 'papaparse';
+// import React from 'react';
+// import Test from './TestComp';
+
+
+// const AlertsTable = ({  selectedDate, alertData, loading }) => {
+
+
+//   return (
+   
+//     <div className="container">
+//         <div className='filter-container'>
+//             Add Filter for cluster, namespace, alert name, zone , priority, status - alertData consists of all the data
+//         </div>
+//         <div className="table-container">
+            
+//          <Test selectedDate={selectedDate} alertData={alertData} loading={loading}/>
+//         </div>
+//     </div>
+//   );
+// };
+
+// export default AlertsTable;
+
+
+import React, { useState, useEffect } from 'react';
 import Test from './TestComp';
 
-// import { Oval } from 'react-loader-spinner';
-
-const AlertsTable = ({ selectedStatus, selectedDate, alertData }) => {
-//   const [loading, setLoading] = useState(true);
-
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [filterValues, setFilterValues] = useState({
-    Cluster: '',
-    Namespace: '',
-    Zone: '',
-    Status: '',
-    Priority: '',
-    'Alert Name': '',
-  });
-  const [filterOptions, setFilterOptions] = useState({
-    Cluster: [],
-    Namespace: [],
-    Zone: [],
-    Status: [],
-    Priority: [],
-    'Alert Name': [],
+const AlertsTable = ({ selectedDate, alertData, loading }) => {
+  // State variables to hold filter values
+  const [filters, setFilters] = useState({
+    cluster: '',
+    namespace: '',
+    alertName: '',
+    zone: '',
+    priority: '',
+    status: '',
   });
 
+  // State variables to hold unique values for dropdowns
+  const [uniqueClusters, setUniqueClusters] = useState([]);
+  const [uniqueNamespaces, setUniqueNamespaces] = useState([]);
+  const [uniqueAlertNames, setUniqueAlertNames] = useState([]);
+  const [uniqueZones, setUniqueZones] = useState([]);
+  const [uniqueStatus, setUniqueStatus] = useState([]);
+  const [uniquePriorities, setUniquePriorities] = useState([]);
+
+  // useEffect to fetch unique values for dropdowns
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const response = await axios.post(
-        //   'http://127.0.0.1:5000/api/process_alerts',
-        // //   { date: '2024-01-13' },
-        //     {date: selectedDate},
-        //   {
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //   }
-        // );
-        // const alerts = response.data.alerts || [];
-        const alerts = alertData || [];
-        if (alerts) {
-            setData(alerts);
-            setFilteredData(alerts);
-            fetchFilterOptions(alerts);
-          } else {
-            console.error('Alerts data is null or undefined');
-          }
-       
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } 
-    //   finally {
-    //     // setLoading(false);
-    //   }
+    const getUniqueValues = () => {
+      // Function to get unique values from alertData
+      const getUnique = (key) => [...new Set(alertData.map((alert) => alert[key]))];
+      setUniqueClusters(getUnique('Cluster'));
+      setUniqueNamespaces(getUnique('Namespace'));
+      setUniqueAlertNames(getUnique('Alert Name'));
+      setUniqueZones(getUnique('Zone'));
+      setUniqueStatus(getUnique('Status'));
+      setUniquePriorities(getUnique('Priority'));
     };
 
-    fetchData();
-  }, [selectedDate, alertData]);
-
-// //   useEffect(() => {
-// //     const filteredByStatus = data.filter((row) => row.Status === selectedStatus || selectedStatus === '');
-
-// //     const filteredByOtherFilters = filteredByStatus.filter((row) => {
-// //       return Object.entries(filterValues).every(([key, filterValue]) => {
-// //         const columnValue = String(row[key]);
-// //         return filterValue === '' || columnValue.toLowerCase().includes(filterValue.toLowerCase());
-// //       });
-// //     });
-
-// //     setFilteredData(filteredByOtherFilters);
-// //   }, [selectedStatus, filterValues, data]);
-
-//  // ...
-
-useEffect(() => {
-    const filteredByStatus = ((data || []).filter((row) => row && row.Status === selectedStatus) || selectedStatus === '');
-  
-    const filteredByOtherFilters = ((filteredByStatus || []).filter((row) => {
-      return Object.entries(filterValues).every(([key, filterValue]) => {
-        const columnValue = row ? String(row[key]) : '';
-        return filterValue === '' || (columnValue && columnValue.toLowerCase().includes(filterValue.toLowerCase()));
-      });
-    })) || [];
-  
-    setFilteredData(filteredByOtherFilters);
-  }, [selectedStatus, filterValues, data]);
-  
- 
-
-//   const fetchFilterOptions = (tableData) => {
-//     const options = {};
-//     tableData.forEach((row) => {
-//       Object.keys(row).forEach((key) => {
-//         if (!options[key]) {
-//           options[key] = [...new Set(tableData.map((item) => item[key]))];
-//         }
-//       });
-//     });
-//     setFilterOptions(options);
-//   };
-
-
-  
-
-const fetchFilterOptions = (tableData) => {
-    const options = {};
-    (tableData || []).forEach((row) => {
-      Object.keys(row).forEach((key) => {
-        if (!options[key]) {
-          // Check if the property exists before accessing it
-          if (row[key] !== null && row[key] !== undefined) {
-            options[key] = [...new Set((tableData || []).map((item) => item[key]))];
-          }
-        }
-      });
-    });
-    console.log('Options:', options); // Add this line to check the options object
-    setFilterOptions(options);
-  };
-  
-  const handleFilterChange = (columnName, value) => {
-    const updatedFilterValues = { ...filterValues, [columnName]: value.trim() };
-
-    const filtered = data.filter((row) => {
-      return Object.entries(updatedFilterValues).every(([key, filterValue]) => {
-        const columnValue = String(row[key]);
-        if (filterValue === '') {
-          return true;
-        }
-        return columnValue.toLowerCase().includes(filterValue.toLowerCase());
-      });
-    });
-
-    setFilterValues(updatedFilterValues);
-    setFilteredData(filtered);
-  };
-
-  const handleResetFilters = () => {
-    setFilterValues({
-      Cluster: '',
-      Namespace: '',
-      Zone: '',
-      Status: '',
-      Priority: '',
-      'Alert Name': '',
-    });
-    setFilteredData(data);
-  };
-
-//   const handleShowAlert = (url) => {
-//     window.open(url, '_blank');
-//   };
-
-//   const handleRunbook = (url) => {
-//     window.open(url, '_blank');
-//   };
-
-
-
-  const handleDownload = () => {
-    const csv = Papa.unparse(filteredData, {
-      header: true,
-      quotes: true,
-      delimiter: ',',
-    });
-
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'alert_data.csv');
-    document.body.appendChild(link);
-    link.click();
-
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-  };
+    getUniqueValues();
+  }, [alertData]);
 
   return (
     <div className="container">
-      <div className="filter-container">
-        {Object.keys(filterValues).map((columnName) => (
-          <div key={columnName}>
-            <label>{columnName}:</label>
-            {Array.isArray(filterOptions[columnName]) && (
-              <select
-                value={filterValues[columnName]}
-                onChange={(e) => handleFilterChange(columnName, e.target.value)}
-              >
-                <option value="">All</option>
-                {filterOptions[columnName].map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
-        ))}
-        <button onClick={handleResetFilters}>Reset Filters</button>
-        <button onClick={handleDownload} className="download-btn">
-          Download Data
-        </button>
-      </div>
-     
-        <div className="table-container">
-         <Test selectedDate={selectedDate}/>
+      <div className='filter-container'>
+        {/* Dropdown filters */}
+        <div>
+        <label>
+          Cluster:
+          <select
+            value={filters.cluster}
+            onChange={(e) => setFilters({ ...filters, cluster: e.target.value })}
+          >
+            <option value="">All</option>
+            {uniqueClusters.map((cluster) => (
+              <option key={cluster} value={cluster}>{cluster}</option>
+            ))}
+          </select>
+        </label>
         </div>
+       <div>
+       <label>
+          Namespace:
+          <select
+            value={filters.namespace}
+            onChange={(e) => setFilters({ ...filters, namespace: e.target.value })}
+          >
+            <option value="">All</option>
+            {uniqueNamespaces.map((namespace) => (
+              <option key={namespace} value={namespace}>{namespace}</option>
+            ))}
+          </select>
+        </label>
+       </div>
+        <div>
+        <label>
+          Alert Name:
+          <select
+            value={filters.alertName}
+            onChange={(e) => setFilters({ ...filters, alertName: e.target.value })}
+          >
+            <option value="">All</option>
+            {uniqueAlertNames.map((name) => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+        </label>
+        </div>
+        <div>
+        <label>
+          Zone:
+          <select
+            value={filters.zone}
+            onChange={(e) => setFilters({ ...filters, zone: e.target.value })}
+          >
+            <option value="">All</option>
+            {uniqueZones.map((zone) => (
+              <option key={zone} value={zone}>{zone}</option>
+            ))}
+          </select>
+        </label>
+        </div>
+       <div>
+       <label>
+          Priority:
+          <select
+            value={filters.priority}
+            onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
+          >
+            <option value="">All</option>
+            {uniquePriorities.map((priority) => (
+              <option key={priority} value={priority}>{priority}</option>
+            ))}
+          </select>
+        </label>
+       </div>
+        <div>
+        <label>
+          Status:
+          <select
+            value={filters.status}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          >
+            <option value="">All</option>
+            {uniqueStatus.map((status) => (
+              <option key={status} value={status}>{status}</option>
+            ))}
+          </select>
+        </label>
+        </div>
+       
+      </div>
+      <div className="table-container">
+        <Test
+          selectedDate={selectedDate}
+          alertData={alertData}
+          loading={loading}
+          filters={filters}
+        />
+      </div>
     </div>
   );
 };

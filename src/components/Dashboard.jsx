@@ -83,7 +83,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import Papa from 'papaparse';
+import Papa from 'papaparse';
 import Chart from 'react-apexcharts';
 import TreemapChart from './TreemapChart.jsx';
 
@@ -99,44 +99,28 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get('https://docs.google.com/spreadsheets/d/17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU/export?format=csv&id=17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU&gid=1316218754');
-        // const parsedData = Papa.parse(response.data, { header: true });
-        // const tableData = parsedData.data;
-        const response = await axios.post(
-          'http://127.0.0.1:5000/api/process_alerts',
-          { date: '2024-01-13' },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-        const alerts = response.data.alerts;
-        // setData(tableData);
-        setData(alerts);
+        const response = await axios.get('https://docs.google.com/spreadsheets/d/17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU/export?format=csv&id=17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU&gid=1316218754');
+        const parsedData = Papa.parse(response.data, { header: true });
+        const tableData = parsedData.data;
+       
+        setData(tableData);
 
         // Extract unique zones
-        // const uniqueZones = Array.from(new Set(tableData.map(row => row.Zone)));
-          const uniqueZones = Array.from(new Set(alerts.map(alert=> alert?.Zone)));
+        const uniqueZones = Array.from(new Set(tableData.map(row => row.Zone)));
         setZoneOptions(uniqueZones);
 
         // Extract unique alerts
-        // const uniqueAlertNames = Array.from(new Set(tableData.map(row => row['Alert Name'])));
-        const uniqueAlertNames = Array.from(new Set(alerts.map(alert=> alert?.['Alert Name'])))
+        const uniqueAlertNames = Array.from(new Set(tableData.map(row => row['Alert Name'])));
         setUniqueAlerts(uniqueAlertNames);
 
         const alertPrioritiesMap = {};
         uniqueAlertNames.forEach(alertName => {
-          // alertPrioritiesMap[alertName] = Array.from(new Set(
-          //   tableData
-          //     .filter(row => row['Alert Name'] === alertName)
-          //     .map(row => row.Priority)
-          // ));
           alertPrioritiesMap[alertName] = Array.from(new Set(
-            alerts
-              .filter(alert => alert?.['Alert Name'] === alertName)
-              .map(alert => alert?.Priority)
+            tableData
+              .filter(row => row['Alert Name'] === alertName)
+              .map(row => row.Priority)
           ));
+         
         });
         setAlertPriorities(alertPrioritiesMap);
 
@@ -144,8 +128,7 @@ const Dashboard = () => {
         const priorities = ['P1', 'P2', 'P3', 'P4', 'P5'];
         const priorityCounts = priorities.map(priority => ({
           priority,
-          // count: tableData.filter(row => row.Priority === priority && row.Status === 'open').length,
-          count: alerts.filter(alert => alert?.Priority === priority && alert?.Status === 'open').length,
+          count: tableData.filter(row => row.Priority === priority && row.Status === 'open').length,
         }));
         setPriorityCounts(priorityCounts);
 
@@ -163,8 +146,7 @@ const Dashboard = () => {
 
   // Filter unique alerts based on the selected zone
   const filteredAlerts = uniqueAlerts.filter(alert =>
-    // selectedZone ? data.some(row => row.Zone === selectedZone && row['Alert Name'] === alert) : true
-    selectedZone? data.some(row => row?.Zone === selectedZone && row?.['Alert Name'] === alert) : true
+    selectedZone ? data.some(row => row.Zone === selectedZone && row['Alert Name'] === alert) : true
   );
 
   // Render priorities for each unique alert
@@ -176,8 +158,7 @@ const Dashboard = () => {
   // Filter priority counts based on the selected zone
   const filteredPriorityCounts = priorityCounts.filter(priorityCount =>
     selectedZone
-      // ? data.some(row => row.Zone === selectedZone && row.Priority === priorityCount.priority && row.Status === 'open')
-    ? data.some(alert => alert?.Zone === selectedZone && alert?.Priority === priorityCount.priority && alert?.Status === 'open')
+      ? data.some(row => row.Zone === selectedZone && row.Priority === priorityCount.priority && row.Status === 'open')
       : true
   );
 

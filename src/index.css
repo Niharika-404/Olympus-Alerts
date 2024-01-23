@@ -163,6 +163,8 @@ select {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin-right: 30px;
+  margin-left: 10px;
 }
 
 
@@ -360,3 +362,22 @@ ul{
   max-height: 500px;
   overflow-x: auto;
 } */
+
+.charts{
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  margin-bottom: 50px;
+  align-items: center;
+  justify-content: space-between;
+}
+.charts *{
+  width: 100%;
+}
+#date-input{
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #1B7B99;
+  color: #155C80;
+}

@@ -510,6 +510,8 @@ const SideContainer = ({ setSelectedStatus, loading, alertData}) => {
   
 
     }, [ alertData, loading]);
+    console.log(alertData);
+
   
     return (
       <>
@@ -518,9 +520,10 @@ const SideContainer = ({ setSelectedStatus, loading, alertData}) => {
         ) : (
           <div>
             <div className="button-container">
-              <Link to="/dashboard">
-                <button id="analyze">Analyze</button>
-              </Link>
+            <Link to={{ pathname: '/dashboard', state: { alertData } }}>
+            <button id="analyze">Analyze</button>
+          </Link>
+
               <button id="refresh">Refresh</button>
             </div>
            
