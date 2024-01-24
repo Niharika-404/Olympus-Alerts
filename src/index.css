@@ -381,3 +381,8 @@ ul{
   border: 1px solid #1B7B99;
   color: #155C80;
 }
+
+.apexcharts-tooltip{
+  width: 250px;
+
+}
