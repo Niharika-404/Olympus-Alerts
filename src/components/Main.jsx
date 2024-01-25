@@ -110,12 +110,14 @@
 
 
 // Main.jsx
-import React from 'react';
+import React, {useState} from 'react';
 import SideContainer from './SideContainer';
 import AlertsTable from './AlertsTable';
 import Title from './Title';
 
-const Main = ({ onDateChange, selectedDate, loading, alertData, fetchData }) => {
+const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh }) => {
+    const [selectedStatus, setSelectedStatus] = useState('');
+
   return (
     <div>
       <Title onDateChange={onDateChange} />
@@ -125,14 +127,18 @@ const Main = ({ onDateChange, selectedDate, loading, alertData, fetchData }) => 
           selectedDate={selectedDate}
           loading={loading}
           alertData={alertData}
-          fetchData={fetchData}
+          selectedStatus={selectedStatus}
+          setSelectedStatus={setSelectedStatus}
+
         />
         <SideContainer
           style={{ width: '30%' }}
           selectedDate={selectedDate}
           loading={loading}
           alertData={alertData}
-          fetchData={fetchData}
+          selectedStatus={selectedStatus}
+          setSelectedStatus={setSelectedStatus}
+          handleRefresh={handleRefresh}
         />
       </div>
     </div>

@@ -31,14 +31,14 @@
 
 
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 
 const Title = ({ onDateChange }) => {
-  const location = useLocation();
+  // const location = useLocation();
   // const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
   // Determine whether to show date based on the route path
-  const showDate = location.pathname === '/';
+  // const showDate = location.pathname === '/';
 
   // Get today's date in the format 'YYYY-MM-DD'
   const todayDate = new Date().toISOString().split('T')[0];
@@ -54,7 +54,7 @@ const Title = ({ onDateChange }) => {
       <h1>OLYMPUS MIDDLEWARE SRE</h1>
       <div className='title-date'>
         <h2>Alerts Dashboard</h2>
-        {showDate && (
+        {/* {showDate && ( */}
           <input
             id='date-input'
             type='date'
@@ -62,7 +62,7 @@ const Title = ({ onDateChange }) => {
             defaultValue={todayDate}
             onChange={(e) => onDateChange(e.target.value)}
           />
-        )}
+        {/* )} */}
       </div>
     </div>
   );

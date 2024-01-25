@@ -433,22 +433,28 @@ import { Link } from 'react-router-dom';
 // import Papa from 'papaparse';
 import PriorityTable from './PriorityTable';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [priorityCounts, setPriorityCounts] = useState([]);
+
     // const [loading, setLoading] = useState(loading);
 
-  
+
+    
+
     const handleStatusClick = (status) => {
       setSelectedStatus(status);
     };
   
+    const refreshData = () => {
+      handleRefresh();
+    };
   
     useEffect(() => {
       console.log('Before fetchData:', { loading, alertData });
 
-      const fetchData = async () => {
+      // const fetchData = async () => {
         try {
           // const response = await axios.get('https://docs.google.com/spreadsheets/d/17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU/export?format=csv&id=17e_YlTfAXZ44mU_6GB3bwAWTPsRNYnHWAONPMh1NNhU&gid=1316218754');
           // const parsedData = Papa.parse(response.data, { header: true });
@@ -504,13 +510,12 @@ const SideContainer = ({ setSelectedStatus, loading, alertData}) => {
 
 
         }
-      };
+      // };
   
-      fetchData();
+      // fetchData();
   
 
     }, [ alertData, loading]);
-    console.log(alertData);
 
   
     return (
@@ -524,7 +529,7 @@ const SideContainer = ({ setSelectedStatus, loading, alertData}) => {
             <button id="analyze">Analyze</button>
           </Link>
 
-              <button id="refresh">Refresh</button>
+              <button id="refresh" onClick={refreshData}>Refresh</button>
             </div>
            
             <div className="openCloseCount">

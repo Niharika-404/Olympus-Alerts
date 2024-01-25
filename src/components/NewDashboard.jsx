@@ -147,9 +147,11 @@ import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import TreemapChart from './TreemapChart.jsx';
 import PriorityVsTimeToAck from './PriorityVsTimeToAck.jsx';
-import AlertVsTimeDiff from './AlertVsTimeDiff.jsx';
-import NoiseAlerts from './NoiseAlerts.jsx';
+// import AlertVsTimeDiff from './AlertVsTimeDiff.jsx';
+// import NoiseAlerts from './NoiseAlerts.jsx';
+import NoiseAlertsTable from './NoiseAlerts.jsx';
 import AcknowledgementChart from './AcknowledgementChart.jsx';
+import AlertVsTimeDiffTable from './AlertVsTimeDiff.jsx';
 
 
 const NewDashboard = ({alertData}) => {
@@ -260,7 +262,11 @@ const NewDashboard = ({alertData}) => {
           <ul>
             {filteredAlerts.map((alert, index) => (
               <li key={index}>
-                {alert} - {renderPriorities(alert)}
+                <div className='alert-priority-div'>
+                    <div>{alert}</div>
+                    <div>{renderPriorities(alert)}</div>
+                </div>
+                {/* {alert} - {renderPriorities(alert)} */}
               </li>
             ))}
           </ul>
@@ -278,8 +284,11 @@ const NewDashboard = ({alertData}) => {
 
         </div>
         <div className='charts'>
-            <AlertVsTimeDiff alertData={alertData} selectedZone={selectedZone}/>
-            <NoiseAlerts alertData={alertData} selectedZone={selectedZone}/>
+            {/* <AlertVsTimeDiff alertData={alertData} selectedZone={selectedZone}/> */}
+            {/* <NoiseAlerts alertData={alertData} selectedZone={selectedZone}/> */}
+            <AlertVsTimeDiffTable alertData={alertData} selectedZone={selectedZone}/>
+            <NoiseAlertsTable alertData={alertData} selectedZone={selectedZone} />
+
 
         </div>
        
