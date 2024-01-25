@@ -159,6 +159,8 @@ useEffect(() => {
               <th>Time To ACK(min)</th>
               <th>Time To Close(min)</th>
               <th>Time Diff(min)</th>
+              <th>Close Time</th>
+              <th>Closed By</th>
               {/* <th>Prometheus</th> */}
               {/* <th>Grafana</th> */}
               <th>Contact Method</th>
@@ -199,6 +201,8 @@ useEffect(() => {
                 <td>{alert?.['Time To ACK'] ?? 'N/A'}</td>
                 <td>{alert?.['Time To Close'] ?? 'N/A'}</td>
                 <td>{alert?.['Time Diff'] ?? 'N/A'}</td>
+                <td>{alert?.['Close Time'] ?? 'N/A'}</td>
+                <td>{alert?.['Closed By'] ?? 'N/A'}</td>
                 {/* <td>{alert?.Prometheus ?? 'N/A'}</td> */}
                 {/* <td>{alert?.Grafana ?? 'N/A'}</td> */}
                 <td>{alert?.['Contact Method'] ?? 'N/A'}</td>
