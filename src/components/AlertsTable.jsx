@@ -168,7 +168,7 @@
 // --------------------------------------------------------------------
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Test from './TestComp';
 
 const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus }) => {
@@ -176,6 +176,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     const [download, setDownload] = useState(false);
     const [isDropdownVisible, setDropdownVisibility] = useState(false);
     const [selectedFilter, setSelectedFilter] = useState(null);
+   
 
 
   // State variables to hold filter values
@@ -334,6 +335,7 @@ useEffect(() => {
 
   const toggleDropdown = () => {
     setDropdownVisibility(!isDropdownVisible);
+
   
   };
 
@@ -547,12 +549,15 @@ const generateOptions = () => {
   
   const generateOptionsForFilter = (values, filter) => {
     return values.map((value) => (
-      <div key={value}>
+      <div key={value} className="checkbox-option">
         <input
           type="checkbox"
           value={value}
           checked={filters[filter].includes(value)}
-          onChange={() => handleCheckboxChange(filter, value)}
+          onChange={(event) => {
+               // Prevent the event from reaching handleClickOutside
+          event.stopPropagation();
+            handleCheckboxChange(filter, value)}}
         />
         {value}
       </div>
@@ -561,12 +566,15 @@ const generateOptions = () => {
   
   const generateOptionsForFilterWithAll = (values, filter) => {
     const options = values.map((value) => (
-      <div key={value}>
+      <div key={value} className="checkbox-option">
         <input
           type="checkbox"
           value={value}
           checked={filters[filter].includes(value)}
-          onChange={() => handleCheckboxChange(filter, value)}
+          onChange={(event) => {
+               // Prevent the event from reaching handleClickOutside
+          event.stopPropagation();
+            handleCheckboxChange(filter, value)}}
         />
         {value}
       </div>
@@ -577,7 +585,10 @@ const generateOptions = () => {
         <input
           type="checkbox"
           checked={filters[filter].length === values.length}
-          onChange={() => handleCheckboxChangeAll(filter)}
+          onChange={(event) => {
+             // Prevent the event from reaching handleClickOutside
+          event.stopPropagation();
+            handleCheckboxChangeAll(filter)}}
         />
         All
       </div>
@@ -585,19 +596,55 @@ const generateOptions = () => {
     return options;
   };
   
-  // ... (rest of your existing code)
-  
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    // const handleClickOutside = (event) => {
+    //     const dropdownTrigger = document.querySelector('.filter-btn'); // Adjust the selector based on your actual structure
+      
+    //     if (
+    //       dropdownRef.current &&
+    //       !dropdownRef.current.contains(event.target) &&
+    //       !dropdownTrigger.contains(event.target)
+    //     ) {
+    //       // Clicked outside the dropdown and its trigger button, close it
+    //       setDropdownVisibility(false);
+    //     }
+    //   };
+    const handleClickOutside = (event) => {
+        const dropdownTrigger = document.querySelector('.filter-btn');
+        const checkboxOptionClass = 'checkbox-option'; // Add this class to your checkbox options
+      
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target) &&
+          !dropdownTrigger.contains(event.target) &&
+          !event.target.classList.contains(checkboxOptionClass)
+        ) {
+          // Clicked outside the dropdown, its trigger button, and not on a checkbox option, close it
+          setDropdownVisibility(false);
+        }
+      };
+      
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [dropdownRef]);
+
 
   return (
     <div className="container">
       <div className='filter-container'>
         {/* Checkbox filters */}
         <div>
-      <div onClick={toggleDropdown} className='filter-btn'>
+      <div onClick={toggleDropdown} className='filter-btn' >
         Filter By
       </div>
       {isDropdownVisible && (
-        <div className='filter-dropdown' >
+        <div  className='filter-dropdown' ref={dropdownRef} >
           <p onClick={() => handleFilterSelection('Cluster')} style={getFilterStyle('Cluster')}>Cluster</p>
           <p onClick={() => handleFilterSelection('Namespace')} style={getFilterStyle('Namespace')}>Namespace</p>
           <p onClick={() => handleFilterSelection('Alert Name')} style={getFilterStyle('Alert Name')}>Alert Name</p>
@@ -608,7 +655,7 @@ const generateOptions = () => {
       )}
     </div>
     {selectedFilter && isDropdownVisible &&(
-        <div className='filters-checkbox'>
+        <div className='filters-checkbox' >
           <label className='options-checkbox'>
             <strong>{selectedFilter}: </strong>
             {generateOptions()}

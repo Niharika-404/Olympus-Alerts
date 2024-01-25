@@ -59,7 +59,7 @@ const Test = ({selectedDate, alertData, loading, filters, download, setDownload}
 //     applyFilters();
 //   }, [selectedDate, alertData, loading, filters]);
 
-
+console.log("Filters: ",filters);
 useEffect(() => {
     // Apply filters to alertData
     const applyFilters = () => {
@@ -71,17 +71,26 @@ useEffect(() => {
           (!filters.zone?.length || filters.zone.some((value) => alert.Zone.includes(value))) &&
           (!filters.priority?.length || filters.priority.some((value) => alert.Priority.includes(value))) &&
           (!filters.status?.length || filters.status.some((value) => alert.Status.includes(value)))
+          
+
 
 
         );
       });
-  
+
       setFilteredData(filteredAlerts);
     };
   
     applyFilters();
   }, [selectedDate, alertData, loading, filters]);
 
+
+
+
+
+
+
+  console.log("Filtered Data for Table:", filteredData);
   useEffect(() => {
     if (download) {
       // Download logic
@@ -136,7 +145,7 @@ useEffect(() => {
               <th>Namespace</th>
               <th>Priority</th>
               {/* <th>Is Seen</th> */}
-              <th>Acknowledged</th>
+              <th>Acknowledge Status</th>
               <th>Alert Creation Time</th>
               {/* <th>Ack Time(ms)</th> */}
               <th>Alert Last Updated At</th>
@@ -166,7 +175,7 @@ useEffect(() => {
                 <td>{alert?.Date ?? 'N/A'}</td>
                 {/* <td>{alert?.['Tiny ID'] ?? 'N/A'}</td> */}
                 <td>{alert?.['Alert ID'] ?? 'N/A'}</td>
-                <td>{alert?.['Alert Name'] ?? 'N/A'}</td>
+                <td>{alert?.['Alert Name'] ? alert?.['Alert Name']: 'N/A'}</td>
                 {/* <td>{alert?.Alias ?? 'N/A'}</td> */}
                 <td>{alert?.Description ?? 'N/A'}</td>
                 <td>{alert?.Zone ?? 'N/A'}</td>
@@ -174,7 +183,9 @@ useEffect(() => {
                 <td>{alert?.Namespace ?? 'N/A'}</td>
                 <td>{alert?.Priority ?? 'N/A'}</td>
                 {/* <td>{alert?.IsSeen ?? 'N/A'}</td> */}
-                <td>{alert?.Acknowledged ?? 'N/A'}</td>
+                {/* <td>{alert?.Acknowledged ?? 'N/A'}</td> */}
+                <td>{String(alert?.Acknowledged) === 'true' ? 'Acknowledged' : 'N/A'}</td>
+
                 <td>{alert?.['Alert Creation Time'] ?? 'N/A'}</td>
                 {/* <td>{alert?.['Ack Time'] ?? 'N/A'}</td> */}
                 <td>{alert?.['Alert Last Updated At'] ?? 'N/A'}</td>

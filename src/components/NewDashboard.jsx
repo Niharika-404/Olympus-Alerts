@@ -222,9 +222,26 @@ const NewDashboard = ({alertData}) => {
   );
 
   // Render priorities for each unique alert
-  const renderPriorities = (alertName) => {
+//   const renderPriorities = (alertName) => {
+//     const priorities = alertPriorities[alertName] || [];
+//     return priorities.join(', ');
+//   };
+
+
+// Update renderPriorities to consider only the selected zone
+const renderPriorities = (alertName) => {
     const priorities = alertPriorities[alertName] || [];
-    return priorities.join(', ');
+    const prioritiesForSelectedZone = priorities.filter(
+      (priority) =>
+        data.some(
+          (alert) =>
+            alert?.['Alert Name'] === alertName &&
+            alert?.Zone === selectedZone &&
+            alert?.Priority === priority 
+            // alert?.Status === 'open'
+        )
+    );
+    return prioritiesForSelectedZone.join(', ');
   };
 
   // Filter priority counts based on the selected zone
