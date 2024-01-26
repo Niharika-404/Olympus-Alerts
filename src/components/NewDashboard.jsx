@@ -152,6 +152,7 @@ import PriorityVsTimeToAck from './PriorityVsTimeToAck.jsx';
 import NoiseAlertsTable from './NoiseAlerts.jsx';
 import AcknowledgementChart from './AcknowledgementChart.jsx';
 import AlertVsTimeDiffTable from './AlertVsTimeDiff.jsx';
+// import AutoAlertsTable from './AutoAlerts.jsx';
 
 
 const NewDashboard = ({alertData}) => {
@@ -305,7 +306,7 @@ const renderPriorities = (alertName) => {
             {/* <NoiseAlerts alertData={alertData} selectedZone={selectedZone}/> */}
             <AlertVsTimeDiffTable alertData={alertData} selectedZone={selectedZone}/>
             <NoiseAlertsTable alertData={alertData} selectedZone={selectedZone} />
-
+            {/* <AutoAlertsTable alertData={alertData} selectedZone={selectedZone}/> */}
 
         </div>
        

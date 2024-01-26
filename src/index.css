@@ -481,3 +481,21 @@ ul{
   max-height: 350px;
   overflow-y: scroll;
 }
+
+.alerts-time-table{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.alerts-time-table svg{
+ width: 50px;
+}
+.charts{
+  display: flex;
+  align-items: first baseline;
+}
+.reset-download-buttons input[type="search"]{
+  padding: 8px;
+  margin-top: 10px;
+}

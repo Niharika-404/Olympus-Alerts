@@ -4,7 +4,7 @@ import { Oval } from 'react-loader-spinner';
 import Papa from 'papaparse'
 
 
-const Test = ({selectedDate, alertData, loading, filters, download, setDownload}) => {
+const Test = ({selectedDate, alertData, loading, filters, download, setDownload, searchTerm}) => {
  
 
 //   const [alertData, setAlertData] = useState([]);
@@ -70,8 +70,12 @@ useEffect(() => {
           (!filters.alertName?.length || filters.alertName.some((value) => alert['Alert Name'].includes(value))) &&
           (!filters.zone?.length || filters.zone.some((value) => alert.Zone.includes(value))) &&
           (!filters.priority?.length || filters.priority.some((value) => alert.Priority.includes(value))) &&
-          (!filters.status?.length || filters.status.some((value) => alert.Status.includes(value)))
+          (!filters.status?.length || filters.status.some((value) => alert.Status.includes(value))) &&
           
+          (!searchTerm ||
+            Object.values(alert).some(
+              (value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase())
+            ))
 
 
 
@@ -82,7 +86,7 @@ useEffect(() => {
     };
   
     applyFilters();
-  }, [selectedDate, alertData, loading, filters]);
+  }, [selectedDate, alertData, loading, filters, searchTerm]);
 
 
 

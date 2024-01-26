@@ -176,7 +176,9 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     const [download, setDownload] = useState(false);
     const [isDropdownVisible, setDropdownVisibility] = useState(false);
     const [selectedFilter, setSelectedFilter] = useState(null);
-   
+    const [searchTerm, setSearchTerm] = useState('');
+    const [optionSearchTerm, setOptionSearchTerm] = useState('');
+
 
 
   // State variables to hold filter values
@@ -548,7 +550,10 @@ const generateOptions = () => {
   };
   
   const generateOptionsForFilter = (values, filter) => {
-    return values.map((value) => (
+    const filteredValues = values.filter(value =>
+        value.toLowerCase().includes(optionSearchTerm.toLowerCase())
+      );
+    return filteredValues.map((value) => (
       <div key={value} className="checkbox-option">
         <input
           type="checkbox"
@@ -565,7 +570,10 @@ const generateOptions = () => {
   };
   
   const generateOptionsForFilterWithAll = (values, filter) => {
-    const options = values.map((value) => (
+    const filteredValues = values.filter(value =>
+        value.toLowerCase().includes(optionSearchTerm.toLowerCase())
+      );
+    const options = filteredValues.map((value) => (
       <div key={value} className="checkbox-option">
         <input
           type="checkbox"
@@ -614,12 +622,14 @@ const generateOptions = () => {
     const handleClickOutside = (event) => {
         const dropdownTrigger = document.querySelector('.filter-btn');
         const checkboxOptionClass = 'checkbox-option'; // Add this class to your checkbox options
+        const optionsSearchClass = 'options-search';
       
         if (
           dropdownRef.current &&
           !dropdownRef.current.contains(event.target) &&
           !dropdownTrigger.contains(event.target) &&
-          !event.target.classList.contains(checkboxOptionClass)
+          !event.target.classList.contains(checkboxOptionClass) &&
+          !event.target.classList.contains(optionsSearchClass)
         ) {
           // Clicked outside the dropdown, its trigger button, and not on a checkbox option, close it
           setDropdownVisibility(false);
@@ -634,6 +644,12 @@ const generateOptions = () => {
     };
   }, [dropdownRef]);
 
+
+// Add a new function to handle search term change
+const handleSearchChange = (event) => {
+    setOptionSearchTerm(event.target.value);
+  };
+  
 
   return (
     <div className="container">
@@ -658,10 +674,19 @@ const generateOptions = () => {
         <div className='filters-checkbox' >
           <label className='options-checkbox'>
             <strong>{selectedFilter}: </strong>
+            <input
+                type="search"
+                placeholder='Search...'
+                className='options-search'
+                value={optionSearchTerm}
+                onChange={handleSearchChange}
+            />
             {generateOptions()}
           </label>
         </div>
       )}
+    
+
         {/* <div className='filters-checkbox'>
           <label className='options-checkbox'>
             <strong>Cluster: </strong>
@@ -778,6 +803,12 @@ const generateOptions = () => {
      
         </div>  */}
         <div className='reset-download-buttons'>
+        <input
+            type="search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search..."
+        />
                 <button onClick={handleResetFilters}>Reset Filters</button>
                 <button onClick={handleDownloadData}>Download Data</button>
         </div>
@@ -791,6 +822,7 @@ const generateOptions = () => {
           filters={filters}
           download={download}
           setDownload={setDownload}
+          searchTerm={searchTerm} 
         />
       </div>
     </div>
