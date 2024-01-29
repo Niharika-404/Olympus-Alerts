@@ -13,7 +13,7 @@ const Test = ({selectedDate, alertData, loading, filters, download, setDownload,
 
 
 
-console.log("Filters: ",filters);
+// console.log("Filters: ",filters);
 useEffect(() => {
     // Apply filters to alertData
     const applyFilters = () => {
@@ -48,16 +48,69 @@ useEffect(() => {
 
 
 
-  console.log("Filtered Data for Table:", filteredData);
+  // console.log("Filtered Data for Table:", filteredData);
+  // useEffect(() => {
+  //   if (download) {
+  //     // Download logic
+  //     const csvHeaders = Object.keys(filteredData[0] || {});
+  //     const csvData = filteredData.map((alert) => {
+  //       return csvHeaders.reduce((rowData, header) => {
+  //         rowData[header] = alert[header] ?? 'N/A';
+  //         return rowData;
+  //       }, {});
+  //     });
+  
+  //     // Create a CSV file
+  //     const csvFileName = 'alert_data.csv';
+  //     const csvLink = document.createElement('a');
+  //     csvLink.href = URL.createObjectURL(new Blob([Papa.unparse(csvData, { header: true })], { type: 'text/csv' }));
+  //     csvLink.setAttribute('download', csvFileName);
+  //     document.body.appendChild(csvLink);
+  //     csvLink.click();
+  //     document.body.removeChild(csvLink);
+  
+  //     setDownload(false); // Reset download state after download logic is executed
+  //   }
+  // }, [download, setDownload, filteredData]);
+
   useEffect(() => {
     if (download) {
-      // Download logic
-      const csvHeaders = Object.keys(filteredData[0] || {});
+      // Define the headers that correspond to the visible columns in the table
+      const visibleHeaders = [
+        'Date',
+        'Alert ID',
+        'Alert Name',
+        'Description',
+        'Zone',
+        'Cluster',
+        'Namespace',
+        'Priority',
+        'Acknowledged',
+        'Alert Creation Time',
+        'Alert Last Updated At',
+        'Alert Ack By',
+        'Last Occured At',
+        'Service',
+        'Severity',
+        'Time To ACK',
+        'Time To Close',
+        'Time Diff',
+        'Close Time',
+        'Closed By',
+        'Contact Method',
+        'Count',
+        'Status',
+        'Alert Link',
+        'Runbook ',
+      ];
+  
+      // Create CSV data only from the visible columns
       const csvData = filteredData.map((alert) => {
-        return csvHeaders.reduce((rowData, header) => {
+        const rowData = {};
+        visibleHeaders.forEach((header) => {
           rowData[header] = alert[header] ?? 'N/A';
-          return rowData;
-        }, {});
+        });
+        return rowData;
       });
   
       // Create a CSV file
@@ -72,6 +125,8 @@ useEffect(() => {
       setDownload(false); // Reset download state after download logic is executed
     }
   }, [download, setDownload, filteredData]);
+  
+  
   
   
 
@@ -129,8 +184,8 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((alert) => (
-              <tr key={`${alert?.['Tiny ID']}-${alert?.['Alert ID']}-${alert?.Cluster}`}>
+            {filteredData.map((alert, index) => (
+              <tr key={`${alert?.['Alert ID']}-${index}`}>
 
                 <td>{alert?.Date ?? 'N/A'}</td>
                 {/* <td>{alert?.['Tiny ID'] ?? 'N/A'}</td> */}

@@ -12,6 +12,10 @@ import NoiseAlertsTable from './NoiseAlerts.jsx';
 import AcknowledgementChart from './AcknowledgementChart.jsx';
 import AlertVsTimeDiffTable from './AlertVsTimeDiff.jsx';
 // import AutoAlertsTable from './AutoAlerts.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleDown } from '@fortawesome/free-solid-svg-icons';
+// import Papa from 'papaparse';
+
 
 
 const NewDashboard = ({alertData, isNavMenuOpen}) => {
@@ -121,6 +125,59 @@ const renderPriorities = (alertName) => {
   const chartSeries = filteredPriorityCounts.map(item => item.count);
   console.log(isNavMenuOpen)
 
+
+  // function handleDownload() {
+  //   // Create a new Blob containing the data to be downloaded
+  //   const data = filteredAlerts.map((alert) => `${alert} - ${renderPriorities(alert)}`).join('\n');
+  //   const blob = new Blob([data], { type: 'text/plain' });
+  
+  //   // Create a URL for the Blob
+  //   const url = URL.createObjectURL(blob);
+  
+  //   // Create a temporary anchor element to trigger the download
+  //   const a = document.createElement('a');
+  //   a.href = url;
+  //   a.download = 'unique_alerts.txt'; // Specify the filename for the downloaded file
+  
+  //   // Programmatically trigger the click event on the anchor element
+  //   document.body.appendChild(a);
+  //   a.click();
+  
+  //   // Clean up: remove the temporary anchor element and revoke the URL
+  //   document.body.removeChild(a);
+  //   URL.revokeObjectURL(url);
+  // }
+
+  function handleDownload() {
+    // Prepare the CSV content
+    let csvContent = 'Alert,Priority\n'; // Header row
+  
+    // Iterate over filteredAlerts and add each alert and its priority to the CSV content
+    filteredAlerts.forEach((alert) => {
+      csvContent += `"${alert}","${renderPriorities(alert)}"\n`;
+    });
+  
+    // Create a Blob containing the CSV content
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+  
+    // Create a URL for the Blob
+    const url = URL.createObjectURL(blob);
+  
+    // Create a temporary anchor element to trigger the download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'unique_alerts.csv'; // Specify the filename for the downloaded file
+  
+    // Programmatically trigger the click event on the anchor element
+    document.body.appendChild(a);
+    a.click();
+  
+    // Clean up: remove the temporary anchor element and revoke the URL
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  
+  
   return (
     <div className={isNavMenuOpen? 'dashboard-container': 'full-width'}>
       <div id='zone-dropdown'>
@@ -136,8 +193,12 @@ const renderPriorities = (alertName) => {
       <div id='alerts-container'>
         <div id='unique-alerts'>
           {/* List of Unique Alerts for the Selected Zone */}
+          <div className='alerts-time-table'> 
           <h3>Unique Alerts</h3>
-          <ul>
+          <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
+          </div>
+         <div className='unique-alerts-content'>
+         <ul>
             {filteredAlerts.map((alert, index) => (
               <li key={index}>
                 <div className='alert-priority-div'>
@@ -148,6 +209,8 @@ const renderPriorities = (alertName) => {
               </li>
             ))}
           </ul>
+         </div>
+         
         </div>
         <div id='priority-alerts'>
           {/* Donut Chart for Open Alerts in Each Priority for the Selected Zone */}

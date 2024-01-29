@@ -76,7 +76,8 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     });
   };
 
- 
+     console.log('Filters:', filters);
+
 
 // useEffect(() => {
 //     console.log('Filters:', filters);
@@ -156,7 +157,7 @@ const handleCheckboxChangeAll = (filter) => {
       case 'alertName':
         return uniqueAlertNames;
       case 'priority':
-        console.log(uniquePriorities);
+        // console.log(uniquePriorities);
         return uniquePriorities;
       case 'zone':
         return uniqueZones;
