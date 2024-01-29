@@ -1,6 +1,62 @@
 
 
 
+// // import React, { useState } from 'react';
+// // import SideContainer from './SideContainer';
+// // import AlertsTable from './AlertsTable';
+// // import Title from './Title';
+// // import NavMenu from './NavMenu';
+// // import NewDashboard from './NewDashboard';
+
+// // const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh }) => {
+// //   const [selectedStatus, setSelectedStatus] = useState('');
+// //   const [activeNavItem, setActiveNavItem] = useState('Alerts');
+
+// //   const handleNavItemClick = (item) => {
+// //     setActiveNavItem(item);
+// //   };
+
+// //   return (
+// //     <div>
+// //               <Title onDateChange={onDateChange} selectedDate={selectedDate} />
+
+// //       <div id='mainContainer'>
+// //         <NavMenu  onNavItemClick={handleNavItemClick} />
+
+
+// //         {activeNavItem === 'Alerts' && (
+// //           <AlertsTable
+            
+// //             selectedDate={selectedDate}
+// //             loading={loading}
+// //             alertData={alertData}
+// //             selectedStatus={selectedStatus}
+// //             setSelectedStatus={setSelectedStatus}
+// //           />
+// //         )}
+// //         {activeNavItem === 'Dashboard' && (
+// //           <NewDashboard alertData={alertData}/>
+// //         )}
+
+// //         <SideContainer
+// //          onDateChange={onDateChange}
+// //           selectedDate={selectedDate}
+// //           loading={loading}
+// //           alertData={alertData}
+// //           selectedStatus={selectedStatus}
+// //           setSelectedStatus={setSelectedStatus}
+// //           handleRefresh={handleRefresh}
+// //         />
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default Main;
+
+
+
+
 // import React, { useState } from 'react';
 // import SideContainer from './SideContainer';
 // import AlertsTable from './AlertsTable';
@@ -11,35 +67,38 @@
 // const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh }) => {
 //   const [selectedStatus, setSelectedStatus] = useState('');
 //   const [activeNavItem, setActiveNavItem] = useState('Alerts');
+//   const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
 
 //   const handleNavItemClick = (item) => {
 //     setActiveNavItem(item);
 //   };
 
+//   const handleNavMenuToggle = (isOpen) => {
+//     setIsNavMenuOpen(isOpen);
+//   };
+
 //   return (
 //     <div>
-//               <Title onDateChange={onDateChange} selectedDate={selectedDate} />
-
+//       <Title onDateChange={onDateChange} selectedDate={selectedDate} />
 //       <div id='mainContainer'>
-//         <NavMenu  onNavItemClick={handleNavItemClick} />
-
-
-//         {activeNavItem === 'Alerts' && (
-//           <AlertsTable
-            
-//             selectedDate={selectedDate}
-//             loading={loading}
-//             alertData={alertData}
-//             selectedStatus={selectedStatus}
-//             setSelectedStatus={setSelectedStatus}
-//           />
-//         )}
-//         {activeNavItem === 'Dashboard' && (
-//           <NewDashboard alertData={alertData}/>
-//         )}
-
+//         <NavMenu onNavItemClick={handleNavItemClick} onToggle={handleNavMenuToggle} />
+//           {activeNavItem === 'Alerts' && (
+//             <AlertsTable
+//               selectedDate={selectedDate}
+//               loading={loading}
+//               alertData={alertData}
+//               selectedStatus={selectedStatus}
+//               setSelectedStatus={setSelectedStatus}
+//               isNavMenuOpen={isNavMenuOpen}
+//             />
+//           )}
+//           {activeNavItem === 'Dashboard' && (
+//             <NewDashboard alertData={alertData}
+//             isNavMenuOpen={isNavMenuOpen}
+//             />
+//           )}
 //         <SideContainer
-//          onDateChange={onDateChange}
+//           onDateChange={onDateChange}
 //           selectedDate={selectedDate}
 //           loading={loading}
 //           alertData={alertData}
@@ -53,9 +112,6 @@
 // };
 
 // export default Main;
-
-
-
 
 import React, { useState } from 'react';
 import SideContainer from './SideContainer';
@@ -80,23 +136,24 @@ const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh })
   return (
     <div>
       <Title onDateChange={onDateChange} selectedDate={selectedDate} />
-      <div id='mainContainer'>
+      <div id='mainContainer' className={activeNavItem === 'Alerts' ? 'alertsActive' : 'dashboardActive'}>
         <NavMenu onNavItemClick={handleNavItemClick} onToggle={handleNavMenuToggle} />
-          {activeNavItem === 'Alerts' && (
-            <AlertsTable
-              selectedDate={selectedDate}
-              loading={loading}
-              alertData={alertData}
-              selectedStatus={selectedStatus}
-              setSelectedStatus={setSelectedStatus}
-              isNavMenuOpen={isNavMenuOpen}
-            />
-          )}
-          {activeNavItem === 'Dashboard' && (
-            <NewDashboard alertData={alertData}
+        {activeNavItem === 'Alerts' && (
+          <AlertsTable
+            selectedDate={selectedDate}
+            loading={loading}
+            alertData={alertData}
+            selectedStatus={selectedStatus}
+            setSelectedStatus={setSelectedStatus}
             isNavMenuOpen={isNavMenuOpen}
-            />
-          )}
+          />
+        )}
+        {activeNavItem === 'Dashboard' && (
+          <NewDashboard
+            alertData={alertData}
+            isNavMenuOpen={isNavMenuOpen}
+          />
+        )}
         <SideContainer
           onDateChange={onDateChange}
           selectedDate={selectedDate}

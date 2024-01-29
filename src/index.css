@@ -36,8 +36,9 @@ table {
 }
 .table-container{
   overflow-y: scroll;
-  max-height: 600px;
-  box-shadow: 10px 10px 5px #a0258f;
+  /* max-height: 800px; */
+  max-height: 800px;
+  /* box-shadow: 10px 10px 5px #a0258f; */
 }
 
 
@@ -72,7 +73,18 @@ td {
   display: flex;
   flex-direction: row;
   gap: 50px;
+  /* height: 300vh; */
 }
+
+.alertsActive {
+  height: 100vh;
+}
+
+.dashboardActive {
+  max-height: 100%;
+}
+
+
 .openCloseCount{
   display: flex;
   flex-direction: row;
@@ -556,7 +568,7 @@ ul{
 #nav-menu{
   background-color: #5F024C;
   color: white;
-  max-height: 100%vh;
+  max-height: 100vh;
   margin: 0;
   display: flex;
   flex-direction: column;
