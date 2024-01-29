@@ -7,57 +7,11 @@ import Papa from 'papaparse'
 const Test = ({selectedDate, alertData, loading, filters, download, setDownload, searchTerm}) => {
  
 
-//   const [alertData, setAlertData] = useState([]);
-//   const [loading, setLoading] = useState(true);
 
-//   useEffect(() => {
-//     ( async () => {
-//       try {
-//         console.log('Component rendered');
-//         // const response = await axios.post(
-//         //   'http://127.0.0.1:5000/api/process_alerts',
-//         // //   { date: '2024-01-13' },
-//         // {date: selectedDate},
-//         //   {
-//         //     headers: {
-//         //       'Content-Type': 'application/json',
-//         //     },
-//         //   }
-//         // );
-//         // const alerts = response.data.alerts;
-//         console.log('Raw response data:', alertData);
-  
-//         // setAlertData(alerts);
-//         // setLoading(false);
-//       } catch (error) {
-//         console.error('Error:', error);
-//         // setLoading(false);
-//       }
-//     })();
-  
-//   }, [selectedDate, alertData, loading]); // Add dependencies if needed
   
   const [filteredData, setFilteredData] = useState([]);
 
-//   useEffect(() => {
-//     // Apply filters to alertData
-//     const applyFilters = () => {
-//       const filteredAlerts = alertData.filter((alert) => {
-//         return (
-//           (!filters.cluster || alert.Cluster.includes(filters.cluster)) &&
-//           (!filters.namespace || alert.Namespace.includes(filters.namespace)) &&
-//           (!filters.alertName || alert['Alert Name'].includes(filters.alertName)) &&
-//           (!filters.zone || alert.Zone.includes(filters.zone)) &&
-//           (!filters.priority || alert.Priority.includes(filters.priority)) &&
-//           (!filters.status || alert.Status.includes(filters.status))
-//         );
-//       });
 
-//       setFilteredData(filteredAlerts);
-//     };
-
-//     applyFilters();
-//   }, [selectedDate, alertData, loading, filters]);
 
 console.log("Filters: ",filters);
 useEffect(() => {
@@ -138,40 +92,40 @@ useEffect(() => {
         <table>
           <thead>
             <tr>
-            <th>Date</th>
+            <th>DATE</th>
               {/* <th>Tiny ID</th> */}
-              <th>Alert ID</th>
-              <th>Alert Name</th>
+              <th>ALERT ID</th>
+              <th>ALERT NAME</th>
               {/* <th>Alias</th> */}
-              <th>Description</th>
-              <th>Zone</th>
-              <th>Cluster</th>
-              <th>Namespace</th>
-              <th>Priority</th>
+              <th>DESCRIPTION</th>
+              <th>ZONE</th>
+              <th>CLUSTER</th>
+              <th>NAMESPACE</th>
+              <th>PRIORITY</th>
               {/* <th>Is Seen</th> */}
-              <th>Acknowledge Status</th>
-              <th>Alert Creation Time</th>
+              <th>ACKNOWLEDGE STATUS</th>
+              <th>ALERT CREATION TIME</th>
               {/* <th>Ack Time(ms)</th> */}
-              <th>Alert Last Updated At</th>
-              <th>Alert Ack By</th>
-              <th>Last Occured At</th>
+              <th>ALERT LAST UPDATED AT</th>
+              <th>ALERT ACK BY</th>
+              <th>LAST OCCURED AT</th>
               {/* <th>Job</th> */}
               {/* <th>Owner</th> */}
-              <th>Service</th>
-              <th>Severity</th>
+              <th>SERVICE</th>
+              <th>SEVERITY</th>
               {/* <th>Source</th> */}
-              <th>Time To ACK(min)</th>
-              <th>Time To Close(min)</th>
-              <th>Time Diff(min)</th>
-              <th>Close Time</th>
-              <th>Closed By</th>
+              <th>TIME TO ACK(min)</th>
+              <th>TIME TO CLOSE(min)</th>
+              <th>TIME DIFF(min)</th>
+              <th>CLOSE TIME</th>
+              <th>CLOSED BY</th>
               {/* <th>Prometheus</th> */}
               {/* <th>Grafana</th> */}
-              <th>Contact Method</th>
-              <th>Count</th>
-              <th>Status</th>
-              <th>Alert Link</th>
-              <th>Runbook</th>
+              <th>CONTACT METHOD</th>
+              <th>COUNT</th>
+              <th>STATUS</th>
+              <th>ALERT LINK</th>
+              <th>RUNBOOK</th>
             </tr>
           </thead>
           <tbody>

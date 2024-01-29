@@ -31,38 +31,26 @@
 
 
 import React from 'react';
-// import { useLocation } from 'react-router-dom';
 
-const Title = ({ onDateChange }) => {
-  // const location = useLocation();
-  // const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+const Title = ({ onDateChange, selectedDate }) => {
 
-  // Determine whether to show date based on the route path
-  // const showDate = location.pathname === '/';
+  // const todayDate = new Date().toISOString().split('T')[0];
 
-  // Get today's date in the format 'YYYY-MM-DD'
-  const todayDate = new Date().toISOString().split('T')[0];
-
-  // useEffect(() => {
-  //   if (onDateChange) {
-  //     onDateChange(date);
-  //   }
-  // }, [onDateChange, date]);
+  
 
   return (
-    <div>
-      <h1>OLYMPUS MIDDLEWARE SRE</h1>
+    <div id='title-container'>
+      {/* <h1>OLYMPUS MIDDLEWARE SRE</h1> */}
       <div className='title-date'>
-        <h2>Alerts Dashboard</h2>
-        {/* {showDate && ( */}
-          <input
+        <h2>Olympus Alerts Dashboard</h2>
+          {/* <input
             id='date-input'
             type='date'
             max={todayDate}
-            defaultValue={todayDate}
+            // defaultValue={todayDate}
+            value={selectedDate || todayDate}
             onChange={(e) => onDateChange(e.target.value)}
-          />
-        {/* )} */}
+          /> */}
       </div>
     </div>
   );
