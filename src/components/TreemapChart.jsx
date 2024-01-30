@@ -249,54 +249,186 @@
 // -----------------------------------------------------------------------------------------------------------
 
 
+// import React from 'react';
+// import Chart from 'react-apexcharts';
+
+// const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
+//   // const groupDataByNamespace = () => {
+//   //   const namespaces = Array.from(new Set(data.map(row => row.Namespace).filter(namespace => namespace !== '')));
+
+//   //   return namespaces.map(namespace => {
+//   //     const alertsForNamespace = filteredAlerts.map(alert => {
+//   //       const alertData = data.find(row => row.Namespace === namespace && row['Alert Name'] === alert);
+//   //       const count = alertData ? alertData.Count : 0;
+//   //       return {
+//   //         x: alert,
+//   //         y: count,
+//   //       };
+//   //     });
+
+//   //     return {
+//   //       name: namespace,
+//   //       data: alertsForNamespace,
+//   //     };
+//   //   });
+//   // };
+
+//   // const groupDataByNamespace = () => {
+//   //   const namespaces = Array.from(new Set(data
+//   //     .filter(row => row.Zone === selectedZone)
+//   //     .map(row => row.Namespace)
+//   //     .filter(namespace => namespace !== '')));
+    
+//   //   return namespaces.map(namespace => {
+//   //     const alertsForNamespace = filteredAlerts.map(alert => {
+//   //       const alertData = data.filter(row => row.Namespace === namespace && row['Alert Name'] === alert && row.Zone === selectedZone);
+//   //       const counts = alertData.map(row => row.Count); // Get counts for each row
+//   //       return {
+//   //         x: alert,
+//   //         y: counts, // Use counts array
+//   //       };
+//   //     }).filter(alert => alert.y.length > 0); // Filter out alerts with no counts
+    
+//   //     return {
+//   //       name: namespace,
+//   //       data: alertsForNamespace,
+//   //     };
+//   //   }).filter(namespace => namespace.data.length > 0); // Filter out namespaces with no alerts
+//   // };
+  
+  
+//   const groupDataByNamespace = () => {
+//     // Filter data for the selected zone
+//     const zoneData = data.filter(row => row.Zone === selectedZone);
+  
+//     // Get unique namespaces in the selected zone
+//     const namespaces = Array.from(new Set(zoneData.map(row => row.Namespace).filter(namespace => namespace !== '')));
+  
+//     // Generate a color for each namespace
+//     const namespaceColors = {};
+//     namespaces.forEach((namespace, index) => {
+//       namespaceColors[namespace] = getNamespaceColor(index);
+//     });
+  
+//     // Group alerts by namespace
+//     const groupedData = {};
+//     zoneData.forEach(row => {
+//       const { Namespace, Count } = row;
+//       const alertName = row['Alert Name']; // Access alert name using bracket notation
+//       if (!groupedData[Namespace]) {
+//         groupedData[Namespace] = {};
+//       }
+//       if (!groupedData[Namespace][Count]) {
+//         groupedData[Namespace][Count] = [];
+//       }
+//       // groupedData[Namespace][Count].push({ x: 'Alert Name: ' + alertName, y: Count });
+//       groupedData[Namespace][Count].push({ x: alertName, y: Count });
+
+//     });
+  
+//     // Prepare data for each namespace
+//     return namespaces.map(namespace => ({
+//       name: namespace,
+//       data: Object.values(groupedData[namespace]).flat(),
+//       color: namespaceColors[namespace], // Assign color for each namespace
+//     }));
+//   };
+  
+  
+
+//   const getNamespaceColor = (index) => {
+//     const colors = [
+//       '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
+//       '#FFA500', '#FFC0CB', '#008080', '#800080', '#FF4500',
+//       '#32CD32', '#8A2BE2', '#FF6347', '#00FFFF', '#FF1493',
+//       '#DC143C', '#696969', '#2E8B57', '#F08080', '#4682B4',
+//       '#FFD700', '#4B0082', '#00CED1', '#8B4513', '#20B2AA',
+//       '#7B68EE', '#87CEEB', '#FF69B4'
+//     ];
+//     return colors[index % colors.length];
+//   };
+
+//   const namespacesData = groupDataByNamespace();
+//   console.log(namespacesData);
+
+//   const treemapChartOptions = {
+//     series: namespacesData,
+//     colors: namespacesData.map((namespace, index) => getNamespaceColor(index)),
+//     legend: {
+//       show: true,
+//       position: 'bottom',
+//     },
+//     chart: {
+//       height: 350,
+//       type: 'treemap',
+//       toolbar: {
+//         show: true,
+//         offsetX: 0,
+//         offsetY: 0,
+//         tools: {
+//           download: false,
+//         },
+//         autoSelected: 'zoom',
+//       }
+//     },
+//     title: {
+//       text: `${selectedZone}`,
+//       align: 'center',
+//     },
+//   };
+
+
+//   const handleCSVDownload = () => {
+//     const csvContent = generateCSVContent();
+
+//     // Create a blob with the CSV data
+//     const blob = new Blob([csvContent], { type: 'text/csv' });
+//     const url = window.URL.createObjectURL(blob);
+
+//     // Create a temporary <a> element to trigger the download
+//     const a = document.createElement('a');
+//     a.href = url;
+//     a.download = 'treemap_data.csv';
+//     document.body.appendChild(a);
+//     a.click();
+
+//     // Cleanup
+//     window.URL.revokeObjectURL(url);
+//     document.body.removeChild(a);
+//   };
+
+//   const generateCSVContent = () => {
+//     let csvContent = 'namespace,alertname,count\n'; // Header row
+
+//     namespacesData.forEach(({ name, data }) => {
+//       data.forEach(({ x: alertName, y: count }) => {
+//         csvContent += `${name},${alertName},${count}\n`;
+//       });
+//     });
+
+//     return csvContent;
+//   };
+//   return (
+//     <div>
+//       <div className="chart-container">
+//         <Chart options={treemapChartOptions} series={treemapChartOptions.series} type="treemap" height={700} width={1000} />
+//         <button onClick={handleCSVDownload}>Download CSV</button>
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TreemapChart;
+
+
+
+// -------------------------------------------------------------------------------------------------------------------
+
 import React from 'react';
 import Chart from 'react-apexcharts';
 
 const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
-  // const groupDataByNamespace = () => {
-  //   const namespaces = Array.from(new Set(data.map(row => row.Namespace).filter(namespace => namespace !== '')));
-
-  //   return namespaces.map(namespace => {
-  //     const alertsForNamespace = filteredAlerts.map(alert => {
-  //       const alertData = data.find(row => row.Namespace === namespace && row['Alert Name'] === alert);
-  //       const count = alertData ? alertData.Count : 0;
-  //       return {
-  //         x: alert,
-  //         y: count,
-  //       };
-  //     });
-
-  //     return {
-  //       name: namespace,
-  //       data: alertsForNamespace,
-  //     };
-  //   });
-  // };
-
-  // const groupDataByNamespace = () => {
-  //   const namespaces = Array.from(new Set(data
-  //     .filter(row => row.Zone === selectedZone)
-  //     .map(row => row.Namespace)
-  //     .filter(namespace => namespace !== '')));
-    
-  //   return namespaces.map(namespace => {
-  //     const alertsForNamespace = filteredAlerts.map(alert => {
-  //       const alertData = data.filter(row => row.Namespace === namespace && row['Alert Name'] === alert && row.Zone === selectedZone);
-  //       const counts = alertData.map(row => row.Count); // Get counts for each row
-  //       return {
-  //         x: alert,
-  //         y: counts, // Use counts array
-  //       };
-  //     }).filter(alert => alert.y.length > 0); // Filter out alerts with no counts
-    
-  //     return {
-  //       name: namespace,
-  //       data: alertsForNamespace,
-  //     };
-  //   }).filter(namespace => namespace.data.length > 0); // Filter out namespaces with no alerts
-  // };
-  
-  
   const groupDataByNamespace = () => {
     // Filter data for the selected zone
     const zoneData = data.filter(row => row.Zone === selectedZone);
@@ -310,7 +442,7 @@ const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
       namespaceColors[namespace] = getNamespaceColor(index);
     });
   
-    // Group alerts by namespace
+    // Group alerts by namespace and then by alert name
     const groupedData = {};
     zoneData.forEach(row => {
       const { Namespace, Count } = row;
@@ -318,24 +450,20 @@ const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
       if (!groupedData[Namespace]) {
         groupedData[Namespace] = {};
       }
-      if (!groupedData[Namespace][Count]) {
-        groupedData[Namespace][Count] = [];
+      if (!groupedData[Namespace][alertName]) {
+        groupedData[Namespace][alertName] = 0;
       }
-      // groupedData[Namespace][Count].push({ x: 'Alert Name: ' + alertName, y: Count });
-      groupedData[Namespace][Count].push({ x: alertName, y: Count });
-
+      groupedData[Namespace][alertName] += Count;
     });
   
     // Prepare data for each namespace
     return namespaces.map(namespace => ({
       name: namespace,
-      data: Object.values(groupedData[namespace]).flat(),
+      data: Object.entries(groupedData[namespace]).map(([alertName, count]) => ({ x: alertName, y: count })),
       color: namespaceColors[namespace], // Assign color for each namespace
     }));
   };
   
-  
-
   const getNamespaceColor = (index) => {
     const colors = [
       '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
@@ -349,7 +477,6 @@ const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
   };
 
   const namespacesData = groupDataByNamespace();
-  console.log(namespacesData);
 
   const treemapChartOptions = {
     series: namespacesData,
@@ -376,7 +503,6 @@ const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
       align: 'center',
     },
   };
-
 
   const handleCSVDownload = () => {
     const csvContent = generateCSVContent();
@@ -408,19 +534,15 @@ const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
 
     return csvContent;
   };
+
   return (
     <div>
       <div className="chart-container">
         <Chart options={treemapChartOptions} series={treemapChartOptions.series} type="treemap" height={700} width={1000} />
         <button onClick={handleCSVDownload}>Download CSV</button>
-
       </div>
     </div>
   );
 };
 
 export default TreemapChart;
-
-
-
-// -------------------------------------------------------------------------------------------------------------------
