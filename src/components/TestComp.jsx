@@ -72,12 +72,12 @@ useEffect(() => {
   //     setDownload(false); // Reset download state after download logic is executed
   //   }
   // }, [download, setDownload, filteredData]);
-
+  console.log("test",alertData)
   useEffect(() => {
     if (download) {
       // Define the headers that correspond to the visible columns in the table
       const visibleHeaders = [
-        'Date',
+        
         'Alert ID',
         'Alert Name',
         'Description',
@@ -147,15 +147,15 @@ useEffect(() => {
         <table>
           <thead>
             <tr>
-            <th>DATE</th>
+            
               {/* <th>Tiny ID</th> */}
               <th>ALERT ID</th>
               <th>ALERT NAME</th>
               {/* <th>Alias</th> */}
-              <th>DESCRIPTION</th>
+              <th>ALERT TYPE</th>
               <th>ZONE</th>
               <th>CLUSTER</th>
-              <th>NAMESPACE</th>
+
               <th>PRIORITY</th>
               {/* <th>Is Seen</th> */}
               <th>ACKNOWLEDGE STATUS</th>
@@ -163,21 +163,26 @@ useEffect(() => {
               {/* <th>Ack Time(ms)</th> */}
               <th>ALERT LAST UPDATED AT</th>
               <th>ALERT ACK BY</th>
-              <th>LAST OCCURED AT</th>
+              <th>ALERT ACK TIME</th>
+             
+              <th>TAGS</th>
+              <th>TEAMS</th>
+              <th>PRIMARY ONCALL</th>
+              <th>SECONDARY ONCALL</th>
               {/* <th>Job</th> */}
               {/* <th>Owner</th> */}
-              <th>SERVICE</th>
+    
               <th>SEVERITY</th>
               {/* <th>Source</th> */}
               <th>TIME TO ACK(min)</th>
               <th>TIME TO CLOSE(min)</th>
-              <th>TIME DIFF(min)</th>
+
               <th>CLOSE TIME</th>
               <th>CLOSED BY</th>
               {/* <th>Prometheus</th> */}
               {/* <th>Grafana</th> */}
-              <th>CONTACT METHOD</th>
-              <th>COUNT</th>
+           
+
               <th>STATUS</th>
               <th>ALERT LINK</th>
               <th>RUNBOOK</th>
@@ -187,47 +192,54 @@ useEffect(() => {
             {filteredData.map((alert, index) => (
               <tr key={`${alert?.['Alert ID']}-${index}`}>
 
-                <td>{alert?.Date ?? 'N/A'}</td>
+                
                 {/* <td>{alert?.['Tiny ID'] ?? 'N/A'}</td> */}
-                <td>{alert?.['Alert ID'] ?? 'N/A'}</td>
-                <td>{alert?.['Alert Name'] ? alert?.['Alert Name']: 'N/A'}</td>
+                <td>{alert?.['AlertID'] ?? 'N/A'}</td>
+                <td>{alert?.['AlertName'] ? alert?.['AlertName']: 'N/A'}</td>
+                <td>{alert?.['AlertType'] ? alert?.['AlertType']: 'N/A'}</td>
                 {/* <td>{alert?.Alias ?? 'N/A'}</td> */}
-                <td>{alert?.Description ?? 'N/A'}</td>
+                {/*<td>{alert?.Description ?? 'N/A'}</td>*/}
                 <td>{alert?.Zone ?? 'N/A'}</td>
                 <td>{alert?.Cluster ?? 'N/A'}</td>
-                <td>{alert?.Namespace ?? 'N/A'}</td>
+
                 <td>{alert?.Priority ?? 'N/A'}</td>
                 {/* <td>{alert?.IsSeen ?? 'N/A'}</td> */}
                 {/* <td>{alert?.Acknowledged ?? 'N/A'}</td> */}
-                <td>{String(alert?.Acknowledged) === 'true' ? 'Acknowledged' : 'N/A'}</td>
+                <td>{String(alert?.Acknowledged) === 'true' ? 'Acknowledged' : 'false'}</td>
 
-                <td>{alert?.['Alert Creation Time'] ?? 'N/A'}</td>
+                <td>{alert?.['CreatedAt'] ?? 'N/A'}</td>
+                <td>{alert?.['UpdatedAt'] ?? 'N/A'}</td>
+                <td>{alert?.['AckBy'] ?? 'N/A'}</td>
+                <td>{alert?.['AlertAckTime'] ?? 'N/A'}</td>
                 {/* <td>{alert?.['Ack Time'] ?? 'N/A'}</td> */}
-                <td>{alert?.['Alert Last Updated At'] ?? 'N/A'}</td>
-                <td>{alert?.['Alert Ack By'] ?? 'N/A'}</td>
-                <td>{alert?.['Last Occured At'] ?? 'N/A'}</td>
+                
+                
+                
+                <td>{alert?.['Tags'] ?? 'N/A'}</td>
+                <td>{alert?.['Team'] ?? 'N/A'}</td>
                 {/* <td>{alert?.Job ?? 'N/A'}</td> */}
                 {/* <td>{alert?.Owner ?? 'N/A'}</td> */}
-                <td>{alert?.Service ?? 'N/A'}</td>
+                <td>{alert?.['PrimaryResponderEmail'] ?? 'N/A'}</td>
+                <td>{alert?.['SecondaryResponderEmail'] ?? 'N/A'}</td>
                 <td>{alert?.Severity ?? 'N/A'}</td>
                 {/* <td>{alert?.Source ?? 'N/A'}</td> */}
-                <td>{alert?.['Time To ACK'] ?? 'N/A'}</td>
-                <td>{alert?.['Time To Close'] ?? 'N/A'}</td>
-                <td>{alert?.['Time Diff'] ?? 'N/A'}</td>
-                <td>{alert?.['Close Time'] ?? 'N/A'}</td>
-                <td>{alert?.['Closed By'] ?? 'N/A'}</td>
+                <td>{alert?.['TimeToAck'] ?? 'N/A'}</td>
+                <td>{alert?.['TimeToClose'] ?? 'N/A'}</td>
+               
+                <td>{alert?.['AlertCloseTime'] ?? 'N/A'}</td>
+                <td>{alert?.['ClosedBy'] ?? 'N/A'}</td>
                 {/* <td>{alert?.Prometheus ?? 'N/A'}</td> */}
                 {/* <td>{alert?.Grafana ?? 'N/A'}</td> */}
-                <td>{alert?.['Contact Method'] ?? 'N/A'}</td>
-                <td>{alert?.Count ?? 'N/A'}</td>
+              
+                {/* <td>{alert?.Count ?? 'N/A'}</td> */}
                 <td>{alert?.Status ?? 'N/A'}</td>
                 {/* <td>{alert?.['Alert Link'] ?? 'N/A'}</td> */}
                 <td>
-                  <button onClick={() => handleShowAlert(alert?.['Alert Link'])}>Show Alert</button>
+                  <button onClick={() => handleShowAlert(alert?.['AlertURL'])}>Show Alert</button>
                 </td>
                 {/* <td>{alert?.['Runbook '] ?? 'N/A'}</td> */}
                 <td>
-                  <button onClick={() => handleRunbook(alert?.['Runbook '])}>Run Book</button>
+                  <button onClick={() => handleRunbook(alert?.['RunbookUrl'])}>Run Book</button>
                 </td>
               </tr>
             ))}

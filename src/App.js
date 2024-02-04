@@ -17,23 +17,20 @@ function App() {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await axios.post(
-        'http://127.0.0.1:5000/api/process_alerts',
-        { date: selectedDate },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      const alerts = response.data.alerts;
+    
+      const response = await axios.get('http://127.0.0.1:5000/alerts')
+       
+       
+      
+
+      const alerts = response.data.data;
       setAlertData(alerts);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
-  }, [selectedDate]);
+  }, []);
 
   useEffect(() => {
     // Initial API call on component mount
