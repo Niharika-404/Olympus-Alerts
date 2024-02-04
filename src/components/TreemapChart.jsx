@@ -429,42 +429,42 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 
 const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
-  const groupDataByNamespace = () => {
+  const groupDataByCluster = () => {
     // Filter data for the selected zone
     const zoneData = data.filter(row => row.Zone === selectedZone);
   
     // Get unique namespaces in the selected zone
-    const namespaces = Array.from(new Set(zoneData.map(row => row.Namespace).filter(namespace => namespace !== '')));
+    const clusters = Array.from(new Set(zoneData.map(row => row.Cluster).filter(cluster => cluster !== '')));
   
     // Generate a color for each namespace
-    const namespaceColors = {};
-    namespaces.forEach((namespace, index) => {
-      namespaceColors[namespace] = getNamespaceColor(index);
+    const clusterColors = {};
+    clusters.forEach((cluster, index) => {
+      clusterColors[cluster] = getClusterColor(index);
     });
   
     // Group alerts by namespace and then by alert name
     const groupedData = {};
     zoneData.forEach(row => {
-      const { Namespace, Count } = row;
-      const alertName = row['Alert Name']; // Access alert name using bracket notation
-      if (!groupedData[Namespace]) {
-        groupedData[Namespace] = {};
+      const { Cluster } = row;
+      const alertName = row['AlertName']; // Access alert name using bracket notation
+      if (!groupedData[Cluster]) {
+        groupedData[Cluster] = {};
       }
-      if (!groupedData[Namespace][alertName]) {
-        groupedData[Namespace][alertName] = 0;
+      if (!groupedData[Cluster][alertName]) {
+        groupedData[Cluster][alertName] = 0;
       }
-      groupedData[Namespace][alertName] += Count;
+      groupedData[Cluster][alertName]++;
     });
   
     // Prepare data for each namespace
-    return namespaces.map(namespace => ({
-      name: namespace,
-      data: Object.entries(groupedData[namespace]).map(([alertName, count]) => ({ x: alertName, y: count })),
-      color: namespaceColors[namespace], // Assign color for each namespace
+    return clusters.map(cluster => ({
+      name: cluster,
+      data: Object.entries(groupedData[cluster]).map(([alertName, count]) => ({ x: alertName, y: count })),
+      color: clusterColors[cluster], // Assign color for each namespace
     }));
   };
   
-  const getNamespaceColor = (index) => {
+  const getClusterColor = (index) => {
     const colors = [
       '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
       '#FFA500', '#FFC0CB', '#008080', '#800080', '#FF4500',
@@ -476,11 +476,11 @@ const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
     return colors[index % colors.length];
   };
 
-  const namespacesData = groupDataByNamespace();
+  const clustersData = groupDataByCluster();
 
   const treemapChartOptions = {
-    series: namespacesData,
-    colors: namespacesData.map((namespace, index) => getNamespaceColor(index)),
+    series: clustersData,
+    colors: clustersData.map((cluster, index) => getClusterColor(index)),
     legend: {
       show: true,
       position: 'bottom',
@@ -524,9 +524,9 @@ const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
   };
 
   const generateCSVContent = () => {
-    let csvContent = 'namespace,alertname,count\n'; // Header row
+    let csvContent = 'cluster,alertname,count\n'; // Header row
 
-    namespacesData.forEach(({ name, data }) => {
+    clustersData.forEach(({ name, data }) => {
       data.forEach(({ x: alertName, y: count }) => {
         csvContent += `${name},${alertName},${count}\n`;
       });

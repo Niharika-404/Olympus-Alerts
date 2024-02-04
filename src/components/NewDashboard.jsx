@@ -11,7 +11,7 @@ import PriorityVsTimeToAck from './PriorityVsTimeToAck.jsx';
 import NoiseAlertsTable from './NoiseAlerts.jsx';
 import AcknowledgementChart from './AcknowledgementChart.jsx';
 import AlertVsTimeDiffTable from './AlertVsTimeDiff.jsx';
-// import AutoAlertsTable from './AutoAlerts.jsx';
+import AutoAlertsTable from './AutoAlerts.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleDown } from '@fortawesome/free-solid-svg-icons';
 // import Papa from 'papaparse';
@@ -47,7 +47,7 @@ const NewDashboard = ({alertData, isNavMenuOpen}) => {
         setZoneOptions(uniqueZones);
 
         // Extract unique alerts
-        const uniqueAlertNames = Array.from(new Set(alertData.map(alert => alert?.['Alert Name'])))
+        const uniqueAlertNames = Array.from(new Set(alertData.map(alert => alert?.['AlertName'])))
         setUniqueAlerts(uniqueAlertNames);
 
         // Extract priority-wise counts for open alerts
@@ -68,7 +68,7 @@ const NewDashboard = ({alertData, isNavMenuOpen}) => {
         uniqueAlertNames.forEach(alertName => {
           alertPrioritiesMap[alertName] = Array.from(new Set(
             alertData
-              .filter(alert => alert?.['Alert Name'] === alertName)
+              .filter(alert => alert?.['AlertName'] === alertName)
               .map(alert => alert?.Priority)
           ));
         });
@@ -82,7 +82,7 @@ const NewDashboard = ({alertData, isNavMenuOpen}) => {
 
   // Filter unique alerts based on the selected zone
   const filteredAlerts = uniqueAlerts.filter(alert =>
-    selectedZone ? data.some(row => row?.Zone === selectedZone && row?.['Alert Name'] === alert) : true
+    selectedZone ? data.some(row => row?.Zone === selectedZone && row?.['AlertName'] === alert) : true
   );
 
   // Render priorities for each unique alert
@@ -99,7 +99,7 @@ const renderPriorities = (alertName) => {
       (priority) =>
         data.some(
           (alert) =>
-            alert?.['Alert Name'] === alertName &&
+            alert?.['AlertName'] === alertName &&
             alert?.Zone === selectedZone &&
             alert?.Priority === priority 
             // alert?.Status === 'open'
@@ -229,7 +229,7 @@ const renderPriorities = (alertName) => {
             {/* <NoiseAlerts alertData={alertData} selectedZone={selectedZone}/> */}
             <AlertVsTimeDiffTable alertData={alertData} selectedZone={selectedZone}/>
             <NoiseAlertsTable alertData={alertData} selectedZone={selectedZone} />
-            {/* <AutoAlertsTable alertData={alertData} selectedZone={selectedZone}/> */}
+            <AutoAlertsTable alertData={alertData} selectedZone={selectedZone}/>
 
         </div>
        

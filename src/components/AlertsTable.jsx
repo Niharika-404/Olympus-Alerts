@@ -21,7 +21,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
   // State variables to hold filter values
   const [filters, setFilters] = useState({
     cluster: [],
-    namespace: [],
+    // namespace: [],
     alertName: [],
     zone: [],
     priority: [],
@@ -30,7 +30,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
 
   // State variables to hold unique values for checkboxes
   const [uniqueClusters, setUniqueClusters] = useState([]);
-  const [uniqueNamespaces, setUniqueNamespaces] = useState([]);
+  // const [uniqueNamespaces, setUniqueNamespaces] = useState([]);
   const [uniqueAlertNames, setUniqueAlertNames] = useState([]);
   const [uniqueZones, setUniqueZones] = useState([]);
   const [uniqueStatus, setUniqueStatus] = useState([]);
@@ -46,7 +46,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
       // Function to get unique values from alertData
       const getUnique = (key) => [...new Set(alertData.map((alert) => alert[key]))];
       setUniqueClusters(getUnique('Cluster'));
-      setUniqueNamespaces(getUnique('Namespace'));
+      // setUniqueNamespaces(getUnique('Namespace'));
       setUniqueAlertNames(getUnique('Alert Name'));
       setUniqueZones(getUnique('Zone'));
       setUniqueStatus(getUnique('Status'));
@@ -106,7 +106,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
   const handleResetFilters = () => {
     setFilters({
       cluster: [],
-      namespace: [],
+      // namespace: [],
       alertName: [],
       zone: [],
       priority: [],
@@ -163,8 +163,8 @@ const handleCheckboxChangeAll = (filter) => {
         return uniqueZones;
       case 'cluster':
         return uniqueClusters;
-      case 'namespace':
-        return uniqueNamespaces;
+      // case 'namespace':
+      //   return uniqueNamespaces;
       // Add cases for other filters...
       default:
         return [];
@@ -181,10 +181,10 @@ const generateOptions = () => {
       case 'Cluster':
         return generateOptionsForFilterWithAll(uniqueClusters, 'cluster');
   
-      case 'Namespace':
-        return generateOptionsForFilterWithAll(uniqueNamespaces, 'namespace');
+      // case 'Namespace':
+      //   return generateOptionsForFilterWithAll(uniqueNamespaces, 'namespace');
   
-      case 'Alert Name':
+      case 'AlertName':
         return generateOptionsForFilterWithAll(uniqueAlertNames, 'alertName');
   
       case 'Priority':
@@ -329,9 +329,9 @@ const clearFilter = (filterName) => {
           case 'cluster':
             addFilter('cluster', value);
             break;
-          case 'namespace':
-            addFilter('namespace', value);
-            break;
+          // case 'namespace':
+          //   addFilter('namespace', value);
+          //   break;
           case 'alertName':
             addFilter('alertName', value);
             break;
@@ -367,8 +367,8 @@ const clearFilter = (filterName) => {
       {isDropdownVisible && (
         <div   className={isNavMenuOpen? 'filter-dropdown' : 'filter-dropdown-expand'} ref={dropdownRef} >
           <p onClick={() => handleFilterSelection('Cluster')} style={getFilterStyle('Cluster')}>Cluster</p>
-          <p onClick={() => handleFilterSelection('Namespace')} style={getFilterStyle('Namespace')}>Namespace</p>
-          <p onClick={() => handleFilterSelection('Alert Name')} style={getFilterStyle('Alert Name')}>Alert Name</p>
+          {/* <p onClick={() => handleFilterSelection('Namespace')} style={getFilterStyle('Namespace')}>Namespace</p> */}
+          <p onClick={() => handleFilterSelection('AlertName')} style={getFilterStyle('AlertName')}>Alert Name</p>
           <p onClick={() => handleFilterSelection('Priority')} style={getFilterStyle('Priority')}>Priority</p>
           <p onClick={() => handleFilterSelection('Status')} style={getFilterStyle('Status')}>Status</p>
           <p onClick={() => handleFilterSelection('Zone')} style={getFilterStyle('Zone')}>Zone</p>

@@ -20,8 +20,8 @@ useEffect(() => {
       const filteredAlerts = alertData.filter((alert) => {
         return (
           (!filters.cluster?.length || filters.cluster.some((value) => alert.Cluster.includes(value))) &&
-          (!filters.namespace?.length || filters.namespace.some((value) => alert.Namespace.includes(value))) &&
-          (!filters.alertName?.length || filters.alertName.some((value) => alert['Alert Name'].includes(value))) &&
+          // (!filters.namespace?.length || filters.namespace.some((value) => alert.Namespace.includes(value))) &&
+          (!filters.alertName?.length || filters.alertName.some((value) => alert['AlertName'].includes(value))) &&
           (!filters.zone?.length || filters.zone.some((value) => alert.Zone.includes(value))) &&
           (!filters.priority?.length || filters.priority.some((value) => alert.Priority.includes(value))) &&
           (!filters.status?.length || filters.status.some((value) => alert.Status.includes(value))) &&
@@ -80,25 +80,24 @@ useEffect(() => {
         
         'Alert ID',
         'Alert Name',
-        'Description',
+        'Alert Type',
         'Zone',
         'Cluster',
-        'Namespace',
         'Priority',
-        'Acknowledged',
+        'Acknowledge Status',
         'Alert Creation Time',
         'Alert Last Updated At',
         'Alert Ack By',
-        'Last Occured At',
-        'Service',
+        'Alert Ack Time',
+        'Tags',
+        'Teams',
+        'Primary oncall',
+        'Secondary oncall',
         'Severity',
-        'Time To ACK',
-        'Time To Close',
-        'Time Diff',
+        'Time To ACK(min)',
+        'Time To Close(min)',
         'Close Time',
         'Closed By',
-        'Contact Method',
-        'Count',
         'Status',
         'Alert Link',
         'Runbook ',

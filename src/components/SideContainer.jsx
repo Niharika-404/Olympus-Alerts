@@ -12,6 +12,8 @@ import PriorityTable from './PriorityTable';
 const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
+    const [totalAck, setTotalAck] = useState(0);
+
     const [priorityCounts, setPriorityCounts] = useState([]);
 
 
@@ -37,6 +39,8 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
 
           const totalOpenedCount = alerts.filter((alert)=>alert?.Status === 'open').length;
           const totalClosedCount = alerts.filter((alert)=>alert?.Status === 'closed').length;
+          const totalAckCount = alerts.filter((alert)=>alert?.Status === 'acknowledged').length;
+
 
   
           const priorities = ['P1', 'P2', 'P3', 'P4', 'P5'];
@@ -45,11 +49,13 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
          
              opened: alerts.filter((alert)=> alert?.Priority === priority && alert?.Status === 'open').length,
             closed: alerts.filter((alert)=> alert?.Priority === priority && alert?.Status === 'closed').length,
+            acknowledged: alerts.filter((alert)=> alert?.Priority === priority && alert?.Status === 'acknowledged').length,
 
           }));
   
           setTotalOpened(totalOpenedCount);
           setTotalClosed(totalClosedCount);
+          setTotalAck(totalAckCount);
           setPriorityCounts(priorityCounts);
 
           // console.log('After fetchData:', { loading,  alertData });
@@ -104,6 +110,10 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
               <div id="close-alerts" onClick={() => handleStatusClick('closed')}>
                 Closed <br />
                 <strong>{totalClosed}</strong>
+              </div>
+              <div id="ack-alerts" onClick={() => handleStatusClick('acknowledged')}>
+                Acknowledged <br />
+                <strong>{totalAck}</strong>
               </div>
             </div>
             <PriorityTable priorityCounts={priorityCounts} />

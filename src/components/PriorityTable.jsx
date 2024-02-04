@@ -15,7 +15,7 @@ const PriorityTable = ({ priorityCounts }) => {
     xaxis: {
       categories: priorityCounts.map((priorityCount) => priorityCount.priority),
     },
-    colors: ['#CF3305', '#056D0A'], // Add your custom colors here
+    colors: ['#CF3305', '#056D0A', '#051189'], // Add your custom colors here
   };
 
   const chartSeries = [
@@ -27,6 +27,10 @@ const PriorityTable = ({ priorityCounts }) => {
       name: 'Closed',
       data: priorityCounts.map((priorityCount) => priorityCount.closed),
     },
+    {
+      name: 'Acknowledged',
+      data: priorityCounts.map((priorityCount) => priorityCount.acknowledged),
+    },
   ];
 
   return (
@@ -37,6 +41,8 @@ const PriorityTable = ({ priorityCounts }) => {
             <th>Priority</th>
             <th>Total Opened</th>
             <th>Total Closed</th>
+            <th>Total Acknowledged</th>
+
           </tr>
         </thead>
         <tbody>
@@ -45,6 +51,8 @@ const PriorityTable = ({ priorityCounts }) => {
               <td>{priorityCount.priority}</td>
               <td>{priorityCount.opened}</td>
               <td>{priorityCount.closed}</td>
+              <td>{priorityCount.acknowledged}</td>
+
             </tr>
           ))}
         </tbody>

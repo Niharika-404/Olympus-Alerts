@@ -39,7 +39,7 @@ const AcknowledgementChart = ({ alertData, selectedZone }) => {
       );
 
       // Group alerts by "Alert Ack By"
-      const groupedAlerts = groupBy(filteredAlerts, 'Alert Ack By');
+      const groupedAlerts = groupBy(filteredAlerts, 'AckBy');
 
       // Extract unique priorities
       const uniquePriorities = Array.from(new Set(filteredAlerts.map((alert) => alert?.Priority)));
@@ -51,7 +51,7 @@ const AcknowledgementChart = ({ alertData, selectedZone }) => {
           data: Object.keys(groupedAlerts).map((ackBy) => {
             const relevantAlerts = groupedAlerts[ackBy].alerts.filter((alert) => alert?.Priority === priority);
             const totalAvgTime =
-              relevantAlerts.reduce((sum, alert) => sum + parseFloat(alert['Time To ACK']), 0) /
+              relevantAlerts.reduce((sum, alert) => sum + parseFloat(alert['TimeToAck']), 0) /
               relevantAlerts.length;
 
             // Round off to 3 decimal places

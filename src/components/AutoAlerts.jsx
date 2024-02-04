@@ -10,10 +10,11 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
     const generateTableData = () => {
       const filteredAlerts = alertData.filter(
         (alert) =>
-          alert?.['Time Diff'] !== undefined &&
-          parseFloat(alert['Time Diff']) === 0 &&
+          
           alert?.Zone === selectedZone &&
-          alert?.Status === 'closed'
+          alert?.Status === 'closed' &&
+          String(alert?.Acknowledged) === 'false' &&
+          alert?.ClosedBy === 'Alert API'
       );
 
       const tableRows = filteredAlerts.map((alert) => ({
@@ -64,14 +65,14 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
         <thead>
           <tr>
             <th>Alert Name</th>
-            <th>Time Difference</th>
+            
           </tr>
         </thead>
         <tbody>
           {tableData.map((row, index) => (
             <tr key={index}>
               <td>{row.alertName}</td>
-              <td>{row.timeDiff}</td>
+              
             </tr>
           ))}
         </tbody>

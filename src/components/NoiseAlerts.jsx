@@ -17,16 +17,18 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
     const generateTableData = () => {
       const filteredAlerts = alertData.filter(
         (alert) =>
-          alert?.['Close Time'] !== undefined &&
-          parseFloat(alert['Close Time']) <= 5 &&
-          parseFloat(alert['Close Time']) >= 0 &&
+          alert?.['TimeToClose'] !== undefined &&
+          parseFloat(alert['TimeToClose']) <= 5 &&
+          parseFloat(alert['TimeToClose']) > 0 &&
           alert?.Zone === selectedZone &&
-          alert?.Status === 'closed'
+          alert?.Status === 'closed' &&
+          String(alert?.Acknowledged) === 'false' &&
+          alert?.ClosedBy === 'Alert API'
       );
 
       const tableRows = filteredAlerts.map((alert) => ({
-        alertName: alert['Alert Name'],
-        closeTime: parseFloat(alert['Close Time']).toFixed(3),
+        alertName: alert['AlertName'],
+        closeTime: parseFloat(alert['TimeToClose']).toFixed(3),
       }));
 
       setTableData(tableRows);
@@ -72,7 +74,7 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
         <thead>
           <tr>
             <th>Alert Name</th>
-            <th>Close Time</th>
+            <th>Time to Close</th>
           </tr>
         </thead>
         <tbody>
