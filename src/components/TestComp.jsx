@@ -137,7 +137,8 @@ useEffect(() => {
     window.open(url, '_blank');
   };
 
-
+  console.log(typeof(alert?.Acknowledged))
+  console.log(alert?.Acknowledged)
   return (
     <div>
       {loading ? (

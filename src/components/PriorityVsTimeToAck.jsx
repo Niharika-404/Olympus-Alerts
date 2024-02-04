@@ -26,10 +26,10 @@ const PriorityVsTimeToAck = ({ alertData, selectedZone }) => {
 
       const avgTimes = priorities.map((priority) => {
         const relevantAlerts = alertData.filter(
-          (alert) => alert?.Priority === priority && alert?.['TimeToACK'] && alert?.Zone === selectedZone
+          (alert) => alert?.Priority === priority && alert?.['TimeToAck'] && alert?.Zone === selectedZone
         );
         const totalAvgTime =
-          relevantAlerts.reduce((sum, alert) => sum + parseFloat(alert['TimeToACK']), 0) /
+          relevantAlerts.reduce((sum, alert) => sum + parseFloat(alert['TimeToAck']), 0) /
           relevantAlerts.length;
 
         // Round off to 3 decimal places

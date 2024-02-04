@@ -22,7 +22,7 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
           parseFloat(alert['TimeToClose']) > 0 &&
           alert?.Zone === selectedZone &&
           alert?.Status === 'closed' &&
-          String(alert?.Acknowledged) === 'false' &&
+          
           alert?.ClosedBy === 'Alert API'
       );
 

@@ -47,7 +47,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
       const getUnique = (key) => [...new Set(alertData.map((alert) => alert[key]))];
       setUniqueClusters(getUnique('Cluster'));
       // setUniqueNamespaces(getUnique('Namespace'));
-      setUniqueAlertNames(getUnique('Alert Name'));
+      setUniqueAlertNames(getUnique('AlertName'));
       setUniqueZones(getUnique('Zone'));
       setUniqueStatus(getUnique('Status'));
       setUniquePriorities(getUnique('Priority'));
@@ -55,7 +55,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
 
     getUniqueValues();
   }, [alertData]);
-
+  
   const handleCheckboxChange = (filterKey, value) => {
     setFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters };
@@ -138,7 +138,7 @@ const handleFilterSelection = (filter) => {
   
 const handleCheckboxChangeAll = (filter) => {
     const allValues = getAllFilterValues(filter);
-    const allSelected = allValues.length > 0 && allValues.every(value => filters[filter].includes(value));
+    const allSelected = allValues.length > 0 && allValues.every(value => filters[filter]?.includes(value));
   
     const updatedFilters = { ...filters };
     if (allSelected) {
@@ -210,7 +210,7 @@ const generateOptions = () => {
         <input
           type="checkbox"
           value={value}
-          checked={filters[filter].includes(value)}
+          checked={filters[filter]?.includes(value)}
           onChange={(event) => {
                // Prevent the event from reaching handleClickOutside
           event.stopPropagation();
@@ -223,14 +223,14 @@ const generateOptions = () => {
   
   const generateOptionsForFilterWithAll = (values, filter) => {
     const filteredValues = values.filter(value =>
-        value.toLowerCase().includes(optionSearchTerm.toLowerCase())
+        value?.toLowerCase().includes(optionSearchTerm.toLowerCase())
       );
     const options = filteredValues.map((value) => (
       <div key={value} className="checkbox-option">
         <input
           type="checkbox"
           value={value}
-          checked={filters[filter].includes(value)}
+          checked={filters[filter]?.includes(value)}
           onChange={(event) => {
                // Prevent the event from reaching handleClickOutside
           event.stopPropagation();
@@ -244,7 +244,7 @@ const generateOptions = () => {
       <div key="all">
         <input
           type="checkbox"
-          checked={filters[filter].length === values.length}
+          checked={filters[filter]?.length === values.length}
           onChange={(event) => {
              // Prevent the event from reaching handleClickOutside
           event.stopPropagation();
@@ -353,7 +353,8 @@ const clearFilter = (filterName) => {
     return selectedFilters;
   };
 
-
+  console.log("uniquealerts",uniqueClusters)
+  console.log(selectedFilter)
   return (
     <div 
     className={isNavMenuOpen? 'container': 'container-expand'}

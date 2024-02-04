@@ -1,0 +1,75 @@
+AckBy
+: 
+"shivanshm.oit@ext.zeta.tech"
+Acknowledged
+: 
+"true"
+AlertAckTime
+: 
+"2024/02/04 05:09:07"
+AlertCloseTime
+: 
+"2024/02/04 07:05:45"
+AlertID
+: 
+"1186eea8-2e61-4e5f-9c7f-519216b805ee-1707003344773"
+AlertName
+: 
+"[Prometheus]: default-AtroposSubscriptionDropEvents-warning"
+AlertType
+: 
+"infra"
+AlertURL
+: 
+"https://zeta.app.opsgenie.com/alert/detail/1186eea8-2e61-4e5f-9c7f-519216b805ee-1707003344773/details"
+BU
+: 
+"NO_DATA"
+ClosedBy
+: 
+"Alert API"
+Cluster
+: 
+"elenchos"
+CreatedAt
+: 
+"2024/02/03 23:35:44"
+PrimaryResponderEmail
+: 
+"priyanshis@zeta.tech"
+Priority
+: 
+"P3"
+RunbookUrl
+: 
+"https://zeta-tm.atlassian.net/wiki/spaces/KBZT/pages/2783936985/Runbook+for+dropped+events+on+subscriptions+for+customers"
+SecondaryResponderEmail
+: 
+"sukantas@zeta.tech"
+Severity
+: 
+"warning"
+Status
+: 
+"closed"
+Tags
+: 
+"600335, NO_DATA, P3, PROD, cardworks, cardworks_RESOURCE_dev, default-AtroposSubscriptionDropEvents-warning, default-prometheus, elenchos, infra, nonpci, us-nonpci, warning, zeta-aws-use2-cprod-eks-01, zeta-aws-use2-cprod-nonpci-eks-01, zone-monitoring/zone-monitoring-infra-prometheus"
+Team
+: 
+"olympus_middleware_sre"
+TimeToAck
+: 
+333.3833333333333
+TimeToClose
+: 
+120.01141666666666
+TinyID
+: 
+"49486"
+UpdatedAt
+: 
+"2024/02/04 01:35:45"
+Zone
+: 
+"zeta-aws-use2-cprod-eks-01"

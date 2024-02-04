@@ -13,13 +13,14 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
           
           alert?.Zone === selectedZone &&
           alert?.Status === 'closed' &&
-          String(alert?.Acknowledged) === 'false' &&
+          
+          // String(alert?.Acknowledged) === 'false' &&
           alert?.ClosedBy === 'Alert API'
       );
-
+      console.log(typeof(alert?.Acknowledged))
       const tableRows = filteredAlerts.map((alert) => ({
-        alertName: alert['Alert Name'],
-        timeDiff: parseFloat(alert['Time Diff']).toFixed(3),
+        alertName: alert['AlertName'],
+
       }));
 
       setTableData(tableRows);
@@ -56,7 +57,7 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
   return (
     <div>
         <div className='alerts-time-table'>
-        <h3>Auto Alerts</h3>
+        <h3>Auto Close Alerts</h3>
         <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
       </div>
 
