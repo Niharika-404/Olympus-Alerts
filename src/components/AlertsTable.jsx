@@ -15,6 +15,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     const [selectedFilter, setSelectedFilter] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [optionSearchTerm, setOptionSearchTerm] = useState('');
+    const [teams, setTeams] = useState(null);
 
 
 
@@ -396,6 +397,24 @@ const clearFilter = (filterName) => {
 
       
         <div className='reset-download-buttons'>
+
+       
+          <select 
+            id='team-select' 
+            value={teams} 
+            onChange={(e) => setTeams(e.target.value)} 
+            placeholder="Select Team"
+          >
+            <option value="Olympus middleware SRE">Olympus middleware SRE</option>
+            {alertData.teams?.map((team, index) => (
+              <option key={index} value={team}>
+                {team}
+              </option>
+            ))}
+          </select>
+
+      
+
         <input
             type="search"
             value={searchTerm}

@@ -139,14 +139,25 @@ const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh })
       <div id='mainContainer' className={activeNavItem === 'Alerts' ? 'alertsActive' : 'dashboardActive'}>
         <NavMenu onNavItemClick={handleNavItemClick} onToggle={handleNavMenuToggle} />
         {activeNavItem === 'Alerts' && (
-          <AlertsTable
-            selectedDate={selectedDate}
-            loading={loading}
-            alertData={alertData}
-            selectedStatus={selectedStatus}
-            setSelectedStatus={setSelectedStatus}
-            isNavMenuOpen={isNavMenuOpen}
-          />
+          <div id='alerttable-count'>
+            <AlertsTable
+              selectedDate={selectedDate}
+              loading={loading}
+              alertData={alertData}
+              selectedStatus={selectedStatus}
+              setSelectedStatus={setSelectedStatus}
+              isNavMenuOpen={isNavMenuOpen}
+            />
+            <SideContainer
+              onDateChange={onDateChange}
+              selectedDate={selectedDate}
+              loading={loading}
+              alertData={alertData}
+              selectedStatus={selectedStatus}
+              setSelectedStatus={setSelectedStatus}
+              handleRefresh={handleRefresh}
+            />
+          </div>
         )}
         {activeNavItem === 'Dashboard' && (
           <NewDashboard
@@ -154,15 +165,6 @@ const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh })
             isNavMenuOpen={isNavMenuOpen}
           />
         )}
-        <SideContainer
-          onDateChange={onDateChange}
-          selectedDate={selectedDate}
-          loading={loading}
-          alertData={alertData}
-          selectedStatus={selectedStatus}
-          setSelectedStatus={setSelectedStatus}
-          handleRefresh={handleRefresh}
-        />
       </div>
     </div>
   );

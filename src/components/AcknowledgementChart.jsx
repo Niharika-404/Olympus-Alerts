@@ -111,7 +111,12 @@ const AcknowledgementChart = ({ alertData, selectedZone }) => {
     <div id='acknowledgement-chart' className='chart-container'>
       {/* Stacked Column chart */}
       <h3>Average Time Taken to Acknowledge By User</h3>
-      <Chart options={chartData} series={chartData.series} type="bar" height={350} />
+      {/* <Chart options={chartData} series={chartData.series} type="bar" height={350} /> */}
+      {chartData.series.length>0 ? (
+        <Chart options={chartData} series={chartData.series} type="bar" height={350} />
+      ) : (
+        <p style={{textAlign:'left', marginTop:'100px'}}>No alerts available for the selected zone.</p>
+      )}
     </div>
   );
 };

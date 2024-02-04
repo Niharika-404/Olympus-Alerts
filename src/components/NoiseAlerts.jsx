@@ -63,15 +63,46 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
   };
 
   return (
-    <div>
-     <div className='alerts-time-table'>
-        <h3>Noise Alerts</h3>
-        <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
-      </div>
+    // <div>
+    //  <div className='alerts-time-table'>
+    //     <h3>Noise Alerts</h3>
+    //     <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
+    //   </div>
 
-    <div id='noise-alerts-table'>
+    //   {tableData.length > 0 ? (
+    //     <div id='noise-alerts-table'>
+    //       <table>
+    //         <thead>
+    //           <tr>
+    //             <th>Alert Name</th>
+    //             <th>Time to Close</th>
+    //           </tr>
+    //         </thead>
+    //         <tbody>
+    //           {tableData.map((row, index) => (
+    //             <tr key={index}>
+    //               <td>{row.alertName}</td>
+    //               <td>{row.closeTime}</td>
+    //             </tr>
+    //           ))}
+    //         </tbody>
+    //       </table>
+    //     </div>
+    //   ) : (
+    //     <p style={{textAlign:'left', marginTop:'100px'}}>No noise alerts found.</p>
+    //   )}
+    // </div>
+
+    <div>
+  <div className='alerts-time-table' style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '1' }}>
+    <h3>Noise Alerts</h3>
+    <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
+  </div>
+
+  {tableData.length > 0 ? (
+    <div style={{ overflowY: 'auto', maxHeight: '350px' }}>
       <table>
-        <thead>
+        <thead style={{ position: 'sticky', top: '40px', backgroundColor: 'white', zIndex: '1' }}>
           <tr>
             <th>Alert Name</th>
             <th>Time to Close</th>
@@ -87,7 +118,11 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
         </tbody>
       </table>
     </div>
-    </div>
+  ) : (
+    <p style={{ textAlign: 'left', marginTop: '100px' }}>No noise alerts found.</p>
+  )}
+</div>
+
 
   );
 };

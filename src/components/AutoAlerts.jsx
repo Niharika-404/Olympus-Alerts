@@ -55,31 +55,62 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
   };
 
   return (
-    <div>
-        <div className='alerts-time-table'>
-        <h3>Auto Close Alerts</h3>
-        <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
-      </div>
+    // <div>
+    //     <div className='alerts-time-table'>
+    //     <h3>Auto Close Alerts</h3>
+    //     <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
+    //   </div>
 
-    <div id='noise-alerts-table'>
+    //   {tableData.length > 0 ? (
+    //     <div id='noise-alerts-table'>
+    //       <table>
+    //         <thead>
+    //           <tr>
+    //             <th>Alert Name</th>
+    //           </tr>
+    //         </thead>
+    //         <tbody>
+    //           {tableData.map((row, index) => (
+    //             <tr key={index}>
+    //               <td>{row.alertName}</td>
+    //             </tr>
+    //           ))}
+    //         </tbody>
+    //       </table>
+    //     </div>
+    //   ) : (
+    //     <p style={{textAlign:'left', marginTop:'100px'}}>No auto close alerts found.</p>
+    //   )}
+    // </div>
+
+
+    <div>
+  <div className='alerts-time-table' style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '1' }}>
+    <h3>Auto Close Alerts</h3>
+    <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
+  </div>
+
+  <div id='noise-alerts-table' style={{ overflowY: 'auto', maxHeight: '400px' }}>
+    {tableData.length > 0 ? (
       <table>
-        <thead>
+        <thead style={{ position: 'sticky', top: '40px', backgroundColor: 'white', zIndex: '1' }}>
           <tr>
             <th>Alert Name</th>
-            
           </tr>
         </thead>
         <tbody>
           {tableData.map((row, index) => (
             <tr key={index}>
               <td>{row.alertName}</td>
-              
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
-    </div>
+    ) : (
+      <p style={{ textAlign: 'left', marginTop: '100px' }}>No auto close alerts found.</p>
+    )}
+  </div>
+</div>
 
   );
 };

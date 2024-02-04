@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Oval } from 'react-loader-spinner';
 // import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { faRotateRight,faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 import PriorityTable from './PriorityTable';
 
@@ -13,6 +13,8 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
+    const [dateRange, setDateRange] = useState(false); // State to track if date range is selected
+
 
     const [priorityCounts, setPriorityCounts] = useState([]);
 
@@ -28,6 +30,10 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
     const refreshData = () => {
       handleRefresh();
     };
+
+    const toggleDateRange = () => {
+      setDateRange(!dateRange);
+  };
   
     useEffect(() => {
       // console.log('Before fetchData:', { loading, alertData });
@@ -89,16 +95,40 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
             {/* <Link to={{ pathname: '/dashboard', state: { alertData } }}>
             <button id="analyze">Analyze</button>
           </Link> */}
-               <input
-            id='date-input'
-            type='date'
-            max={todayDate}
-            // defaultValue={todayDate}
-            value={selectedDate || todayDate}
-            onChange={(e) => onDateChange(e.target.value)}
-          />
+           {dateRange ? (
+                            <>
+                                <input
+                                    id="date-input"
+                                    type="datetime-local"
+                                    defaultValue={todayDate}
+                                    value={selectedDate || todayDate}
+                                    onChange={(e) => onDateChange(e.target.value)}
+                                />
+                              
+                                <input
+                                    id="date-input"
+                                    type="datetime-local"
+                                    defaultValue={todayDate}
+                                    value={selectedDate || todayDate}
+                                    onChange={(e) => onDateChange(e.target.value)}
+                                />
+                               
+                             
+                            </>
+                        ) : (
+                            <input
+                                id="date-input"
+                                type="datetime-local"
+                                defaultValue={todayDate}
+                                value={selectedDate || todayDate}
+                                onChange={(e) => onDateChange(e.target.value)}
+                            />
+                        )}
               {/* <button id="refresh" onClick={refreshData}>Refresh</button> */}
+              <FontAwesomeIcon id="date-range" icon={faCalendarAlt} onClick={toggleDateRange} />
+
               <FontAwesomeIcon id="refresh" icon={faRotateRight} onClick={refreshData} />
+
 
             </div>
            

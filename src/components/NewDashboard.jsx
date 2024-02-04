@@ -123,7 +123,7 @@ const renderPriorities = (alertName) => {
   };
 
   const chartSeries = filteredPriorityCounts.map(item => item.count);
-  console.log(isNavMenuOpen)
+  // console.log(chartSeries)
 
 
   // function handleDownload() {
@@ -190,9 +190,8 @@ const renderPriorities = (alertName) => {
           ))}
         </select>
       </div>
-      <div id='alerts-container'>
+      {/* <div id='alerts-container'>
         <div id='unique-alerts'>
-          {/* List of Unique Alerts for the Selected Zone */}
           <div className='alerts-time-table'> 
           <h3>Unique Alerts</h3>
           <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
@@ -205,7 +204,6 @@ const renderPriorities = (alertName) => {
                     <div>{alert}</div>
                     <div>{renderPriorities(alert)}</div>
                 </div>
-                {/* {alert} - {renderPriorities(alert)} */}
               </li>
             ))}
           </ul>
@@ -213,11 +211,46 @@ const renderPriorities = (alertName) => {
          
         </div>
         <div id='priority-alerts'>
-          {/* Donut Chart for Open Alerts in Each Priority for the Selected Zone */}
           <h3>Open Priority Alerts</h3>
           <Chart options={chartOptions} series={chartSeries} type="donut" width="400" />
         </div>
+      </div> */}
+
+      <div id='alerts-container'>
+        <div id='unique-alerts'>
+          <div className='alerts-time-table'> 
+            <h3>Unique Alerts</h3>
+            <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
+          </div>
+          <div className='unique-alerts-content'>
+            {filteredAlerts.length > 0 ? (
+              <ul>
+                {filteredAlerts.map((alert, index) => (
+                  <li key={index}>
+                    <div className='alert-priority-div'>
+                      <div>{alert}</div>
+                      <div>{renderPriorities(alert)}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No unique alerts found.</p>
+            )}
+          </div>
+        </div>
+        <div id='priority-alerts'>
+          <h3>Open Priority Alerts</h3>
+          {chartSeries.every(count => count === 0) ? (
+            <p>No open alerts in the selected zone.</p>
+          ) : (
+            <Chart options={chartOptions} series={chartSeries} type="donut" width="400" />
+          )}
+        </div>
+
       </div>
+
+
       <div>
         <div className='charts'>
            <PriorityVsTimeToAck alertData={alertData} selectedZone={selectedZone}/>
