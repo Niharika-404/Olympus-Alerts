@@ -13,8 +13,11 @@ body{
 }
 
   .dashboardActive{
-    height: 250vh;
-}
+    height: 300vh;
+    max-height: 100%;
+    height: 320vh;
+ }
+
 #mainContainer{
     display: flex;
     flex-direction: row;
@@ -238,7 +241,7 @@ body{
     text-align: center;
     padding: 10px;
  }
- .Analyze-btn, button{
+ .Analyze-btn{
     background-color: #0E2951;
     color: white;
     padding: 10px;
@@ -285,6 +288,7 @@ body{
     justify-content: space-between;
     align-items: center;
     gap: 12rem;
+    padding: 20px 0;
     overflow-x: auto; /* Enable horizontal scrolling */
     white-space: nowrap; /* Prevent wrapping of content */
     max-width: 100%; 
@@ -414,6 +418,9 @@ body{
   .filter-summary{
     padding: 2px 15px;
     margin-bottom: 10px;
+    max-width: 100%;
+    overflow-x: auto;
+
   }
   .selected-filter {
     background-color: #E8EFFA;
@@ -445,7 +452,17 @@ body{
 
   }
 
-
+  .filter-container button, td button, .unique-alerts-btn {
+    padding: 10px 16px;
+    background-color: #0E2951;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-wrap: nowrap;
+  
+  }
+  
 
 
 
@@ -469,7 +486,8 @@ body{
     padding: 50px 10px;
     border-radius: 5px;
     position: relative;
-    /* overflow-x: scroll; */
+    overflow-x: auto;
+    max-width: 100%;
   
   }
   .charts Chart{
@@ -553,6 +571,7 @@ body{
     margin-bottom: 50px;
     align-items: center;
     justify-content: space-between;
+   
   }
   .charts *{
     width: 100%;
@@ -588,4 +607,28 @@ body{
   .charts{
     display: flex;
     align-items: first baseline;
+   
+
   }
+  .dashboard-container .charts{
+    max-width: 80%;
+    overflow-x: auto;
+  }
+  .full-width .charts{
+    max-width: 100%;
+  }
+
+  .chart-container{
+    position: relative;
+  }
+  .chart-container button{
+    position: absolute;
+    top: 0px;
+    right: 25%;
+    background-color: #0E2951;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+

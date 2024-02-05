@@ -19,12 +19,22 @@ useEffect(() => {
     const applyFilters = () => {
       const filteredAlerts = alertData.filter((alert) => {
         return (
-          (!filters.cluster?.length || filters.cluster.some((value) => alert.Cluster.includes(value))) &&
+          // (!filters.cluster?.length || filters.cluster.some((value) => alert.Cluster.includes(value))) &&
+          (!filters.cluster?.length || (alert.Cluster && filters.cluster.some((value) => alert.Cluster.includes(value)))) &&
+
           // (!filters.namespace?.length || filters.namespace.some((value) => alert.Namespace.includes(value))) &&
-          (!filters.alertName?.length || filters.alertName.some((value) => alert['AlertName'].includes(value))) &&
-          (!filters.zone?.length || filters.zone.some((value) => alert.Zone.includes(value))) &&
-          (!filters.priority?.length || filters.priority.some((value) => alert.Priority.includes(value))) &&
-          (!filters.status?.length || filters.status.some((value) => alert.Status.includes(value))) &&
+          // (!filters.alertName?.length || filters.alertName.some((value) => alert['AlertName'].includes(value))) &&
+          (!filters.alertName?.length || (alert.AlertName && filters.alertName.some((value) => alert.AlertName.includes(value)))) &&
+
+          // (!filters.zone?.length || filters.zone.some((value) => alert.Zone.includes(value))) &&
+          (!filters.zone?.length || (alert.Zone && filters.zone.some((value) => alert.Zone.includes(value)))) &&
+
+          // (!filters.priority?.length || filters.priority.some((value) => alert.Priority.includes(value))) &&
+          (!filters.priority?.length || (alert.Priority && filters.priority.some((value) => alert.Priority.includes(value)))) &&
+
+          // (!filters.status?.length || filters.status.some((value) => alert.Status.includes(value))) &&
+          (!filters.status?.length || (alert.Status && filters.status.some((value) => alert.Status.includes(value)))) &&
+
           
           (!searchTerm ||
             Object.values(alert).some(
@@ -72,7 +82,6 @@ useEffect(() => {
   //     setDownload(false); // Reset download state after download logic is executed
   //   }
   // }, [download, setDownload, filteredData]);
-  console.log("test",alertData)
   useEffect(() => {
     if (download) {
       // Define the headers that correspond to the visible columns in the table
@@ -139,6 +148,7 @@ useEffect(() => {
 
   console.log(typeof(alert?.Acknowledged))
   console.log(alert?.Acknowledged)
+
   return (
     <div>
       {loading ? (

@@ -257,7 +257,7 @@ const renderPriorities = (alertName) => {
            <AcknowledgementChart alertData={alertData} selectedZone={selectedZone}/>
 
         </div>
-        <div className='charts'>
+        <div className='charts' >
             {/* <AlertVsTimeDiff alertData={alertData} selectedZone={selectedZone}/> */}
             {/* <NoiseAlerts alertData={alertData} selectedZone={selectedZone}/> */}
             <AlertVsTimeDiffTable alertData={alertData} selectedZone={selectedZone}/>

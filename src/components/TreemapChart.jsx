@@ -541,10 +541,10 @@ const TreemapChart = ({ data, selectedZone, filteredAlerts }) => {
         <Chart options={treemapChartOptions} series={treemapChartOptions.series} type="treemap" height={700} width={1000} />
         <button onClick={handleCSVDownload}>Download CSV</button>
       </div> */}
-      
+
         {clustersData.length > 0 ? (
         <div className="chart-container">
-          <Chart options={treemapChartOptions} series={treemapChartOptions.series} type="treemap" height={700} width={1000} />
+          <Chart options={treemapChartOptions} series={treemapChartOptions.series} type="treemap" height={700} width={1050}  />
           <button onClick={handleCSVDownload}>Download CSV</button>
         </div>
       ) : (

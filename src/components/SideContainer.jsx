@@ -9,7 +9,7 @@ import { faRotateRight,faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 import PriorityTable from './PriorityTable';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -18,8 +18,12 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
 
     const [priorityCounts, setPriorityCounts] = useState([]);
 
+    // const[start, setStart] = useState('');
+    // const[end, setEnd] = useState('');
 
-    const todayDate = new Date().toISOString().split('T')[0];
+
+
+    const todayDate = new Date().toISOString();
 
     
 
@@ -84,7 +88,8 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
 
     }, [ alertData, loading]);
 
-  
+    console.log(start);
+    console.log(end);
     return (
       <>
         {loading ? (
@@ -101,18 +106,18 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
                                 <input
                                     id="date-input"
                                     type="datetime-local"
-                                    defaultValue={todayDate}
-                                    value={selectedDate || todayDate}
-                                    onChange={(e) => onDateChange(e.target.value)}
+                                    step={1}
+                                    value={start || todayDate}
+                                    onChange={(e) => {onStartDateChange(e.target.value)}}
                                     max={todayDate}
                                 />
                               
                                 <input
                                     id="date-input"
                                     type="datetime-local"
-                                    defaultValue={todayDate}
-                                    value={selectedDate || todayDate}
-                                    onChange={(e) => onDateChange(e.target.value)}
+                                    step={1}
+                                    value={end || todayDate}
+                                    onChange={(e) => {onEndDateChange(e.target.value)}}
                                     max={todayDate}
                                 />
                                
@@ -122,7 +127,7 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
                             <input
                                 id="date-input"
                                 type="datetime-local"
-                                defaultValue={todayDate}
+                                step={1}
                                 value={selectedDate || todayDate}
                                 onChange={(e) => onDateChange(e.target.value)}
                                 max={todayDate}

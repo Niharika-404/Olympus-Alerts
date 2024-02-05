@@ -8,14 +8,14 @@ import { faCircleDown } from '@fortawesome/free-solid-svg-icons';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
-const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, isNavMenuOpen }) => {
+const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, isNavMenuOpen, responders, onResponderChange, selectedResponder }) => {
 
     const [download, setDownload] = useState(false);
     const [isDropdownVisible, setDropdownVisibility] = useState(false);
     const [selectedFilter, setSelectedFilter] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [optionSearchTerm, setOptionSearchTerm] = useState('');
-    const [teams, setTeams] = useState(null);
+    // const [selectedResponder, setSelectedResponder] = useState('');
 
 
 
@@ -354,8 +354,9 @@ const clearFilter = (filterName) => {
     return selectedFilters;
   };
 
-  console.log("uniquealerts",uniqueClusters)
-  console.log(selectedFilter)
+  // const responders = [...new Set(alertData.map((alert) => alert.Team))];
+
+
   return (
     <div 
     className={isNavMenuOpen? 'container': 'container-expand'}
@@ -398,20 +399,20 @@ const clearFilter = (filterName) => {
       
         <div className='reset-download-buttons'>
 
-       
+    
             <select 
               id='team-select' 
-              value={teams} 
-              onChange={(e) => setTeams(e.target.value)} 
-              placeholder="Select Team"
+              value={selectedResponder} 
+              onChange={(e) => onResponderChange(e.target.value)} 
+              placeholder="Select Responder"
             >
-              <option value="Olympus middleware SRE">Olympus middleware SRE</option>
-              {alertData.teams?.map((team, index) => (
-                <option key={index} value={team}>
-                  {team}
+              {/* <option value="Olympus middleware SRE">Olympus middleware SRE</option> */}
+              {responders?.map((responder, index) => (
+                <option key={index} value={responder}>
+                  {responder}
                 </option>
               ))}
-            </select>
+            </select> 
 
       
 

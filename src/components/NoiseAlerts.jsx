@@ -100,9 +100,9 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
   </div>
 
   {tableData.length > 0 ? (
-    <div style={{ overflowY: 'auto', maxHeight: '350px' }}>
-      <table>
-        <thead style={{ position: 'sticky', top: '40px', backgroundColor: 'white', zIndex: '1' }}>
+    <div style={{ overflowY: 'auto', maxHeight: '400px' }}>
+      <table style={{marginTop:'0px'}}>
+        <thead style={{ position: 'sticky', top: '0px', backgroundColor: 'white', zIndex: '1' }}>
           <tr>
             <th>Alert Name</th>
             <th>Time to Close</th>

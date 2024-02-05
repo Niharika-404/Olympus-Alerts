@@ -120,7 +120,7 @@ import Title from './Title';
 import NavMenu from './NavMenu';
 import NewDashboard from './NewDashboard';
 
-const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh }) => {
+const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [activeNavItem, setActiveNavItem] = useState('Alerts');
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
@@ -141,16 +141,22 @@ const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh })
         {activeNavItem === 'Alerts' && (
           <div id={isNavMenuOpen? 'alerttable-count' : 'alerttable-count-expand'}>
             <AlertsTable
-              selectedDate={selectedDate}
               loading={loading}
               alertData={alertData}
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
               isNavMenuOpen={isNavMenuOpen}
+              responders={responders}
+              selectedResponder={selectedResponder}
+              onResponderChange={onResponderChange}
             />
             <SideContainer
               onDateChange={onDateChange}
               selectedDate={selectedDate}
+              onStartDateChange={onStartDateChange}
+              onEndDateChange={onEndDateChange}
+              start={start}
+              end={end}
               loading={loading}
               alertData={alertData}
               selectedStatus={selectedStatus}
