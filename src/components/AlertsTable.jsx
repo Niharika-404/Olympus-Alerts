@@ -362,65 +362,65 @@ const clearFilter = (filterName) => {
     >
       <div className='filter-container'>
         {/* Checkbox filters */}
-        <div>
-      <div onClick={toggleDropdown} className='filter-btn' >
-        Filter       <FontAwesomeIcon className='filter-icon' icon={faFilter} />
-      </div>
-      {isDropdownVisible && (
-        <div   className={isNavMenuOpen? 'filter-dropdown' : 'filter-dropdown-expand'} ref={dropdownRef} >
-          <p onClick={() => handleFilterSelection('Cluster')} style={getFilterStyle('Cluster')}>Cluster</p>
-          {/* <p onClick={() => handleFilterSelection('Namespace')} style={getFilterStyle('Namespace')}>Namespace</p> */}
-          <p onClick={() => handleFilterSelection('AlertName')} style={getFilterStyle('AlertName')}>Alert Name</p>
-          <p onClick={() => handleFilterSelection('Priority')} style={getFilterStyle('Priority')}>Priority</p>
-          <p onClick={() => handleFilterSelection('Status')} style={getFilterStyle('Status')}>Status</p>
-          <p onClick={() => handleFilterSelection('Zone')} style={getFilterStyle('Zone')}>Zone</p>
-        </div>
-      )}
-    </div>
-    {selectedFilter && isDropdownVisible &&(
-        <div className='filters-checkbox' >
-          <label 
-          className={isNavMenuOpen? 'options-checkbox' : 'options-checkbox-expand'}>
-            <strong>{selectedFilter}: </strong>
-            <input
-                type="search"
-                placeholder='Search...'
-                className='options-search'
-                value={optionSearchTerm}
-                onChange={handleSearchChange}
-            />
-            {generateOptions()}
-          </label>
-        </div>
-      )}
+          <div>
+            <div onClick={toggleDropdown} className='filter-btn' >
+              Filter       <FontAwesomeIcon className='filter-icon' icon={faFilter} />
+            </div>
+            {isDropdownVisible && (
+              <div   className={isNavMenuOpen? 'filter-dropdown' : 'filter-dropdown-expand'} ref={dropdownRef} >
+                <p onClick={() => handleFilterSelection('Cluster')} style={getFilterStyle('Cluster')}>Cluster</p>
+                {/* <p onClick={() => handleFilterSelection('Namespace')} style={getFilterStyle('Namespace')}>Namespace</p> */}
+                <p onClick={() => handleFilterSelection('AlertName')} style={getFilterStyle('AlertName')}>Alert Name</p>
+                <p onClick={() => handleFilterSelection('Priority')} style={getFilterStyle('Priority')}>Priority</p>
+                <p onClick={() => handleFilterSelection('Status')} style={getFilterStyle('Status')}>Status</p>
+                <p onClick={() => handleFilterSelection('Zone')} style={getFilterStyle('Zone')}>Zone</p>
+              </div>
+            )}
+          </div>
+            {selectedFilter && isDropdownVisible &&(
+                <div className='filters-checkbox' >
+                  <label 
+                  className={isNavMenuOpen? 'options-checkbox' : 'options-checkbox-expand'}>
+                    <strong>{selectedFilter}: </strong>
+                    <input
+                        type="search"
+                        placeholder='Search...'
+                        className='options-search'
+                        value={optionSearchTerm}
+                        onChange={handleSearchChange}
+                    />
+                    {generateOptions()}
+                  </label>
+                </div>
+              )}
     
 
       
         <div className='reset-download-buttons'>
 
        
-          <select 
-            id='team-select' 
-            value={teams} 
-            onChange={(e) => setTeams(e.target.value)} 
-            placeholder="Select Team"
-          >
-            <option value="Olympus middleware SRE">Olympus middleware SRE</option>
-            {alertData.teams?.map((team, index) => (
-              <option key={index} value={team}>
-                {team}
-              </option>
-            ))}
-          </select>
+            <select 
+              id='team-select' 
+              value={teams} 
+              onChange={(e) => setTeams(e.target.value)} 
+              placeholder="Select Team"
+            >
+              <option value="Olympus middleware SRE">Olympus middleware SRE</option>
+              {alertData.teams?.map((team, index) => (
+                <option key={index} value={team}>
+                  {team}
+                </option>
+              ))}
+            </select>
 
       
 
-        <input
-            type="search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search..."
-        />
+            <input
+                type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search..."
+            />
                 <button onClick={handleResetFilters}>Reset Filters</button>
                 {/* <button onClick={handleDownloadData}>Download Data</button> */}
                 <FontAwesomeIcon icon={faCircleDown} onClick={handleDownloadData} className='download-table' />
@@ -429,11 +429,11 @@ const clearFilter = (filterName) => {
 
         
       </div>
-      <div className="filter-summary">
-      {generateFilterSummary().map((filter, index) => (
-        <span key={index}>{filter}</span>
-      ))}
-    </div>
+        <div className="filter-summary">
+          {generateFilterSummary().map((filter, index) => (
+            <span key={index}>{filter}</span>
+          ))}
+        </div>
       <div className="table-container">
         <Test
           selectedDate={selectedDate}

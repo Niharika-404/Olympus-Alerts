@@ -95,7 +95,8 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
             {/* <Link to={{ pathname: '/dashboard', state: { alertData } }}>
             <button id="analyze">Analyze</button>
           </Link> */}
-           {dateRange ? (
+          <div id='multiple-dates'>
+          {dateRange ? (
                             <>
                                 <input
                                     id="date-input"
@@ -103,6 +104,7 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
                                     defaultValue={todayDate}
                                     value={selectedDate || todayDate}
                                     onChange={(e) => onDateChange(e.target.value)}
+                                    max={todayDate}
                                 />
                               
                                 <input
@@ -111,6 +113,7 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
                                     defaultValue={todayDate}
                                     value={selectedDate || todayDate}
                                     onChange={(e) => onDateChange(e.target.value)}
+                                    max={todayDate}
                                 />
                                
                              
@@ -122,8 +125,11 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
                                 defaultValue={todayDate}
                                 value={selectedDate || todayDate}
                                 onChange={(e) => onDateChange(e.target.value)}
+                                max={todayDate}
                             />
                         )}
+          </div>
+           
               {/* <button id="refresh" onClick={refreshData}>Refresh</button> */}
               <FontAwesomeIcon id="date-range" icon={faCalendarAlt} onClick={toggleDateRange} />
 

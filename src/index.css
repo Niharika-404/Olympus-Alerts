@@ -128,7 +128,7 @@ td {
 
 } */
 
-.filter-container button, .Analyze-btn, td button, .unique-alerts-btn, #analyze, #refresh, #date-range {
+.filter-container button, .Analyze-btn, td button, .unique-alerts-btn, #analyze, #refresh,#date-range {
   padding: 10px 16px;
   background-color: #0E2951;
   color: white;

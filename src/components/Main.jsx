@@ -136,10 +136,10 @@ const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh })
   return (
     <div>
       <Title onDateChange={onDateChange} selectedDate={selectedDate} />
-      <div id='mainContainer' className={activeNavItem === 'Alerts' ? 'alertsActive' : 'dashboardActive'}>
-        <NavMenu onNavItemClick={handleNavItemClick} onToggle={handleNavMenuToggle} />
+      <div id='mainContainer' className={activeNavItem === 'Alerts'? 'alertActive': 'dashboardActive'}>
+        <NavMenu  onNavItemClick={handleNavItemClick} onToggle={handleNavMenuToggle}/>
         {activeNavItem === 'Alerts' && (
-          <div id='alerttable-count'>
+          <div id={isNavMenuOpen? 'alerttable-count' : 'alerttable-count-expand'}>
             <AlertsTable
               selectedDate={selectedDate}
               loading={loading}

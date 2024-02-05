@@ -19,7 +19,7 @@ const NavMenu = ({ onNavItemClick, onToggle }) => {
 
   return (
     <>
-      <div id='nav' >
+      <div id='nav' className = {isOpen? 'nav' : 'nav-close'}  >
       <FontAwesomeIcon icon={isOpen ? faLessThan : faGreaterThan} onClick={toggleMenu} 
         className={isOpen ? 'close-navmenu': 'open-navmenu'}/>
         <div id='nav-menu' className={isOpen ? 'open' : 'closed'}>

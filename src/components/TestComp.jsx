@@ -245,9 +245,9 @@ useEffect(() => {
             ))}
           </tbody>
         </table>
-      ) : (
+       ) : (
         <p>No alerts found.</p>
-      )}
+      )} 
     </div>
   );
 };
