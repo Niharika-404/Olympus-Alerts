@@ -102,8 +102,8 @@ const formatDate = (date) => {
         end_time: endFormatted.time
       }
     });
-    console.log(response.data);
-    const alerts=response.data;
+    console.log(response.data.data);
+    const alerts=response.data.data;
     setAlertData(alerts)
 
     
@@ -137,7 +137,8 @@ const formatDate = (date) => {
     const interval = setInterval(() => {
       // setRefresh(true); // Set refresh flag every 5 minutes
       fetchData();
-    }, 5 * 60 * 1000); // 5 minutes interval
+      console.log('auto refresh')
+    }, 3 * 60 * 1000); // 5 minutes interval
     return () => clearInterval(interval); 
   }, [fetchData]);
 

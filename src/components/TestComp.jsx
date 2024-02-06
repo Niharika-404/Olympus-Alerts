@@ -110,7 +110,7 @@ useEffect(() => {
         'AlertAckTime',
         'Tags',
         'Teams',
-        'PrimaryResponderEmail ',
+        'PrimaryResponderEmail',
         'SecondaryResponderEmail',
         'Severity',
         'TimeToAck',
@@ -224,7 +224,8 @@ useEffect(() => {
                 <td>{alert?.Priority ?? 'N/A'}</td>
                 {/* <td>{alert?.IsSeen ?? 'N/A'}</td> */}
                 {/* <td>{alert?.Acknowledged ?? 'N/A'}</td> */}
-                <td>{String(alert?.Acknowledged) === 'true' ? 'Acknowledged' : 'false'}</td>
+                {/* <td>{String(alert?.Acknowledged) === 'true' ? 'Acknowledged' : 'false'}</td> */}
+                <td>{alert?.Acknowledged ?? 'false'}</td>
 
                 <td>{alert?.['CreatedAt'] ?? 'N/A'}</td>
                 <td>{alert?.['UpdatedAt'] ?? 'N/A'}</td>

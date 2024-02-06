@@ -70,7 +70,7 @@ const PriorityVsTimeToAck = ({ alertData, selectedZone }) => {
     <div id='column-chart'>
       {/* Column chart */}
       <h3>Average Time to Acknowledge Alerts</h3>
-      {chartData.series.data? 
+      {chartData.series[0].data.length>0? 
       <Chart options={chartData} series={chartData.series} type="bar" height={350} />:
       <p style={{textAlign:'left', marginTop:'100px'}}>No alerts found</p>}
       

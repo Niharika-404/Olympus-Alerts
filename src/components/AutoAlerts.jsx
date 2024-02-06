@@ -8,16 +8,18 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
 
   useEffect(() => {
     const generateTableData = () => {
-      const filteredAlerts = alertData.filter(
-        (alert) =>
-          
+      const filteredAlerts = alertData.filter((alert) => {
+        // Log within the filter function to have access to the alert object
+        console.log(Boolean(alert?.Acknowledged)); // This will now correctly print the Acknowledged value of each alert being processed
+
+        return (
           alert?.Zone === selectedZone &&
           alert?.Status === 'closed' &&
-          
-          String(alert?.Acknowledged) === 'false' &&
+          Boolean(alert?.Acknowledged) === false &&
           alert?.ClosedBy === 'Alert API'
-      );
-      console.log(typeof(alert?.Acknowledged))
+        );
+      });
+      
       const tableRows = filteredAlerts.map((alert) => ({
         alertName: alert['AlertName'],
 
