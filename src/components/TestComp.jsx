@@ -17,6 +17,7 @@ const Test = ({selectedDate, alertData, loading, filters, download, setDownload,
 useEffect(() => {
     // Apply filters to alertData
     const applyFilters = () => {
+    if (Array.isArray(alertData)){
       const filteredAlerts = alertData.filter((alert) => {
         return (
           // (!filters.cluster?.length || filters.cluster.some((value) => alert.Cluster.includes(value))) &&
@@ -44,9 +45,19 @@ useEffect(() => {
 
 
         );
+       
       });
 
       setFilteredData(filteredAlerts);
+    }
+      else{
+         // Handle cases where alertData is not an array
+            console.error("alertData is not an array:", alertData);
+            // You might want to set filteredData to an empty array or handle it differently based on your requirements
+            setFilteredData([]);
+              }
+
+      
     };
   
     applyFilters();
@@ -146,8 +157,6 @@ useEffect(() => {
     window.open(url, '_blank');
   };
 
-  console.log(typeof(alert?.Acknowledged))
-  console.log(alert?.Acknowledged)
 
   return (
     <div>
