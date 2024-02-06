@@ -26,7 +26,11 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
 
    
     const today = new Date();
- const currentDate = today.toISOString();
+
+ const currentDateTime = new Date().toISOString().slice(0, -8); // Remove seconds and milliseconds
+
+
+
 
  // Initialize start and end dates with today's date and time
 const todayISOString = today.toISOString();
@@ -100,8 +104,7 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
 
     }, [ alertData, loading]);
 
-    console.log(start);
-    console.log(end);
+  
 
 
     // const dateConversion = (dateString) => {
@@ -151,11 +154,26 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
     // const [endTemp, setEndTemp] = useState(dateConversion(end) || todayDate); // Temporary state to hold end date
    
 
+  
+
     const handleSearch = () => {
+      // Calculate the difference between start and end dates
+      const startDate = new Date(startTemp);
+      const endDate = new Date(endTemp);
+      const differenceInTime = endDate.getTime() - startDate.getTime();
+      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    
+      // Check if the selected date range is more than or equal to 7 days
+      if (differenceInDays >= 7) {
+        alert('Please select the date range within 7 days.');
+        return; // Stop further execution
+      }
+    
       // Pass the temporary start and end dates to the actual start and end date states
       onStartDateChange(toLocaleConversion(startTemp));
       onEndDateChange(toLocaleConversion(endTemp));
     };
+    
     return (
       <>
         {loading ? (
@@ -175,7 +193,7 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
                                     step={1}
                                     value={startTemp} // Use temporary start date
                                     onChange={(e) => setStartTemp(e.target.value)}
-                                    max={currentDate}
+                                    max={currentDateTime}
                                 />
                               
                                 <input
@@ -184,7 +202,7 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
                                     step={1}
                                     value={endTemp} // Use temporary start date
                                     onChange={(e) => setEndTemp(e.target.value)}
-                                    max={currentDate}
+                                    max={currentDateTime}
                                 />
                                
                              
@@ -204,16 +222,18 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
                               step={1}
                               value={startTemp} // Use temporary start date
                               onChange={(e) => setStartTemp(e.target.value)}
-                              max={currentDate}
+                              max={currentDateTime}
                           />
                         )}
           </div>
            
               {/* <button id="refresh" onClick={refreshData}>Refresh</button> */}
 
-              <FontAwesomeIcon id="date-range" icon={faSearch}  onClick={handleSearch}/>
 
               <FontAwesomeIcon id="date-range" icon={faCalendarAlt} onClick={toggleDateRange} />
+
+              <FontAwesomeIcon id="date-range" icon={faSearch}  onClick={handleSearch}/>
+
 
               <FontAwesomeIcon id="refresh" icon={faRotateRight} onClick={refreshData} />
 

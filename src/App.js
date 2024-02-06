@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Main from './components/Main';
 import NewDashboard from './components/NewDashboard';
 import axios from 'axios';
+
 // import Papa from 'papaparse';
 
 
@@ -20,7 +21,7 @@ function App() {
   const [start, setStart] = useState(startInitial);
   const [end, setEnd] = useState(endInitial);
 
-  const [selectedResponder, setSelectedResponder] = useState('');
+  const [selectedResponder, setSelectedResponder] = useState('olympus_middleware_sre');
 
 
   const [loading, setLoading] = useState(true);
@@ -95,7 +96,7 @@ const formatDate = (date) => {
 
       const response = await axios.get('http://localhost:5000/alerts', {
       params: {
-        responder_name: 'olympus_middleware_sre',
+        responder_name: selectedResponder,
         start_date: formatDate(startFormatted.date),
         end_date: formatDate(endFormatted.date),
         start_time: startFormatted.time,
@@ -114,7 +115,7 @@ const formatDate = (date) => {
     } finally {
       setLoading(false);
     }
-  }, [startFormatted.date, endFormatted.date, startFormatted.time, endFormatted.time]);
+  }, [startFormatted.date, endFormatted.date, startFormatted.time, endFormatted.time, selectedResponder]);
 
   useEffect(() => {
     const fetchResponderNames = async () => {

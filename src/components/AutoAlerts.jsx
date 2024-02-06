@@ -10,7 +10,7 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
     const generateTableData = () => {
       const filteredAlerts = alertData.filter((alert) => {
         // Log within the filter function to have access to the alert object
-        console.log(Boolean(alert?.Acknowledged)); // This will now correctly print the Acknowledged value of each alert being processed
+      
 
         return (
           alert?.Zone === selectedZone &&

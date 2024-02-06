@@ -7,44 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleDown } from '@fortawesome/free-solid-svg-icons';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
-const SearchableDropdown = ({ options, selectedValue, onChange }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-
-  const filteredOptions = options.filter(option =>
-    option.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  return (
-    <div className="searchable-dropdown">
-      <input
-        type="text"
-        value={selectedValue}
-        onChange={() => {}}
-        onClick={() => setIsOpen(!isOpen)}
-        placeholder="Select an option..."
-        readOnly
-      />
-      {isOpen && (
-        <div className="options">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            placeholder="Search..."
-          />
-          {filteredOptions.map(option => (
-            <div key={option} onClick={() => {
-              onChange(option);
-              setIsOpen(false);
-              setSearchTerm('');
-            }}>{option}</div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 
 
 const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, isNavMenuOpen, responders, onResponderChange, selectedResponder }) => {
@@ -57,7 +19,13 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     // const [selectedResponder, setSelectedResponder] = useState('');
 
 
-
+    const [searchResTerm, setSearchResTerm] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+  
+    const filteredResOptions = responders.filter(option =>
+      option.toLowerCase().includes(searchResTerm.toLowerCase())
+    );
+  
   // State variables to hold filter values
   const [filters, setFilters] = useState({
     cluster: [],
@@ -116,15 +84,9 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     });
   };
 
-     console.log('Filters:', filters);
 
 
-// useEffect(() => {
-//     console.log('Filters:', filters);
-//     console.log('Selected Status:', selectedStatus);
-  
 
-//   }, [filters, selectedStatus, alertData]);
   
   
  
@@ -141,7 +103,6 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
  
 
 
-  console.log(selectedStatus); //selectedStatus - open or closed
 
   const handleResetFilters = () => {
     setFilters({
@@ -197,7 +158,6 @@ const handleCheckboxChangeAll = (filter) => {
       case 'alertName':
         return uniqueAlertNames;
       case 'priority':
-        // console.log(uniquePriorities);
         return uniquePriorities;
       case 'zone':
         return uniqueZones;
@@ -260,6 +220,8 @@ const generateOptions = () => {
       </div>
     ));
   };
+
+  
   
   const generateOptionsForFilterWithAll = (values, filter) => {
     const filteredValues = values.filter(value =>
@@ -334,7 +296,6 @@ const handleSearchChange = (event) => {
 
  // Function to clear a filter
 const clearFilter = (filterName) => {
-  console.log('Clearing filter:', filterName);
 
   setFilters((prevFilters) => ({
     ...prevFilters,
@@ -402,7 +363,7 @@ const clearFilter = (filterName) => {
     >
       <div className='filter-container'>
         {/* Checkbox filters */}
-          <div>
+          <div style={{display:"flex", flexDirection:"row", gap:"40px"}}>
             <div onClick={toggleDropdown} className='filter-btn' >
               Filter       <FontAwesomeIcon className='filter-icon' icon={faFilter} />
             </div>
@@ -416,6 +377,13 @@ const clearFilter = (filterName) => {
                 <p onClick={() => handleFilterSelection('Zone')} style={getFilterStyle('Zone')}>Zone</p>
               </div>
             )}
+            
+            <input
+                type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search..."
+            />
           </div>
             {selectedFilter && isDropdownVisible &&(
                 <div className='filters-checkbox' >
@@ -433,7 +401,7 @@ const clearFilter = (filterName) => {
                   </label>
                 </div>
               )}
-    
+           
 
       
         <div className='reset-download-buttons'>
@@ -452,20 +420,40 @@ const clearFilter = (filterName) => {
               ))}
             </select>  */}
 
-          <SearchableDropdown
-            options={responders}
-            selectedValue={selectedResponder}
-            onChange={onResponderChange}
+          
+
+<div className="searchable-dropdown">
+      <input
+        type="text"
+        value={selectedResponder || 'olympus_middleware_sre'}
+        onChange={() => {}}
+        onClick={() => setIsOpen(!isOpen)}
+        // placeholder="Select an option..."
+        readOnly
+      />
+    {isOpen && (
+        <div className="options">
+          <input
+            type="search"
+            value={searchResTerm}
+            onChange={e => setSearchResTerm(e.target.value)}
+            placeholder="Search..."
           />
+          {filteredResOptions.map(option => (
+            <div key={option} onClick={() => {
+              onResponderChange(option);
+              setIsOpen(false);
+              setSearchResTerm('');
+            }}>{option}</div>
+          ))}
+        </div>
+      )}
+      
+    </div>
 
       
 
-            <input
-                type="search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search..."
-            />
+           
                 <button onClick={handleResetFilters}>Reset Filters</button>
                 {/* <button onClick={handleDownloadData}>Download Data</button> */}
                 <FontAwesomeIcon icon={faCircleDown} onClick={handleDownloadData} className='download-table' />
