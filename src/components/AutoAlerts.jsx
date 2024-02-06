@@ -14,7 +14,7 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
           alert?.Zone === selectedZone &&
           alert?.Status === 'closed' &&
           
-          // String(alert?.Acknowledged) === 'false' &&
+          String(alert?.Acknowledged) === 'false' &&
           alert?.ClosedBy === 'Alert API'
       );
       console.log(typeof(alert?.Acknowledged))

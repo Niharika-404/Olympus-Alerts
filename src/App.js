@@ -11,10 +11,14 @@ import axios from 'axios';
 
 
 function App() {
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString());
 
-  const [start, setStart] = useState(new Date().toISOString());
-  const [end, setEnd] = useState(new Date().toISOString());
+  const today = new Date();
+  const startInitial = new Date(today);
+  startInitial.setHours(0, 0, 0, 0);
+  const endInitial = new Date(today);
+
+  const [start, setStart] = useState(startInitial);
+  const [end, setEnd] = useState(endInitial);
 
   const [selectedResponder, setSelectedResponder] = useState('');
 
@@ -25,25 +29,56 @@ function App() {
 
   const [responders, setResponders] = useState([]);
 
-    // Split date and time from selectedDate
-const selectedDateObj = new Date(selectedDate);
-const selectedDateFormatted = {
-  date: selectedDateObj.toISOString().split('T')[0],
-  time: selectedDateObj.toTimeString().split(' ')[0]
-};
+
+
+// Split date and time from start
+// const startObj = new Date(start);
+// const startFormatted = {
+//   date: startObj.toLocaleString().split('T')[0],
+//   time: startObj.toTimeString().split(' ')[0]
+// };
+
+// // Split date and time from end
+// const endObj = new Date(end);
+// const endFormatted = {
+//   date: endObj.toLocaleString().split('T')[0],
+//   time: endObj.toTimeString().split(' ')[0]
+// };
+
+
+// Split date and time from start
+// const startFormatted = {
+//   date: start.split('T')[0],
+//   time: start.split('T')[1].split('.')[0]
+// };
+
+// // Split date and time from end
+// const endFormatted = {
+//   date: end.split('T')[0],
+//   time: end.split('T')[1].split('.')[0]
+// };
 
 // Split date and time from start
 const startObj = new Date(start);
 const startFormatted = {
-  date: startObj.toISOString().split('T')[0],
-  time: startObj.toTimeString().split(' ')[0]
+  date: startObj.toLocaleString().split(',')[0], // Date part
+  time: startObj.toLocaleString().split(',')[1].trim() // Time part
 };
 
 // Split date and time from end
 const endObj = new Date(end);
 const endFormatted = {
-  date: endObj.toISOString().split('T')[0],
-  time: endObj.toTimeString().split(' ')[0]
+  date: endObj.toLocaleString().split(',')[0], // Date part
+  time: endObj.toLocaleString().split(',')[1].trim() // Time part
+};
+
+const formatDate = (date) => {
+  const [day, month, year] = date.split('/');
+  
+  // Construct the formatted date string in yyyy-mm-dd format
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate;
 };
 
   const fetchData = useCallback(async () => {
@@ -61,8 +96,8 @@ const endFormatted = {
       const response = await axios.get('http://localhost:5000/alerts', {
       params: {
         responder_name: 'olympus_middleware_sre',
-        start_date: startFormatted.date,
-        end_date: endFormatted.date,
+        start_date: formatDate(startFormatted.date),
+        end_date: formatDate(endFormatted.date),
         start_time: startFormatted.time,
         end_time: endFormatted.time
       }
@@ -71,9 +106,7 @@ const endFormatted = {
     const alerts=response.data;
     setAlertData(alerts)
 
-    const responderNames = await axios.get('http://localhost:5000/responder_names');
-    console.log(responderNames.responder_names);
-    setResponders(responderNames.responder_names);
+    
 
 
     } catch (error) {
@@ -84,8 +117,28 @@ const endFormatted = {
   }, [startFormatted.date, endFormatted.date, startFormatted.time, endFormatted.time]);
 
   useEffect(() => {
+    const fetchResponderNames = async () => {
+      try {
+        const responderNames = await axios.get('http://localhost:5000/responder_names');
+        console.log(responderNames.data.responder_names);
+        setResponders(responderNames.data.responder_names);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchResponderNames();
+  }, []);
+  
+
+  useEffect(() => {
     // Initial API call on component mount
     fetchData();
+    const interval = setInterval(() => {
+      // setRefresh(true); // Set refresh flag every 5 minutes
+      fetchData();
+    }, 5 * 60 * 1000); // 5 minutes interval
+    return () => clearInterval(interval); 
   }, [fetchData]);
 
   useEffect(() => {
@@ -96,9 +149,7 @@ const endFormatted = {
     }
   }, [fetchData, refresh]);
 
-  const handleDateChange= (date) =>{
-    setSelectedDate(date);
-  }
+  
 
   const handleStartDateChange = (date) => {
     setStart(date);
@@ -119,7 +170,9 @@ const endFormatted = {
 
 
 
-console.log(`Start - ${startFormatted.date}, ${startFormatted.time}; End - ${endFormatted.date}, ${endFormatted.time}; SelectedDate - ${selectedDateFormatted.date}, ${selectedDateFormatted.time}`);
+
+console.log(`Start - ${startFormatted.date}, ${startFormatted.time}; End - ${endFormatted.date}, ${endFormatted.time};`);
+console.log(start, end);
 
 
   return (
@@ -129,7 +182,7 @@ console.log(`Start - ${startFormatted.date}, ${startFormatted.time}; End - ${end
           <Route
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
-            onEndDateChange={handleEndDateChange} end={end} selectedDate={selectedDate} onDateChange={handleDateChange}
+            onEndDateChange={handleEndDateChange} end={end} 
             start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} />}
           />
           <Route

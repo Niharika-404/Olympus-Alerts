@@ -7,6 +7,45 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleDown } from '@fortawesome/free-solid-svg-icons';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
+const SearchableDropdown = ({ options, selectedValue, onChange }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+
+  const filteredOptions = options.filter(option =>
+    option.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="searchable-dropdown">
+      <input
+        type="text"
+        value={selectedValue}
+        onChange={() => {}}
+        onClick={() => setIsOpen(!isOpen)}
+        placeholder="Select an option..."
+        readOnly
+      />
+      {isOpen && (
+        <div className="options">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            placeholder="Search..."
+          />
+          {filteredOptions.map(option => (
+            <div key={option} onClick={() => {
+              onChange(option);
+              setIsOpen(false);
+              setSearchTerm('');
+            }}>{option}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, isNavMenuOpen, responders, onResponderChange, selectedResponder }) => {
 
@@ -400,19 +439,24 @@ const clearFilter = (filterName) => {
         <div className='reset-download-buttons'>
 
     
-            <select 
+            {/* <select 
               id='team-select' 
               value={selectedResponder} 
               onChange={(e) => onResponderChange(e.target.value)} 
               placeholder="Select Responder"
             >
-              {/* <option value="Olympus middleware SRE">Olympus middleware SRE</option> */}
               {responders?.map((responder, index) => (
                 <option key={index} value={responder}>
                   {responder}
                 </option>
               ))}
-            </select> 
+            </select>  */}
+
+          <SearchableDropdown
+            options={responders}
+            selectedValue={selectedResponder}
+            onChange={onResponderChange}
+          />
 
       
 

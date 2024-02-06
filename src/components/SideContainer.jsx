@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Oval } from 'react-loader-spinner';
 // import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotateRight,faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faRotateRight,faCalendarAlt,faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import PriorityTable from './PriorityTable';
 
@@ -18,12 +18,24 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
 
     const [priorityCounts, setPriorityCounts] = useState([]);
 
+   
     // const[start, setStart] = useState('');
     // const[end, setEnd] = useState('');
 
 
 
-    const todayDate = new Date().toISOString();
+   
+    const today = new Date();
+ const currentDate = today.toISOString();
+
+ // Initialize start and end dates with today's date and time
+const todayISOString = today.toISOString();
+const todayDate = todayISOString.split('T')[0];
+const todayTime = todayISOString.split('T')[1].slice(0, 5);
+
+const [startTemp, setStartTemp] = useState(start || `${todayDate}T00:00`);
+const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
+
 
     
 
@@ -90,6 +102,60 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
 
     console.log(start);
     console.log(end);
+
+
+    // const dateConversion = (dateString) => {
+    //   dateString = String(dateString);
+
+    //   if (typeof dateString !== 'string') {
+    //     console.error('Invalid date string:', dateString);
+    //     return null;
+    //   }
+    
+    //   const [, day, month, dayOfMonth, year, time] = dateString.split(" ");
+    
+    //   // Check if all parts are present
+    //   if (!day || !month || !dayOfMonth || !year || !time) {
+    //     console.error('Invalid date string format:', dateString);
+    //     return null;
+    //   }
+      
+    //   // Convert month name to month number
+    //   const monthIndex = new Date(Date.parse(`${month} 1, 2000`)).getMonth() + 1;
+      
+    //   // Format the date in ISO 8601 format
+    //   const isoString = `${year}-${monthIndex < 10 ? '0' : ''}${monthIndex}-${dayOfMonth}T${time}`;
+    
+    //   return isoString;
+    // }
+    
+
+    const toLocaleConversion = (isoString) => {
+      const date = new Date(isoString);
+      const options = {
+        weekday: 'short',
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'Asia/Kolkata' // India's time zone
+      };
+      const dateString = new Intl.DateTimeFormat('en-US', options).format(date);
+      return dateString;
+    }
+    
+
+    // const [startTemp, setStartTemp] = useState(dateConversion(start) || todayDate.split('T')[0] + 'T00:00'); // Temporary state to hold start date
+    // const [endTemp, setEndTemp] = useState(dateConversion(end) || todayDate); // Temporary state to hold end date
+   
+
+    const handleSearch = () => {
+      // Pass the temporary start and end dates to the actual start and end date states
+      onStartDateChange(toLocaleConversion(startTemp));
+      onEndDateChange(toLocaleConversion(endTemp));
+    };
     return (
       <>
         {loading ? (
@@ -107,35 +173,46 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
                                     id="date-input"
                                     type="datetime-local"
                                     step={1}
-                                    value={start || todayDate}
-                                    onChange={(e) => {onStartDateChange(e.target.value)}}
-                                    max={todayDate}
+                                    value={startTemp} // Use temporary start date
+                                    onChange={(e) => setStartTemp(e.target.value)}
+                                    max={currentDate}
                                 />
                               
                                 <input
                                     id="date-input"
                                     type="datetime-local"
                                     step={1}
-                                    value={end || todayDate}
-                                    onChange={(e) => {onEndDateChange(e.target.value)}}
-                                    max={todayDate}
+                                    value={endTemp} // Use temporary start date
+                                    onChange={(e) => setEndTemp(e.target.value)}
+                                    max={currentDate}
                                 />
                                
                              
                             </>
                         ) : (
+                            // <input
+                            //     id="date-input"
+                            //     type="datetime-local"
+                            //     step={1}
+                            //     value={selectedDate || todayDate}
+                            //     onChange={(e) => onDateChange(e.target.value)}
+                            //     max={todayDate}
+                            // />
                             <input
-                                id="date-input"
-                                type="datetime-local"
-                                step={1}
-                                value={selectedDate || todayDate}
-                                onChange={(e) => onDateChange(e.target.value)}
-                                max={todayDate}
-                            />
+                              id="date-input"
+                              type="datetime-local"
+                              step={1}
+                              value={startTemp} // Use temporary start date
+                              onChange={(e) => setStartTemp(e.target.value)}
+                              max={currentDate}
+                          />
                         )}
           </div>
            
               {/* <button id="refresh" onClick={refreshData}>Refresh</button> */}
+
+              <FontAwesomeIcon id="date-range" icon={faSearch}  onClick={handleSearch}/>
+
               <FontAwesomeIcon id="date-range" icon={faCalendarAlt} onClick={toggleDateRange} />
 
               <FontAwesomeIcon id="refresh" icon={faRotateRight} onClick={refreshData} />

@@ -120,7 +120,7 @@ import Title from './Title';
 import NavMenu from './NavMenu';
 import NewDashboard from './NewDashboard';
 
-const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder }) => {
+const Main = ({  loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [activeNavItem, setActiveNavItem] = useState('Alerts');
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
@@ -135,7 +135,7 @@ const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh, o
 
   return (
     <div>
-      <Title onDateChange={onDateChange} selectedDate={selectedDate} />
+      <Title  />
       <div id='mainContainer' className={activeNavItem === 'Alerts'? 'alertActive': 'dashboardActive'}>
         <NavMenu  onNavItemClick={handleNavItemClick} onToggle={handleNavMenuToggle}/>
         {activeNavItem === 'Alerts' && (
@@ -151,8 +151,7 @@ const Main = ({ onDateChange, selectedDate, loading, alertData, handleRefresh, o
               onResponderChange={onResponderChange}
             />
             <SideContainer
-              onDateChange={onDateChange}
-              selectedDate={selectedDate}
+           
               onStartDateChange={onStartDateChange}
               onEndDateChange={onEndDateChange}
               start={start}
