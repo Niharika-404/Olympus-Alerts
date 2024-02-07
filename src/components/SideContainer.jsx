@@ -9,7 +9,7 @@ import { faRotateRight,faCalendarAlt,faSearch } from '@fortawesome/free-solid-sv
 
 import PriorityTable from './PriorityTable';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -132,6 +132,12 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
     //   return isoString;
     // }
     
+    const dateConversion = (dateString) => {
+      // Assuming dateString is in the format: Thu Feb 08 2024 00:00:00 GMT+0530 (India Standard Time)
+      const date = new Date(dateString);
+      return date;
+    }
+    
 
     const toLocaleConversion = (isoString) => {
       const date = new Date(isoString);
@@ -153,10 +159,20 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
     // const [startTemp, setStartTemp] = useState(dateConversion(start) || todayDate.split('T')[0] + 'T00:00'); // Temporary state to hold start date
     // const [endTemp, setEndTemp] = useState(dateConversion(end) || todayDate); // Temporary state to hold end date
    
+    const formatDateForInput = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    };
+    
 
   
 
-    const handleSearch = () => {
+    const onSearchClick = () => {
       // Calculate the difference between start and end dates
       const startDate = new Date(startTemp);
       const endDate = new Date(endTemp);
@@ -168,10 +184,10 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
         alert('Please select the date range within 7 days.');
         return; // Stop further execution
       }
-    
+      handleSearch(toLocaleConversion(startTemp), toLocaleConversion(endTemp));
       // Pass the temporary start and end dates to the actual start and end date states
-      onStartDateChange(toLocaleConversion(startTemp));
-      onEndDateChange(toLocaleConversion(endTemp));
+      // onStartDateChange(toLocaleConversion(startTemp));
+      // onEndDateChange(toLocaleConversion(endTemp));
     };
     
     return (
@@ -191,7 +207,8 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
                                     id="date-input"
                                     type="datetime-local"
                                     step={1}
-                                    value={startTemp} // Use temporary start date
+                                    // value={startTemp} // Use temporary start date
+                                    value={startTemp || formatDateForInput(dateConversion(start)) }
                                     onChange={(e) => setStartTemp(e.target.value)}
                                     max={currentDateTime}
                                 />
@@ -200,7 +217,8 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
                                     id="date-input"
                                     type="datetime-local"
                                     step={1}
-                                    value={endTemp} // Use temporary start date
+                                    // value={endTemp} // Use temporary start date
+                                    value={endTemp || formatDateForInput(dateConversion(end))}
                                     onChange={(e) => setEndTemp(e.target.value)}
                                     max={currentDateTime}
                                 />
@@ -220,7 +238,7 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
                               id="date-input"
                               type="datetime-local"
                               step={1}
-                              value={startTemp} // Use temporary start date
+                              value={startTemp || formatDateForInput(dateConversion(start))} // Use temporary start date
                               onChange={(e) => setStartTemp(e.target.value)}
                               max={currentDateTime}
                           />
@@ -232,7 +250,7 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
 
               <FontAwesomeIcon id="date-range" icon={faCalendarAlt} onClick={toggleDateRange} title='Add Date Range'/>
 
-              <FontAwesomeIcon id="date-search" icon={faSearch}  onClick={handleSearch} title='Search'/>
+              <FontAwesomeIcon id="date-search" icon={faSearch}  onClick={onSearchClick} title='Search'/>
 
 
               <FontAwesomeIcon id="refresh" icon={faRotateRight} onClick={refreshData} title='Refresh' />

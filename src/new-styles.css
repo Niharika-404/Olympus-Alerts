@@ -658,7 +658,7 @@ body{
 }
 
 /* CSS for larger desktop screens like iMac */
-@media only screen and (min-width: 1440px) {
+@media only screen and (min-width: 1441px) {
   /* Add your styles for larger desktop screens here */
   .filter-btn{
     position: relative;

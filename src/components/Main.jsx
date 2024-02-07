@@ -194,7 +194,7 @@ import AlertsTable from './AlertsTable';
 import Title from './Title';
 import NewDashboard from './NewDashboard';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [activeTab, setActiveTab] = useState('Alerts');
   // const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
@@ -238,6 +238,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
               handleRefresh={handleRefresh}
+              handleSearch={handleSearch}
             
             />
           </div>

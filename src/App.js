@@ -222,7 +222,7 @@ const formatDate = (date) => {
   return formattedDate;
 };
 
-const fetchData = useCallback(async (startParam = start, endParam) => {
+const fetchData = useCallback(async (startParam = start, endParam=end) => {
   try {
     setLoading(true);
 
@@ -268,7 +268,7 @@ const fetchData = useCallback(async (startParam = start, endParam) => {
   } finally {
     setLoading(false);
   }
-}, [start, selectedResponder]);
+}, [selectedResponder]);
 
   useEffect(() => {
     const fetchResponderNames = async () => {
@@ -287,25 +287,20 @@ const fetchData = useCallback(async (startParam = start, endParam) => {
 
 
   useEffect(() => {
-    // Subsequent API calls when refresh is true
+    fetchData();
     if (refresh) {
-      const currentDateTime = new Date();
-      setEnd(new Date())
-      fetchData(start, end || currentDateTime); // Pass the current date and time for the end parameter if end date is not selected
+      const defaultStart = new Date().setHours(0, 0, 0, 0); // Default start date
+      const defaultEnd = new Date(); // Default end date
+  
+      setStart(defaultStart); // Reset start to default value
+      setEnd(defaultEnd); // Reset end to default value
+  
+      fetchData(defaultStart, defaultEnd); // API call with default start and end dates
+  
       setRefresh(false); // Reset refresh state after handling it
     }
-  }, [fetchData, refresh, start, end]);
-
-  useEffect(() => {
-    fetchData(); // Initial API call on component mount
-    const interval = setInterval(() => {
-      const currentDateTime = new Date();
-      setEnd(new Date())
-      fetchData(start, end || currentDateTime); // Pass the current date and time for the end parameter if end date is not selected
-      console.log('Auto-refreshed at', currentDateTime.toLocaleString());
-    }, 3 * 60 * 1000); // 3 minutes interval for demonstration
-    return () => clearInterval(interval); 
-  }, [fetchData, start, end]);
+  }, [fetchData, refresh]);
+  
   
 
 
@@ -320,7 +315,14 @@ const fetchData = useCallback(async (startParam = start, endParam) => {
     setSelectedResponder(responder);
   }
 
-
+  const handleSearch = (startTemp, endTemp) => {
+    // Validation and conversion logic here
+    // Update start and end state
+    setStart(new Date(startTemp));
+    setEnd(new Date(endTemp));
+    // Trigger fetchData or any other necessary actions
+    fetchData()
+  };
   const onRefresh = () => {
     setRefresh(true);
   };
@@ -353,7 +355,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} 
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} />}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch}/>}
           />
           <Route
             path="/dashboard"
