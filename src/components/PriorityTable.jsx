@@ -35,7 +35,7 @@ const PriorityTable = ({ priorityCounts }) => {
 
   return (
     <>
-      <table>
+      <table id='priority-wise-count'>
         <thead>
           <tr>
             <th>Priority</th>

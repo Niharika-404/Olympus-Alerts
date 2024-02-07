@@ -230,12 +230,12 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
               {/* <button id="refresh" onClick={refreshData}>Refresh</button> */}
 
 
-              <FontAwesomeIcon id="date-range" icon={faCalendarAlt} onClick={toggleDateRange} />
+              <FontAwesomeIcon id="date-range" icon={faCalendarAlt} onClick={toggleDateRange} title='Add Date Range'/>
 
-              <FontAwesomeIcon id="date-range" icon={faSearch}  onClick={handleSearch}/>
+              <FontAwesomeIcon id="date-search" icon={faSearch}  onClick={handleSearch} title='Search'/>
 
 
-              <FontAwesomeIcon id="refresh" icon={faRotateRight} onClick={refreshData} />
+              <FontAwesomeIcon id="refresh" icon={faRotateRight} onClick={refreshData} title='Refresh' />
 
 
             </div>

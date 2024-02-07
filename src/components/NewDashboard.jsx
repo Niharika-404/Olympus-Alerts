@@ -18,7 +18,7 @@ import { faCircleDown } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const NewDashboard = ({alertData, isNavMenuOpen}) => {
+const NewDashboard = ({alertData}) => {
   const [data, setData] = useState([]);
   const [zoneOptions, setZoneOptions] = useState([]);
   const [uniqueAlerts, setUniqueAlerts] = useState([]);
@@ -179,7 +179,7 @@ const renderPriorities = (alertName) => {
   
   
   return (
-    <div className={isNavMenuOpen? 'dashboard-container': 'full-width'}>
+    <div className='dashboard-container'>
       <div id='zone-dropdown'>
         {/* Filter Dropdown for Zones */}
         <select value={selectedZone} onChange={(e) => setSelectedZone(e.target.value)}>
@@ -251,7 +251,7 @@ const renderPriorities = (alertName) => {
       </div>
 
 
-      <div>
+      <div id='chart-and-tables'>
         <div className='charts'>
            <PriorityVsTimeToAck alertData={alertData} selectedZone={selectedZone}/>
            <AcknowledgementChart alertData={alertData} selectedZone={selectedZone}/>

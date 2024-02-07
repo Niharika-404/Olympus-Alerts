@@ -9,7 +9,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, isNavMenuOpen, responders, onResponderChange, selectedResponder }) => {
+const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder }) => {
 
     const [download, setDownload] = useState(false);
     const [isDropdownVisible, setDropdownVisibility] = useState(false);
@@ -163,6 +163,8 @@ const handleCheckboxChangeAll = (filter) => {
         return uniqueZones;
       case 'cluster':
         return uniqueClusters;
+      // case 'status':
+      //   return uniqueStatus;
       // case 'namespace':
       //   return uniqueNamespaces;
       // Add cases for other filters...
@@ -203,7 +205,7 @@ const generateOptions = () => {
   
   const generateOptionsForFilter = (values, filter) => {
     const filteredValues = values.filter(value =>
-        value.toLowerCase().includes(optionSearchTerm.toLowerCase())
+        value?.toLowerCase().includes(optionSearchTerm.toLowerCase())
       );
     return filteredValues.map((value) => (
       <div key={value} className="checkbox-option">
@@ -301,6 +303,11 @@ const clearFilter = (filterName) => {
     ...prevFilters,
     [filterName]: [],
   }));
+
+   // Clear selectedStatus if it matches the cleared filter
+   if (filterName === 'status') {
+    setSelectedStatus('');
+  }
 };
 
 
@@ -354,12 +361,36 @@ const clearFilter = (filterName) => {
     return selectedFilters;
   };
 
+
+  const dropdownSearchRef = useRef(null);
+
+// useEffect to handle clicks outside the searchable dropdown
+useEffect(() => {
+  const handleClickOutsideSearchDropdown = (event) => {
+    const dropdownSearchContainer = document.querySelector('.searchable-dropdown');
+    if (
+      dropdownSearchRef.current &&
+      !dropdownSearchRef.current.contains(event.target) &&
+      !dropdownSearchContainer.contains(event.target)
+    ) {
+      // Clicked outside the searchable dropdown, close it
+      setIsOpen(false);
+    }
+  };
+
+  document.addEventListener('click', handleClickOutsideSearchDropdown);
+
+  return () => {
+    document.removeEventListener('click', handleClickOutsideSearchDropdown);
+  };
+}, [dropdownSearchRef, setIsOpen]);
+
   // const responders = [...new Set(alertData.map((alert) => alert.Team))];
 
 
   return (
     <div 
-    className={isNavMenuOpen? 'container': 'container-expand'}
+    className='container'
     >
       <div className='filter-container'>
         {/* Checkbox filters */}
@@ -368,7 +399,7 @@ const clearFilter = (filterName) => {
               Filter       <FontAwesomeIcon className='filter-icon' icon={faFilter} />
             </div>
             {isDropdownVisible && (
-              <div   className={isNavMenuOpen? 'filter-dropdown' : 'filter-dropdown-expand'} ref={dropdownRef} >
+              <div   className='filter-dropdown' ref={dropdownRef} >
                 <p onClick={() => handleFilterSelection('Cluster')} style={getFilterStyle('Cluster')}>Cluster</p>
                 {/* <p onClick={() => handleFilterSelection('Namespace')} style={getFilterStyle('Namespace')}>Namespace</p> */}
                 <p onClick={() => handleFilterSelection('AlertName')} style={getFilterStyle('AlertName')}>Alert Name</p>
@@ -379,6 +410,7 @@ const clearFilter = (filterName) => {
             )}
             
             <input
+            id='normal-search'
                 type="search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -388,7 +420,7 @@ const clearFilter = (filterName) => {
             {selectedFilter && isDropdownVisible &&(
                 <div className='filters-checkbox' >
                   <label 
-                  className={isNavMenuOpen? 'options-checkbox' : 'options-checkbox-expand'}>
+                  className= 'options-checkbox'>
                     <strong>{selectedFilter}: </strong>
                     <input
                         type="search"
@@ -422,7 +454,7 @@ const clearFilter = (filterName) => {
 
           
 
-<div className="searchable-dropdown">
+<div className="searchable-dropdown" ref={dropdownSearchRef}>
       <input
         type="text"
         value={selectedResponder || 'olympus_middleware_sre'}
@@ -432,7 +464,7 @@ const clearFilter = (filterName) => {
         readOnly
       />
     {isOpen && (
-        <div className="options">
+        <div className='options'>
           <input
             type="search"
             value={searchResTerm}
@@ -467,7 +499,7 @@ const clearFilter = (filterName) => {
             <span key={index}>{filter}</span>
           ))}
         </div>
-      <div className="table-container">
+      <div >
         <Test
           selectedDate={selectedDate}
           alertData={alertData}

@@ -113,45 +113,122 @@
 
 // export default Main;
 
+
+
+
+// ----------------------------------------------------------------------------------------
+
+// import React, { useState } from 'react';
+// import SideContainer from './SideContainer';
+// import AlertsTable from './AlertsTable';
+// import Title from './Title';
+// import NavMenu from './NavMenu';
+// import NewDashboard from './NewDashboard';
+
+// const Main = ({  loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder }) => {
+//   const [selectedStatus, setSelectedStatus] = useState('');
+//   const [activeNavItem, setActiveNavItem] = useState('Alerts');
+//   const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
+
+//   const handleNavItemClick = (item) => {
+//     setActiveNavItem(item);
+//   };
+
+//   const handleNavMenuToggle = (isOpen) => {
+//     setIsNavMenuOpen(isOpen);
+//   };
+
+//   return (
+//     <div>
+//       <Title  />
+//       <div id='mainContainer' className={activeNavItem === 'Alerts'? 'alertActive': 'dashboardActive'}>
+//         <NavMenu  onNavItemClick={handleNavItemClick} onToggle={handleNavMenuToggle}/>
+//         {activeNavItem === 'Alerts' && (
+//           <div id={isNavMenuOpen? 'alerttable-count' : 'alerttable-count-expand'}>
+//             <AlertsTable
+//               loading={loading}
+//               alertData={alertData}
+//               selectedStatus={selectedStatus}
+//               setSelectedStatus={setSelectedStatus}
+//               isNavMenuOpen={isNavMenuOpen}
+//               responders={responders}
+//               selectedResponder={selectedResponder}
+//               onResponderChange={onResponderChange}
+//             />
+//             <SideContainer
+           
+//               onStartDateChange={onStartDateChange}
+//               onEndDateChange={onEndDateChange}
+//               start={start}
+//               end={end}
+//               loading={loading}
+//               alertData={alertData}
+//               selectedStatus={selectedStatus}
+//               setSelectedStatus={setSelectedStatus}
+//               handleRefresh={handleRefresh}
+//               isNavMenuOpen={isNavMenuOpen}
+//             />
+//           </div>
+//         )}
+//         {activeNavItem === 'Dashboard' && (
+//           <NewDashboard
+//             alertData={alertData}
+//             isNavMenuOpen={isNavMenuOpen}
+//           />
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Main;
+
+
+
+
+// ----------------------------------------------------------------------------------------
+
 import React, { useState } from 'react';
 import SideContainer from './SideContainer';
 import AlertsTable from './AlertsTable';
 import Title from './Title';
-import NavMenu from './NavMenu';
 import NewDashboard from './NewDashboard';
 
-const Main = ({  loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
-  const [activeNavItem, setActiveNavItem] = useState('Alerts');
-  const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState('Alerts');
+  // const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
 
-  const handleNavItemClick = (item) => {
-    setActiveNavItem(item);
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
   };
 
-  const handleNavMenuToggle = (isOpen) => {
-    setIsNavMenuOpen(isOpen);
-  };
+  // const handleNavMenuToggle = (isOpen) => {
+  //   setIsNavMenuOpen(isOpen);
+  // };
 
   return (
     <div>
-      <Title  />
-      <div id='mainContainer' className={activeNavItem === 'Alerts'? 'alertActive': 'dashboardActive'}>
-        <NavMenu  onNavItemClick={handleNavItemClick} onToggle={handleNavMenuToggle}/>
-        {activeNavItem === 'Alerts' && (
-          <div id={isNavMenuOpen? 'alerttable-count' : 'alerttable-count-expand'}>
+      <Title />
+      <div className="tabs">
+          <div className={activeTab === 'Alerts' ? 'active' : ''} onClick={() => handleTabClick('Alerts')}>Alerts</div>
+          <div className={activeTab === 'Dashboard' ? 'active' : ''} onClick={() => handleTabClick('Dashboard')}>Dashboard</div>
+        </div>
+      <div id='mainContainer'>
+      
+        {activeTab === 'Alerts' && (
+          <div id='alerttable-count'>
             <AlertsTable
               loading={loading}
               alertData={alertData}
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
-              isNavMenuOpen={isNavMenuOpen}
+            
               responders={responders}
               selectedResponder={selectedResponder}
               onResponderChange={onResponderChange}
             />
             <SideContainer
-           
               onStartDateChange={onStartDateChange}
               onEndDateChange={onEndDateChange}
               start={start}
@@ -161,13 +238,13 @@ const Main = ({  loading, alertData, handleRefresh, onStartDateChange, onEndDate
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
               handleRefresh={handleRefresh}
+            
             />
           </div>
         )}
-        {activeNavItem === 'Dashboard' && (
+        {activeTab === 'Dashboard' && (
           <NewDashboard
             alertData={alertData}
-            isNavMenuOpen={isNavMenuOpen}
           />
         )}
       </div>

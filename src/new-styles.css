@@ -2,7 +2,7 @@ body{
     margin: 0;
     padding: 0;
     max-width: 100vw;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     font-family: 'Roboto', sans-serif;
 
 }
@@ -12,173 +12,36 @@ body{
     color: #0E2951;
 }
 
-  .dashboardActive{
-    height: 300vh;
-    max-height: 100%;
-    height: 320vh;
- }
+ 
 
-#mainContainer{
-    display: flex;
-    flex-direction: row;
-    align-items: first baseline;
-    gap: 5rem;
-}
- #alerttable-count{
-    flex: 0 0 80%;
-    display: flex;
-    flex-direction: row;
-    align-items: first baseline;
-    gap: 5rem;
-    max-width: 100vw;
-}
-#alerttable-count-expand{
-    flex: 0 0 92%;
-    display: flex;
-    flex-direction: row;
-    align-items: first baseline;
-    gap: 5rem;
-    padding-top: 1.2rem;
-    max-width: 100vw;
-}
-.dashboard-container{
-    flex: 0 0 85%;
-    max-width: 100vw;
 
-}
-.full-width{
-    flex: 0 0 95%;
-    max-width: 100vw;
-    padding-top: 4rem;
 
-}
 
-.nav{
-    flex: 0 0 15%;
-    background-color: #0E2951;
-    color: white;
-    position: relative;
-    height: 100%;
-}
-.nav-close{
-    background-color: #0E2951;
-    color: white;
-    position: relative;
-}
 
-/* #side-container{
-    width: 30%;
-    max-width: 15%;
-} */
 .container{
-    width: 60%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    border: 3px solid #0E2951;
+    /* justify-content: space-between; */
+    /* border: 3px solid #0E2951; */
+    background-color: #e2e7ef;
     padding: 20px;
     box-sizing: border-box;
     border-radius: 15px;
 
     overflow-x: auto;
-    max-width: 50%;
 }
 
-.container-expand{
-    width: 72%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 3px solid #0E2951;
-    border-radius: 15px;
-    padding: 20px;
-    box-sizing: border-box;
-    max-width: 65%;
 
-}
 
-#nav-menu{
-    background-color: #0E2951;
-    color: white;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 15px;
-    padding-top: 50px;
-    flex: 0 0 15%;
 
-  }
   
-  #navmenu-items{
-    cursor: pointer;
-    width: 100%;
-    padding: 10px 0;
-    text-align: center;
-  }
-  
-  #navmenu-items div{
-    padding: 10px 0;
-  }
-  
-  #navmenu-items div:hover{
-    background-color: #E8EFFA;
-    color: #0E2951;
-  
-  }
-  
-  .close-navmenu{
-    color: white;
-    background-color: #0E2951;
-    position: absolute;
-    padding: 10px;
-    top: 0px;
-    left: 100%;
-  }
-  
-  
-  .open-navmenu{
-    color: white;
-    background-color: #0E2951;
-    position: absolute;
-    padding: 10px;
-    top: 0;
-    left: 0;
-  }
-  
-  
-  
-  #nav-menu.closed{
-    display: none;
-  }
 
- .alertActive{
-    max-height: 100vh;
-    height: 100vh;
- }
+  
+  
+  
+  
 
- .button-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
- }
- #multiple-dates{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
- }
- #date-input{
-    margin-top: 15px;
-    padding: 10px;
- }
- #date-range, #refresh{
-    background-color: #0E2951;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
- }
+
 
  .openCloseCount{
     display: flex;
@@ -191,8 +54,9 @@ body{
  }
 
  .openCloseCount div{
-    padding: 20px;
+    padding: 20px 3px;
     flex: 0 0 25%;
+    cursor: pointer;
  }
  .openCloseCount strong{
     display: block;
@@ -298,7 +162,7 @@ body{
     overflow-x: auto; /* Enable horizontal scrolling */
     white-space: nowrap; /* Prevent wrapping of content */
     max-width: 100%; 
-    background-color: #c1d1e8;
+    /* background-color: #c1d1e8; */
     
   }
   #normal-search{
@@ -317,7 +181,7 @@ body{
     max-width: 100%;
     overflow-y: scroll;
     /* max-height: 800px; */
-    max-height: 900px;
+    max-height: 700px;
   }
   .table-container table{
     margin-top: 10px;
@@ -339,8 +203,8 @@ body{
     width: 200px;
     border: 1px solid gray;
     position: absolute;
-    top: 25%; 
-    left: 20%; 
+    top: 37%; 
+    left: 5%; 
     z-index: 1000;
     background-color: white;
     max-height: 200px;
@@ -371,8 +235,8 @@ body{
   
   .options-checkbox{
     position: absolute;
-    top: 21%;
-    left: 37%;
+    top: 32%;
+    left: 20%;
     max-height: 150px;
     overflow-y: scroll;
     background-color: white;
@@ -444,7 +308,7 @@ body{
     padding: 5px 1px;
   }
   .filter-summary{
-    padding: 2px 15px;
+    padding: 5px 15px;
     margin-bottom: 10px;
     max-width: 100%;
     overflow-x: auto;
@@ -453,7 +317,7 @@ body{
   .selected-filter {
     background-color: #E8EFFA;
     padding: 5px 10px;
-    border: 0.5px solid #0E2951;
+    border: 1px solid #0E2951;
   }
   .clear-filter{
     background-color: transparent;
@@ -611,7 +475,7 @@ body{
     align-items: center;
   }
   .apexcharts-tooltip{
-    width: 250px;
+    width: 500px;
   
   }
   #noise-alerts-table, #alert-vs-time-diff-table{
@@ -638,13 +502,7 @@ body{
    
 
   }
-  .dashboard-container .charts{
-    max-width: 80%;
-    overflow-x: auto;
-  }
-  .full-width .charts{
-    max-width: 100%;
-  }
+
 
   .chart-container{
     position: relative;
@@ -652,7 +510,7 @@ body{
   .chart-container button{
     position: absolute;
     top: 0px;
-    right: 25%;
+    right: 2%;
     background-color: #0E2951;
     color: white;
     padding: 10px;
@@ -672,9 +530,9 @@ body{
   }
   .options {
     position: absolute;
-    top: 27%;
-    left: 50%;
-    width: 220px;
+    top: 37%;
+    left: 49%;
+    width: 210px;
     border: 1px solid #ccc;
     z-index: 1000;
     background-color: white;
@@ -683,19 +541,7 @@ body{
     border-radius: 5px;
 
   }
- .options-expand {
-    position: absolute;
-    top: 27%;
-    left: 41%;
-    width: 220px;
-    border: 1px solid #ccc;
-    z-index: 1000;
-    background-color: white;
-    max-height: 200px;
-    overflow-y: scroll;
-    border-radius: 5px;
 
-  }
   
   
   .searchable-dropdown input[type="text"] {
@@ -725,81 +571,81 @@ body{
     background-color: #f0f0f0;
   }
   
- 
+  /* ---------------------------------------------------------- */
 
-
-/* Media query for laptops and desktops */
-/* @media screen and (min-width: 1024px) {
-  #mainContainer{
-    gap: 50px;
-  }
-  #alerttable-count{
-    width: 824px;
-    gap: 20px;
-  }
-  #alerttable-count-expand{
-    width: 1000px;
-    gap: 20px;
-  }
- 
-#side-container{
-  width: 300px;
+.tabs{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 30px;
 }
-#side-container-expand{
-  width: 340px;
+.tabs div{
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+  background-color: lightgray;
+  cursor: pointer;
 }
-#priority-wise-count{
-  width: 300px;
+.tabs .active{
+  background-color: #0E2951;
+  color: white;
 }
-#priority-wise-count-expand{
-  width: 340px;
+#mainContainer{
+  width: 100%;
+}
+.dashboard-container{
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+#alerttable-count{
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .container{
- width: 450px;
+  flex: 0 0 70%;
+  max-height: 1000px;
 }
 
-.container-expand{
-  width: 600px;
+#side-container{
+  flex: 0 0 25%;
 }
-.openCloseCount{
-  width: 340px;
-  gap: 3px;
-}
-.openCloseCount div{
-  width: 110px;
-  box-sizing: border-box;
-}
-#ack-alerts{
-  padding: 20px 1px;
-}
-.openCloseCount-expand{
-  width: 300px;
-  gap: 3px;
-}
-.openCloseCount div{
-  width: 110px;
-  box-sizing: border-box;
-}
-#ack-alerts{
-  padding: 20px 1px;
-}
+
+
 .button-container{
-  gap: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+ #multiple-dates{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+ 
 }
 #date-input{
-  width: 150px;
+  padding: 10px 0;
+  box-sizing: border-box;
+} 
+#date-range, #refresh, #date-search{
+  background-color: #0E2951;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+} 
+#chart-and-tables{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.table-container td{
+  text-wrap: nowrap;
+  position: relative;
+  padding-bottom: 30px;
 }
 
-} */
-
-/* Media query for iMac */
-@media screen and (min-width: 1920px) {
-  /* Add styles specific to iMac resolution */
-
-}
-
-/* Media query for MacBook Pro */
-@media screen and (min-width: 2560px) {
-  /* Add styles specific to MacBook Pro resolution */
-
-}
