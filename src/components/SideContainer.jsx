@@ -184,6 +184,7 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
         alert('Please select the date range within 7 days.');
         return; // Stop further execution
       }
+      console.log(toLocaleConversion(startTemp), toLocaleConversion(endTemp));
       handleSearch(toLocaleConversion(startTemp), toLocaleConversion(endTemp));
       // Pass the temporary start and end dates to the actual start and end date states
       // onStartDateChange(toLocaleConversion(startTemp));
