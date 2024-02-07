@@ -195,7 +195,7 @@ function App() {
   const today = new Date();
   const startInitial = new Date(today);
   startInitial.setHours(0, 0, 0, 0);
-  const endInitial = new Date(today);
+  const endInitial = new Date();
 
   const [start, setStart] = useState(startInitial);
   const [end, setEnd] = useState(endInitial);
@@ -290,6 +290,7 @@ const fetchData = useCallback(async (startParam = start, endParam) => {
     // Subsequent API calls when refresh is true
     if (refresh) {
       const currentDateTime = new Date();
+      setEnd(new Date())
       fetchData(start, end || currentDateTime); // Pass the current date and time for the end parameter if end date is not selected
       setRefresh(false); // Reset refresh state after handling it
     }
@@ -299,6 +300,7 @@ const fetchData = useCallback(async (startParam = start, endParam) => {
     fetchData(); // Initial API call on component mount
     const interval = setInterval(() => {
       const currentDateTime = new Date();
+      setEnd(new Date())
       fetchData(start, end || currentDateTime); // Pass the current date and time for the end parameter if end date is not selected
       console.log('Auto-refreshed at', currentDateTime.toLocaleString());
     }, 3 * 60 * 1000); // 3 minutes interval for demonstration

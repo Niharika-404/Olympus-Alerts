@@ -385,7 +385,9 @@ body{
   .charts Chart{
     margin-bottom: 20px;
   }
-  
+  .charts h3{
+    color: #0E2951;
+  }
   .chart-modal button {
     margin-top: 10px;
   }
@@ -474,9 +476,15 @@ body{
     justify-content: space-between;
     align-items: center;
   }
-  .apexcharts-tooltip{
-    width: 500px;
+  .treemap-chart .apexcharts-tooltip{
+    max-width: 500px;
   
+  }
+  #column-chart .apexcharts-tooltip{
+    width: 50%;
+  }
+  #acknowledgement-chart .apexcharts-tooltip{
+    width: 50%;
   }
   #noise-alerts-table, #alert-vs-time-diff-table{
     max-height: 350px;
@@ -649,3 +657,31 @@ body{
   padding-bottom: 30px;
 }
 
+/* CSS for larger desktop screens like iMac */
+@media only screen and (min-width: 1440px) {
+  /* Add your styles for larger desktop screens here */
+  .filter-btn{
+    position: relative;
+  }
+  .filter-dropdown{
+    position: absolute;
+    top: 33%; 
+    left: 4%; 
+    
+  }
+  .options-checkbox{
+    position: absolute;
+    top: 32.5%;
+    left: 15.8%;
+
+  }
+
+  .searchable-dropdown input[type="text"]{
+    position: relative;
+  }
+  .options{
+    position: absolute;
+    top: 32.5%;
+    left: 44%;
+  }
+}
