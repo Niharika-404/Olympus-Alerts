@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Test from './TestComp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { faCircleDown, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -486,9 +486,11 @@ useEffect(() => {
       
 
            
-                <button onClick={handleResetFilters}>Reset Filters</button>
+                {/* <button onClick={handleResetFilters}>Reset Filters</button> */}
+                <FontAwesomeIcon icon={faUndo} onClick={handleResetFilters} className='download-table' title='Reset Filters'/>
+
                 {/* <button onClick={handleDownloadData}>Download Data</button> */}
-                <FontAwesomeIcon icon={faCircleDown} onClick={handleDownloadData} className='download-table' />
+                <FontAwesomeIcon icon={faCircleDown} onClick={handleDownloadData} className='download-table' title='Download'/>
 
         </div>
 

@@ -67,7 +67,7 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
         time: endObj.toLocaleString().split(',')[1].trim()
       };
     }
-
+    console.log('API call');
     // Update your API call to use startFormatted and endFormatted
     const response = await axios.get('http://localhost:5000/alerts', {
       params: {
@@ -106,18 +106,18 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
 
   useEffect(() => {
     fetchData();
-    if (refresh) {
-      const defaultStart = new Date().setHours(0, 0, 0, 0); // Default start date
-      const defaultEnd = new Date(); // Default end date
+    // if (refresh) {
+    //   const defaultStart = new Date().setHours(0, 0, 0, 0); // Default start date
+    //   const defaultEnd = new Date(); // Default end date
   
-      // setStart(defaultStart); // Reset start to default value
-      // setEnd(defaultEnd); // Reset end to default value
+    //   // setStart(defaultStart); // Reset start to default value
+    //   // setEnd(defaultEnd); // Reset end to default value
   
-      fetchData(defaultStart, defaultEnd); // API call with default start and end dates
+    //   fetchData(defaultStart, defaultEnd); // API call with default start and end dates
   
-      setRefresh(false); // Reset refresh state after handling it
-    }
-  }, [fetchData, refresh]);
+    //   setRefresh(false); // Reset refresh state after handling it
+    // }
+  }, [fetchData]);
   
   
 
@@ -146,9 +146,26 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
     // Trigger fetchData or any other necessary actions
     fetchData(selectedStart, selectedEnd)
   };
-  const onRefresh = () => {
-    setRefresh(true);
-  };
+// Remove the immediate check for `refresh` within `onRefresh`
+const onRefresh = () => {
+  setRefresh(true); // Simply set `refresh` to true
+};
+
+// Use an effect to react to changes in `refresh`
+useEffect(() => {
+  if (refresh) {
+    // Place your logic that should run after refresh is set to true here
+    console.log("Refresh logic runs now.");
+    const startInitial = new Date(today);
+    startInitial.setHours(0, 0, 0, 0);
+    const endInitial = new Date();
+    fetchData(startInitial, endInitial); // Or any other actions that need to occur on refresh
+
+    // Then reset the `refresh` state
+    setRefresh(false);
+  }
+}, [refresh]); // This effect runs whenever `refresh` changes
+
 
 
 const DataFetchFromCSV = useCallback(async()=>{

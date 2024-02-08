@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Oval } from 'react-loader-spinner';
 // import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotateRight,faCalendarAlt,faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSync,faCalendarAlt,faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import PriorityTable from './PriorityTable';
 
@@ -33,24 +33,55 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
 
 
  // Initialize start and end dates with today's date and time
-const todayISOString = today.toISOString();
-const todayDate = todayISOString.split('T')[0];
-const todayTime = todayISOString.split('T')[1].slice(0, 5);
+// const todayISOString = today.toISOString();
+// const todayDate = todayISOString.split('T')[0];
+// const todayTime = todayISOString.split('T')[1].slice(0, 5);
 
-const [startTemp, setStartTemp] = useState(start || `${todayDate}T00:00`);
-const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
+// // const [startTemp, setStartTemp] = useState(start || `${todayDate}T00:00`);
+// // const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
 
-
+// const [startTemp, setStartTemp] = useState( `${todayDate}T00:00`);
+// const [endTemp, setEndTemp] = useState( `${todayDate}T${todayTime}`);
     
+
+const getISTDateAndTime = () => {
+  // Current date and time in UTC
+  const nowUTC = new Date();
+  // Convert to IST: UTC + 5:30
+  const offsetIST = 5.5 * 60; // in minutes
+  const nowIST = new Date(nowUTC.getTime() + offsetIST * 60000); // Convert offset to milliseconds and add
+
+  // Format the date part
+  const datePart = nowIST.toISOString().split('T')[0];
+
+  // Format the time part to HH:MM:SS
+  const timePart = nowIST.toISOString().split('T')[1].slice(0, 8);
+
+  return { datePart, timePart };
+};
+
+// Use the function to initialize your state
+const { datePart, timePart } = getISTDateAndTime();
+
+const [startTemp, setStartTemp] = useState(`${datePart}T00:00:00`); // Set start time to 00:00:00
+const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end time to the current time in HH:MM:SS
+
 
     const handleStatusClick = (status) => {
       setSelectedStatus(status);
     };
   
     const refreshData = () => {
-      handleRefresh();
+      
+      const { datePart, timePart } = getISTDateAndTime();
+    
+      // Use functional updates to ensure the most recent state is used
+      setStartTemp(`${datePart}T00:00:00`);
+      setEndTemp(`${datePart}T${timePart}`);
+      console.log(startTemp,endTemp);
+      handleRefresh(startTemp,endTemp);
     };
-
+    
     const toggleDateRange = () => {
       setDateRange(!dateRange);
   };
@@ -184,6 +215,11 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
         alert('Please select the date range within 7 days.');
         return; // Stop further execution
       }
+        // Check if start date is greater than end date
+      if (startDate >= endDate) {
+        alert('Start date must be less than end date.');
+        return; // Stop further execution
+      }
       console.log(toLocaleConversion(startTemp), toLocaleConversion(endTemp));
       handleSearch(toLocaleConversion(startTemp), toLocaleConversion(endTemp));
       // Pass the temporary start and end dates to the actual start and end date states
@@ -209,7 +245,7 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
                                     type="datetime-local"
                                     step={1}
                                     // value={startTemp} // Use temporary start date
-                                    value={startTemp || formatDateForInput(dateConversion(start)) }
+                                    value={startTemp  }
                                     onChange={(e) => setStartTemp(e.target.value)}
                                     max={currentDateTime}
                                 />
@@ -219,7 +255,7 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
                                     type="datetime-local"
                                     step={1}
                                     // value={endTemp} // Use temporary start date
-                                    value={endTemp || formatDateForInput(dateConversion(end))}
+                                    value={endTemp }
                                     onChange={(e) => setEndTemp(e.target.value)}
                                     max={currentDateTime}
                                 />
@@ -248,13 +284,13 @@ const [endTemp, setEndTemp] = useState(end || `${todayDate}T${todayTime}`);
            
               {/* <button id="refresh" onClick={refreshData}>Refresh</button> */}
 
-
+                
               <FontAwesomeIcon id="date-range" icon={faCalendarAlt} onClick={toggleDateRange} title='Add Date Range'/>
 
               <FontAwesomeIcon id="date-search" icon={faSearch}  onClick={onSearchClick} title='Search'/>
 
 
-              <FontAwesomeIcon id="refresh" icon={faRotateRight} onClick={refreshData} title='Refresh' />
+              <FontAwesomeIcon id="refresh" icon={faSync} onClick={refreshData} title='Refresh' />
 
 
             </div>
