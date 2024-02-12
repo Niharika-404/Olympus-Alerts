@@ -5,7 +5,7 @@ import Main from './components/Main';
 import NewDashboard from './components/NewDashboard';
 import axios from 'axios';
 
-import Papa from 'papaparse';
+// import Papa from 'papaparse';
 
 
 function App() {
@@ -168,20 +168,20 @@ useEffect(() => {
 
 
 
-const DataFetchFromCSV = useCallback(async()=>{
-  const response = await fetch('/AlertsData.csv'); // Update the path
-      if (!response.ok) {
-        throw new Error('Failed to fetch CSV file');
-      }
-      const csv = await response.text(); // Extract CSV content
-      const parsedData = Papa.parse(csv, { header: true }).data; // Parse CSV using Papaparse
-      setAlertData(parsedData);
-},[])
+// const DataFetchFromCSV = useCallback(async()=>{
+//   const response = await fetch('/AlertsData.csv'); // Update the path
+//       if (!response.ok) {
+//         throw new Error('Failed to fetch CSV file');
+//       }
+//       const csv = await response.text(); // Extract CSV content
+//       const parsedData = Papa.parse(csv, { header: true }).data; // Parse CSV using Papaparse
+//       setAlertData(parsedData);
+// },[])
 
-useEffect(() => {
-  // Initial API call on component mount
-  DataFetchFromCSV();
-}, [DataFetchFromCSV]);
+// useEffect(() => {
+//   // Initial API call on component mount
+//   DataFetchFromCSV();
+// }, [DataFetchFromCSV]);
 
 // console.log(`Start - ${startFormatted.date}, ${startFormatted.time}; End - ${endFormatted.date}, ${endFormatted.time};`);
 // console.log(start, end);
