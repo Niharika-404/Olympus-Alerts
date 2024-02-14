@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSync,faCalendarAlt,faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import PriorityTable from './PriorityTable';
+import Report from './Report';
 
 const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch}) => {
     const [totalOpened, setTotalOpened] = useState(0);
@@ -23,7 +24,11 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
     // const[end, setEnd] = useState('');
 
 
+    const [isPopupOpen, setPopupOpen] = useState(false);
 
+  const togglePopup = () => {
+    setPopupOpen(!isPopupOpen);
+  };
    
     const today = new Date();
 
@@ -310,6 +315,20 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
               </div>
             </div>
             <PriorityTable priorityCounts={priorityCounts} />
+            <button className='Analyze-btn' onClick={togglePopup}>
+              View Report
+            </button>
+            {isPopupOpen && (
+        <div className="popup-container">
+          <div className="popup">
+            <span className="close" onClick={togglePopup}>
+              &times;
+            </span>
+           
+            <Report alertData={alertData} startTemp={startTemp} endTemp={endTemp}/>
+          </div>
+        </div>
+      )}
           </div>
         )}
       </>

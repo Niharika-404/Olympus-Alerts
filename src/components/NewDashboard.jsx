@@ -14,8 +14,10 @@ import AlertVsTimeDiffTable from './AlertVsTimeDiff.jsx';
 import AutoAlertsTable from './AutoAlerts.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleDown } from '@fortawesome/free-solid-svg-icons';
-// import Papa from 'papaparse';
+import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
+// import Papa from 'papaparse';
+import OpenAlertsModal from './OpenAlertsModal.jsx';
 
 
 const NewDashboard = ({alertData}) => {
@@ -25,6 +27,14 @@ const NewDashboard = ({alertData}) => {
   const [priorityCounts, setPriorityCounts] = useState([]);
   const [selectedZone, setSelectedZone] = useState('');
   const [alertPriorities, setAlertPriorities] = useState({});
+
+  const [openAlerts, setOpenAlerts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  const [sortOrder, setSortOrder] = useState('desc'); // 'asc' or 'desc'
+
+
 
   useEffect(() => {
     
@@ -50,13 +60,7 @@ const NewDashboard = ({alertData}) => {
         const uniqueAlertNames = Array.from(new Set(alertData.map(alert => alert?.['AlertName'])))
         setUniqueAlerts(uniqueAlertNames);
 
-        // Extract priority-wise counts for open alerts
-        const priorities = ['P1', 'P2', 'P3', 'P4', 'P5'];
-        const priorityCounts = priorities.map(priority => ({
-          priority,
-          count: alertData.filter(alert => alert?.Priority === priority && alert?.Status === 'open').length,
-        }));
-        setPriorityCounts(priorityCounts);
+     
 
         // Set a default selected zone
         if (uniqueZones.length > 0) {
@@ -80,33 +84,71 @@ const NewDashboard = ({alertData}) => {
     
   }, [alertData]);
 
+  useEffect(()=>{
+       // Extract priority-wise counts for open alerts
+       const priorities = ['P1', 'P2', 'P3', 'P4', 'P5'];
+       // const priorityCounts = priorities.map(priority => ({
+       //   priority,
+       //   count: alertData.filter(alert => alert?.Priority === priority && alert?.Status === 'open').length,
+       // }));
+
+       const priorityCounts = priorities.map(priority => ({
+         priority,
+         count: alertData.filter(alert => alert?.Priority === priority && alert?.Status === 'open' && alert?.Zone === selectedZone).length,
+       }));
+   
+       setPriorityCounts(priorityCounts);
+  },[selectedZone])
+  
+
   // Filter unique alerts based on the selected zone
-  const filteredAlerts = uniqueAlerts.filter(alert =>
-    selectedZone ? data.some(row => row?.Zone === selectedZone && row?.['AlertName'] === alert) : true
-  );
-
-  // Render priorities for each unique alert
-//   const renderPriorities = (alertName) => {
-//     const priorities = alertPriorities[alertName] || [];
-//     return priorities.join(', ');
-//   };
+  // const filteredAlerts = uniqueAlerts.filter(alert =>
+  //   selectedZone ? data.some(row => row?.Zone === selectedZone && row?.['AlertName'] === alert) : true
+  // );
 
 
-// Update renderPriorities to consider only the selected zone
+
+
+
+  // Filter unique alerts based on the selected zone and sort by count
+const filteredAlerts = uniqueAlerts
+.filter(alert =>
+  selectedZone ? data.some(row => row?.Zone === selectedZone && row?.['AlertName'] === alert) : true
+)
+.sort((a, b) => {
+  const countA = data.filter(alert => alert['AlertName'] === a && alert.Zone === selectedZone).length;
+  const countB = data.filter(alert => alert['AlertName'] === b && alert.Zone === selectedZone).length;
+  // return countB - countA; // Sort in descending order
+  return sortOrder === 'asc' ? countA - countB : countB - countA; // Sort based on sortOrder
+
+});
+
+
+
+
+const handleSort = () => {
+  setSortOrder((prevSortOrder) => (prevSortOrder === 'asc' ? 'desc' : 'asc'));
+};
+
+
+
+
+
+
+
+
 const renderPriorities = (alertName) => {
-    const priorities = alertPriorities[alertName] || [];
-    const prioritiesForSelectedZone = priorities.filter(
-      (priority) =>
-        data.some(
-          (alert) =>
-            alert?.['AlertName'] === alertName &&
-            alert?.Zone === selectedZone &&
-            alert?.Priority === priority 
-            // alert?.Status === 'open'
-        )
-    );
-    return prioritiesForSelectedZone.join(', ');
-  };
+  const priorities = alertPriorities[alertName] || [];
+  const prioritiesWithCounts = priorities
+    .map(priority => {
+      const count = data.filter(alert => alert['AlertName'] === alertName && alert.Zone === selectedZone && alert.Priority === priority).length;
+      return { priority, count };
+    })
+    .filter(({ count }) => count > 0) // Filter out priorities with count 0
+    .map(({ priority, count }) => `${priority} - ${count}`);
+  return prioritiesWithCounts.join(', ');
+};
+
 
   // Filter priority counts based on the selected zone
   const filteredPriorityCounts = priorityCounts.filter(priorityCount =>
@@ -117,9 +159,63 @@ const renderPriorities = (alertName) => {
       true
   );
 
+  const onDataPointSelection = (event, chartContext, config) => {
+    // Ensure config and w are defined
+    if (!config || !config.w) {
+      console.error('Configuration or chart context is undefined.');
+      return;
+    }
+  
+    // Safely access the series and labels using the config object
+    const series = config.w.config.series;
+    const labels = config.w.config.labels;
+    const seriesIndex = config.seriesIndex;
+    const dataPointIndex = config.dataPointIndex;
+  
+    // Check if series and labels are correctly accessed
+    if (seriesIndex !== undefined && series[seriesIndex] !== undefined && labels && labels[dataPointIndex] !== undefined) {
+      const clickedData = {
+        // Depending on how your series data is structured, you may need to adjust how you access the value
+        value: series[seriesIndex].data ? series[seriesIndex].data[dataPointIndex] : series[seriesIndex],
+        category: labels[dataPointIndex],
+      };
+     
+      // onChartSelection(clickedData.category, 'open', selectedZone)
+      // onChartSelection(clickedData.category, selectedZone, 'open', 'Alerts');
+      console.log(clickedData.category, selectedZone);
+
+
+
+      const openAlerts = alertData.filter(alert =>
+        alert?.Priority === clickedData.category && alert?.Zone === selectedZone && alert?.Status === 'open'
+      );
+  
+      // Log the selected priority and zone
+      console.log('Selected Priority:', clickedData.category);
+      console.log('Selected Zone:', selectedZone);
+      // Log the open alerts for the selected priority and zone
+      console.log('Open Alerts:', openAlerts);
+
+
+      setOpenAlerts(openAlerts);
+      setIsModalOpen(true);
+
+    } else {
+      console.error('Unable to access clicked segment data.');
+    }
+  };
+  
   // Chart configuration
   const chartOptions = {
+    chart: {
+      // Other chart options...
+      events: {
+        dataPointSelection: onDataPointSelection, // Assign the event handler
+      },
+    },
     labels: filteredPriorityCounts.map(item => item.priority),
+
+  
   };
 
   const chartSeries = filteredPriorityCounts.map(item => item.count);
@@ -177,6 +273,13 @@ const renderPriorities = (alertName) => {
     URL.revokeObjectURL(url);
   }
   
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setOpenAlerts([]);
+  };
+
+
   
   return (
     <div className='dashboard-container'>
@@ -190,36 +293,16 @@ const renderPriorities = (alertName) => {
           ))}
         </select>
       </div>
-      {/* <div id='alerts-container'>
-        <div id='unique-alerts'>
-          <div className='alerts-time-table'> 
-          <h3>Unique Alerts</h3>
-          <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
-          </div>
-         <div className='unique-alerts-content'>
-         <ul>
-            {filteredAlerts.map((alert, index) => (
-              <li key={index}>
-                <div className='alert-priority-div'>
-                    <div>{alert}</div>
-                    <div>{renderPriorities(alert)}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
-         </div>
-         
-        </div>
-        <div id='priority-alerts'>
-          <h3>Open Priority Alerts</h3>
-          <Chart options={chartOptions} series={chartSeries} type="donut" width="400" />
-        </div>
-      </div> */}
+    
 
       <div id='alerts-container'>
         <div id='unique-alerts'>
           <div className='alerts-time-table'> 
             <h3>Unique Alerts</h3>
+            <FontAwesomeIcon
+              icon={sortOrder === 'asc' ? faSortDown : faSortUp}
+              onClick={handleSort}
+            />
             <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
           </div>
           <div className='unique-alerts-content'>
@@ -244,8 +327,13 @@ const renderPriorities = (alertName) => {
           {chartSeries.every(count => count === 0) ? (
             <p>No open alerts in the selected zone.</p>
           ) : (
-            <Chart options={chartOptions} series={chartSeries} type="donut" width="400" />
+            <Chart key={selectedZone} options={chartOptions} series={chartSeries} type="donut" width="400"   
+            
+            
+            />
           )}
+     
+
         </div>
 
       </div>
@@ -268,6 +356,11 @@ const renderPriorities = (alertName) => {
        
        
       </div>
+
+      {isModalOpen && (
+        <OpenAlertsModal openAlerts={openAlerts} onClose={handleModalClose} />
+      )}
+
       {/* Additional content can be added here */}
       <div id='treemap-chart'>
         <TreemapChart data={data} selectedZone={selectedZone} filteredAlerts={filteredAlerts} />

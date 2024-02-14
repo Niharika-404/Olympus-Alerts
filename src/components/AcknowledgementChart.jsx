@@ -71,7 +71,7 @@ const AcknowledgementChart = ({ alertData, selectedZone }) => {
         },
         yaxis: {
           title: {
-            text: 'Average Time Taken to Acknowledge(minutes)',
+            text: 'Average Time Taken to Acknowledge(min)',
           },
         },
         series: seriesData,
@@ -113,7 +113,7 @@ const AcknowledgementChart = ({ alertData, selectedZone }) => {
       <h3>Average Time Taken to Acknowledge By User</h3>
       {/* <Chart options={chartData} series={chartData.series} type="bar" height={350} /> */}
       {chartData.series.length>0 ? (
-        <Chart options={chartData} series={chartData.series} type="bar" height={350} />
+        <Chart options={chartData} series={chartData.series} type="bar" height={450} />
       ) : (
         <p style={{textAlign:'left', marginTop:'100px'}}>No alerts available for the selected zone.</p>
       )}

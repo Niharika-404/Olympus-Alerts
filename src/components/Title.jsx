@@ -32,25 +32,41 @@
 
 import React from 'react';
 
-const Title = ({ onDateChange, selectedDate }) => {
+const Title = ({ alertData, selectedResponder }) => {
 
   // const todayDate = new Date().toISOString().split('T')[0];
-
+  const primaryResponderEmails = new Set();
+  const secondaryResponderEmails = new Set();
+  
+  alertData.forEach(alert => {
+    if (alert?.PrimaryResponderEmail) {
+      primaryResponderEmails.add(alert.PrimaryResponderEmail);
+    }
+    if (alert?.SecondaryResponderEmail) {
+      secondaryResponderEmails.add(alert.SecondaryResponderEmail);
+    }
+  });
+  
+  // console.log("Unique Primary Responder Emails:", Array.from(primaryResponderEmails));
+  // console.log("Unique Secondary Responder Emails:", Array.from(secondaryResponderEmails));
   
 
   return (
     <div id='title-container'>
-      {/* <h1>OLYMPUS MIDDLEWARE SRE</h1> */}
       <div className='title-date'>
         <h2>Olympus Alerts Dashboard</h2>
-          {/* <input
-            id='date-input'
-            type='date'
-            max={todayDate}
-            // defaultValue={todayDate}
-            value={selectedDate || todayDate}
-            onChange={(e) => onDateChange(e.target.value)}
-          /> */}
+       <div className='responder-oncall'>
+          <strong>{selectedResponder}</strong>
+          <div>
+          <small style={{fontSize: '0.7rem'}}>Primary Oncall:</small>
+          <p style={{marginTop:'0', fontSize: '0.9rem'}}>dineshkumar@zeta.tech</p>
+          </div>
+          <div>
+          <small style={{fontSize: '0.7rem'}}>Secondary Oncall:</small>
+          <p style={{marginTop:'0', fontSize:'0.9rem'}}>lovek@zeta.tech</p>
+          </div>
+
+       </div>
       </div>
     </div>
   );

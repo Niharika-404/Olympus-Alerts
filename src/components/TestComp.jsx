@@ -557,7 +557,7 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
         'AckBy',
         'AlertAckTime',
         'Tags',
-        'Teams',
+        'Team',
         'PrimaryResponderEmail',
         'SecondaryResponderEmail',
         'Severity',

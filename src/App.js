@@ -28,8 +28,14 @@ function App() {
   const [responders, setResponders] = useState([]);
 
 
+  const [category, setCategory] = useState('Olympus');
 
 
+const handleCategoryChange = (category)=>{
+  setCategory(category);
+}
+
+console.log(category);
 
 const formatDate = (date) => {
   const [day, month, year] = date.split('/');
@@ -176,6 +182,8 @@ const DataFetchFromCSV = useCallback(async()=>{
       const csv = await response.text(); // Extract CSV content
       const parsedData = Papa.parse(csv, { header: true }).data; // Parse CSV using Papaparse
       setAlertData(parsedData);
+
+      setResponders(['olympus_middleware_sre', 'Data_Commons_DevOps_Team', 'Metis_Dev_Team', 'Commons_DevOps', 'olympus_dbre_team', 'Prod_Ops'])
 },[])
 
 useEffect(() => {
@@ -195,7 +203,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} 
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch}/>}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange}/>}
           />
           <Route
             path="/dashboard"

@@ -8,10 +8,15 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+
 import Papa from 'papaparse';
 
 const NoiseAlertsTable = ({ alertData, selectedZone }) => {
   const [tableData, setTableData] = useState([]);
+
+  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
+
 
   useEffect(() => {
     const generateTableData = () => {
@@ -31,6 +36,9 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
         closeTime: parseFloat(alert['TimeToClose']).toFixed(3),
       }));
 
+      tableRows.sort((a, b) => parseFloat(b.closeTime) - parseFloat(a.closeTime));
+
+
       setTableData(tableRows);
     };
 
@@ -40,6 +48,18 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
       console.error('Error generating table data:', error);
     }
   }, [alertData, selectedZone]);
+
+
+  const handleSort = () => {
+    setSortOrder((prevSortOrder) => (prevSortOrder === 'asc' ? 'desc' : 'asc'));
+    const sortedData = [...tableData].sort((a, b) => {
+      const valueA = parseFloat(a.closeTime);
+      const valueB = parseFloat(b.closeTime);
+      return sortOrder === 'asc' ? valueA - valueB : valueB - valueA;
+    });
+    setTableData(sortedData);
+  };
+  
 
   const handleDownload = () => {
     const csvData = Papa.unparse(tableData);
@@ -96,6 +116,10 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
     <div>
   <div className='alerts-time-table' style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '1' }}>
     <h3>Noise Alerts</h3>
+    <FontAwesomeIcon
+              icon={sortOrder === 'asc' ? faSortUp : faSortDown}
+              onClick={handleSort}
+            />
     <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
   </div>
 

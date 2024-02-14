@@ -44,7 +44,7 @@ const PriorityVsTimeToAck = ({ alertData, selectedZone }) => {
         },
         yaxis: {
           title: {
-            text: 'Average Time to Acknowledge',
+            text: 'Average Time to Acknowledge(min)',
           },
         },
         series: [
@@ -61,6 +61,7 @@ const PriorityVsTimeToAck = ({ alertData, selectedZone }) => {
 
     try {
       setChartData(generateColumnChartData());
+      console.log(chartData.series[0].data);
     } catch (error) {
       console.error('Error generating chart data:', error);
     }
@@ -71,7 +72,7 @@ const PriorityVsTimeToAck = ({ alertData, selectedZone }) => {
       {/* Column chart */}
       <h3>Average Time to Acknowledge Alerts</h3>
       {chartData.series[0].data.length>0? 
-      <Chart options={chartData} series={chartData.series} type="bar" height={350} />:
+      <Chart options={chartData} series={chartData.series} type="bar" height={450} />:
       <p style={{textAlign:'left', marginTop:'100px'}}>No alerts found</p>}
       
     </div>

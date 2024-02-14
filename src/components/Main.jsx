@@ -188,17 +188,31 @@
 
 // ----------------------------------------------------------------------------------------
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SideContainer from './SideContainer';
 import AlertsTable from './AlertsTable';
 import Title from './Title';
 import NewDashboard from './NewDashboard';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [activeTab, setActiveTab] = useState('Alerts');
   // const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
 
+
+  // const [selectedPriority, setSelectedPriority] = useState('');
+  // const [selZone, setSelZone] = useState('');
+  // const [status, setStatus] = useState('')
+
+
+
+
+
+  // useEffect(() => {
+  //   console.log('Active tab now:', activeTab);
+  // }, [activeTab]);
+  
+  
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -207,12 +221,41 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
   //   setIsNavMenuOpen(isOpen);
   // };
 
+  // const handleSelectedPriority = (priority)=>{
+  //   setSelectedPriority(priority)
+  // }
+
+  // const handleZone = (zone)=>{
+  //   setSelZone(zone)
+  // }
+
+  // const handleStatus = (status)=>{
+  //   setStatus(status)
+  // }
+  // useEffect(() => {
+  //   console.log('Updated status:', status);
+  //   console.log('Updated selected zone:', selZone);
+  //   console.log('Updated selected priority:', selectedPriority);
+  //   console.log('Active tab now:', activeTab);
+  // }, [status, selZone, selectedPriority, activeTab]);
+  
+  // const handleChartSelection = (priority, zone, status, tab) => {
+  //   handleSelectedPriority(priority);
+  //   handleZone(zone);
+  //   handleStatus(status);
+  //   handleTabClick(tab);
+  // };
+  
+ 
+
   return (
     <div>
-      <Title />
+      <Title alertData={alertData} selectedResponder={selectedResponder} />
       <div className="tabs">
           <div className={activeTab === 'Alerts' ? 'active' : ''} onClick={() => handleTabClick('Alerts')}>Alerts</div>
-          <div className={activeTab === 'Dashboard' ? 'active' : ''} onClick={() => handleTabClick('Dashboard')}>Dashboard</div>
+          <div className={activeTab === 'Dashboard' ? 'active' : ''} onClick={() => {
+            handleTabClick('Dashboard')
+            }}>Dashboard</div>
         </div>
       <div id='mainContainer'>
       
@@ -227,6 +270,13 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               responders={responders}
               selectedResponder={selectedResponder}
               onResponderChange={onResponderChange}
+
+              category={category}
+              onCategoryChange={onCategoryChange}
+
+              // selZone={selZone}
+              // selectedPriority={selectedPriority}
+              // Dashboardstatus={status}
             />
             <SideContainer
               onStartDateChange={onStartDateChange}
@@ -246,6 +296,10 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
         {activeTab === 'Dashboard' && (
           <NewDashboard
             alertData={alertData}
+            // onChartSelection={handleChartSelection} // New prop
+          
+
+           
           />
         )}
       </div>

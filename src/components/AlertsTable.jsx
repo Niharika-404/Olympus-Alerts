@@ -9,7 +9,9 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder }) => {
+const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, category, onCategoryChange }) => {
+
+  // console.log(selZone, selectedPriority, Dashboardstatus);
 
     const [download, setDownload] = useState(false);
     const [isDropdownVisible, setDropdownVisibility] = useState(false);
@@ -19,12 +21,12 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     // const [selectedResponder, setSelectedResponder] = useState('');
 
 
-    const [searchResTerm, setSearchResTerm] = useState('');
+    // const [searchResTerm, setSearchResTerm] = useState('');
     const [isOpen, setIsOpen] = useState(false);
   
-    const filteredResOptions = responders.filter(option =>
-      option.toLowerCase().includes(searchResTerm.toLowerCase())
-    );
+    // const filteredResOptions = responders.filter(option =>
+    //   option.toLowerCase().includes(searchResTerm.toLowerCase())
+    // );
   
   // State variables to hold filter values
   const [filters, setFilters] = useState({
@@ -34,6 +36,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     zone: [],
     priority: [],
     status: [],
+    responder: ['olympus_middleware_sre'], // Initialize with the default responder
   });
 
   // State variables to hold unique values for checkboxes
@@ -43,6 +46,8 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
   const [uniqueZones, setUniqueZones] = useState([]);
   const [uniqueStatus, setUniqueStatus] = useState([]);
   const [uniquePriorities, setUniquePriorities] = useState([]);
+
+
 
   const handleDownloadData = () => {
     setDownload(true);
@@ -62,9 +67,23 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     };
 
     getUniqueValues();
+
+    
+
   }, [alertData]);
   
   const handleCheckboxChange = (filterKey, value) => {
+
+    if (filterKey === 'responder') {
+      // If the filter is 'responder', update the state directly with the selected value
+         // If the selected value is the default responder, set it as the selected responder
+    if (value === 'olympus_middleware_sre') {
+      onResponderChange(value);
+    } else {
+      // If the selected value is not the default responder, set it as the selected responder
+      onResponderChange(value);
+    }
+    } else {
     setFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters };
       const index = updatedFilters[filterKey].indexOf(value);
@@ -82,6 +101,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
 
       return updatedFilters;
     });
+  }
   };
 
 
@@ -112,6 +132,8 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
       zone: [],
       priority: [],
       status: [],
+      responder: ['olympus_middleware_sre'], // Initialize with the default responder
+
     });
     setSelectedStatus('')
     setDropdownVisibility(false)
@@ -163,6 +185,7 @@ const handleCheckboxChangeAll = (filter) => {
         return uniqueZones;
       case 'cluster':
         return uniqueClusters;
+      
       // case 'status':
       //   return uniqueStatus;
       // case 'namespace':
@@ -197,26 +220,54 @@ const generateOptions = () => {
   
       case 'Status':
         return generateOptionsForFilter(uniqueStatus, 'status');
+
+      case 'Responder':
+        return generateOptionsForFilter(responders, 'responder')
   
       default:
         return null;
     }
   };
   
+  // const generateOptionsForFilter = (values, filter) => {
+  //   const filteredValues = values.filter(value =>
+  //       value?.toLowerCase().includes(optionSearchTerm.toLowerCase())
+  //     );
+  //   return filteredValues.map((value) => (
+  //     <div key={value} className="checkbox-option">
+  //       <input
+  //         type="checkbox"
+  //         value={value}
+  //         checked={filters[filter]?.includes(value)}
+  //         onChange={(event) => {
+  //              // Prevent the event from reaching handleClickOutside
+  //         event.stopPropagation();
+  //           handleCheckboxChange(filter, value)}}
+  //       />
+  //       {value}
+  //     </div>
+  //   ));
+  // };
+
+ 
+
+
   const generateOptionsForFilter = (values, filter) => {
     const filteredValues = values.filter(value =>
-        value?.toLowerCase().includes(optionSearchTerm.toLowerCase())
-      );
+      value?.toLowerCase().includes(optionSearchTerm.toLowerCase())
+    );
+  
     return filteredValues.map((value) => (
       <div key={value} className="checkbox-option">
         <input
-          type="checkbox"
+          type={filter === 'responder' ? 'radio' : 'checkbox'} // Change input type to radio for responder filter
           value={value}
-          checked={filters[filter]?.includes(value)}
+          checked={filter === 'responder' ? selectedResponder === value : filters[filter]?.includes(value)} // Update checked attribute for responder filter
           onChange={(event) => {
-               // Prevent the event from reaching handleClickOutside
-          event.stopPropagation();
-            handleCheckboxChange(filter, value)}}
+            // Prevent the event from reaching handleClickOutside
+            event.stopPropagation();
+            handleCheckboxChange(filter, value);
+          }}
         />
         {value}
       </div>
@@ -352,6 +403,9 @@ const clearFilter = (filterName) => {
           case 'status':
             addFilter('status', value);
             break;
+            // case 'responder':
+            //   addFilter('responder', value);
+            //   break;
           default:
             break;
         }
@@ -406,6 +460,8 @@ useEffect(() => {
                 <p onClick={() => handleFilterSelection('Priority')} style={getFilterStyle('Priority')}>Priority</p>
                 <p onClick={() => handleFilterSelection('Status')} style={getFilterStyle('Status')}>Status</p>
                 <p onClick={() => handleFilterSelection('Zone')} style={getFilterStyle('Zone')}>Zone</p>
+                <p onClick={() => handleFilterSelection('Responder')} style={getFilterStyle('Responder')}>Responder</p>
+
               </div>
             )}
             
@@ -454,7 +510,7 @@ useEffect(() => {
 
           
 
-<div className="searchable-dropdown" ref={dropdownSearchRef}>
+{/* <div className="searchable-dropdown" ref={dropdownSearchRef}>
       <input
         type="text"
         value={selectedResponder || 'olympus_middleware_sre'}
@@ -481,11 +537,30 @@ useEffect(() => {
         </div>
       )}
       
-    </div>
+    </div> */}
 
-      
+    <div>
+        <input
+          type="radio"
+          id="olympus"
+          name="category"
+          value="olympus"
+          checked={category==='Olympus'}
+          onChange={() => onCategoryChange('Olympus')}
+        />
+        <label htmlFor="olympus">Olympus</label>
+        <input
+          type="radio"
+          id="nonOlympus"
+          name="category"
+          value="non olympus"
+          checked={category==='Non-Olympus'}
+          onChange={() =>onCategoryChange('Non-Olympus')}
+        />
+        <label htmlFor="nonOlympus">Non-Olympus</label>
+      </div>
 
-           
+            
                 {/* <button onClick={handleResetFilters}>Reset Filters</button> */}
                 <FontAwesomeIcon icon={faUndo} onClick={handleResetFilters} className='download-table' title='Reset Filters'/>
 
