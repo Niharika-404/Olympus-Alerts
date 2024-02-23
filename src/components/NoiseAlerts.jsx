@@ -23,13 +23,14 @@ const NoiseAlertsTable = ({ alertData, selectedZone }) => {
       const filteredAlerts = alertData.filter(
         (alert) =>
           alert?.['TimeToClose'] !== undefined &&
-          parseFloat(alert['TimeToClose']) <= 5 &&
+          parseFloat(alert['TimeToClose']).toFixed(2) <= 5.016666666666667 && // Round off to 2 decimal digits
           parseFloat(alert['TimeToClose']) > 0 &&
           alert?.Zone === selectedZone &&
           alert?.Status === 'closed' &&
-          
           alert?.ClosedBy === 'Alert API'
       );
+      
+      
 
       const tableRows = filteredAlerts.map((alert) => ({
         alertName: alert['AlertName'],

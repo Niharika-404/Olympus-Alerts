@@ -42,11 +42,13 @@ const OpenAlertsModal = ({ openAlerts, onClose }) => {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <span className="close-openalerts" onClick={onClose}>&times;</span>
         <h2>Open Alerts</h2>
+        <div id='openalerts-modal'>
         <table>
           <thead>
             <tr>
               <th>Alert Name</th>
               <th>Zone</th>
+              <th>Cluster</th>
               <th>Priority</th>
               <th>Status</th>
             </tr>
@@ -56,12 +58,15 @@ const OpenAlertsModal = ({ openAlerts, onClose }) => {
               <tr key={index}>
                 <td>{alert.AlertName}</td>
                 <td>{alert.Zone}</td>
+                <td>{alert.Cluster}</td>
                 <td>{alert.Priority}</td>
                 <td>{alert.Status}</td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
+     
       </div>
     </div>
   );

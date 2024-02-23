@@ -28,12 +28,30 @@ function App() {
   const [responders, setResponders] = useState([]);
 
 
-  const [category, setCategory] = useState('Olympus');
+  const [category, setCategory] = useState('None');
 
+// const handleCategoryChange = (category)=>{
 
-const handleCategoryChange = (category)=>{
+//   if (category !== 'None') {
+//     setSelectedResponder('');
+//   }
+
+//   setCategory(category);
+
+// }
+
+// Modify the handleCategoryChange function to handle category selection
+const handleCategoryChange = (category) => {
+  if (category !== 'None') {
+    // If a category other than 'None' is selected, update the category to 'None'
+    setCategory('None');
+  }
+  // Update the category
   setCategory(category);
-}
+};
+
+
+
 
 console.log(category);
 
@@ -138,6 +156,11 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
   const handleResponderChange = (responder) => {
     setSelectedResponder(responder);
   }
+
+
+
+ 
+
 
   const handleSearch = (startTemp, endTemp) => {
     // Validation and conversion logic here

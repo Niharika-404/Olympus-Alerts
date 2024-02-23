@@ -57,14 +57,7 @@ const Title = ({ alertData, selectedResponder }) => {
         <h2>Olympus Alerts Dashboard</h2>
        <div className='responder-oncall'>
           <strong>{selectedResponder}</strong>
-          <div>
-          <small style={{fontSize: '0.7rem'}}>Primary Oncall:</small>
-          <p style={{marginTop:'0', fontSize: '0.9rem'}}>dineshkumar@zeta.tech</p>
-          </div>
-          <div>
-          <small style={{fontSize: '0.7rem'}}>Secondary Oncall:</small>
-          <p style={{marginTop:'0', fontSize:'0.9rem'}}>lovek@zeta.tech</p>
-          </div>
+         
 
        </div>
       </div>
@@ -73,3 +66,13 @@ const Title = ({ alertData, selectedResponder }) => {
 };
 
 export default Title;
+
+
+{/* <div>
+<small style={{fontSize: '0.7rem'}}>Primary Oncall:</small>
+<p style={{marginTop:'0', fontSize: '0.9rem'}}>dineshkumar@zeta.tech</p>
+</div>
+<div>
+<small style={{fontSize: '0.7rem'}}>Secondary Oncall:</small>
+<p style={{marginTop:'0', fontSize:'0.9rem'}}>lovek@zeta.tech</p>
+</div> */}

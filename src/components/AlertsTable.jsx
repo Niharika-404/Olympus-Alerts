@@ -440,6 +440,20 @@ useEffect(() => {
 }, [dropdownSearchRef, setIsOpen]);
 
   // const responders = [...new Set(alertData.map((alert) => alert.Team))];
+  useEffect(() => {
+    if (category !== 'None') {
+      // Category is selected, clear the responder filter
+      onResponderChange('');
+    } else {
+      // Category is 'None', check if a responder is selected
+      if (selectedResponder === '') {
+        // No responder selected, set the default responder
+        onResponderChange('olympus_middleware_sre');
+      }
+    }
+  }, [category, selectedResponder, onResponderChange]);
+  
+  
 
 
   return (
@@ -540,7 +554,7 @@ useEffect(() => {
     </div> */}
 
     <div>
-        <input
+        {/* <input
           type="radio"
           id="olympus"
           name="category"
@@ -557,7 +571,14 @@ useEffect(() => {
           checked={category==='Non-Olympus'}
           onChange={() =>onCategoryChange('Non-Olympus')}
         />
-        <label htmlFor="nonOlympus">Non-Olympus</label>
+        <label htmlFor="nonOlympus">Non-Olympus</label> */}
+
+        <select name="category" id="" onChange={(event) => onCategoryChange(event.target.value)}>
+          <option value="None">None</option>
+          <option value="Olympus">Olympus</option>
+          <option value="Non-Olympus">Non-Olympus</option>
+        </select>
+
       </div>
 
             

@@ -787,3 +787,7 @@ body{
   text-decoration: none;
   cursor: pointer;
 }
+#openalerts-modal{
+  height: 500px;
+  overflow-y: scroll;
+}
