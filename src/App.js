@@ -271,13 +271,11 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
     fetchData();
   }, [fetchData]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchOlympusData();
-  },[fetchOlympusData]);
-
-  useEffect(()=>{
     fetchNonOlympusData();
-  },[fetchNonOlympusData]);
+  }, []); // Empty dependency array means this effect runs only once on mount
+  
   
   useEffect(()=>{
     const fetchTrendData = async ()=>{
