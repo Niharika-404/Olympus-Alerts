@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import Chart from 'react-apexcharts'; // Install this library using: npm install react-apexcharts apexcharts
+import { trendData } from './trendData.js';
 
 const PriorityTable = ({ priorityCounts }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [clickedBtn, setClickedBtn] = useState('');
 
-  const togglePopup = () => {
+  const togglePopup = (btn) => {
+    setClickedBtn(btn); // Set the clickedBtn state to the value of the clicked button
     setPopupOpen(!isPopupOpen);
   };
+  
+  console.log(trendData);
 
-  const chartOptions = {
+  const priorityChartOptions = {
     chart: {
       type: 'bar',
     },
@@ -18,7 +23,7 @@ const PriorityTable = ({ priorityCounts }) => {
     colors: ['#CF3305', '#056D0A', '#051189'], // Add your custom colors here
   };
 
-  const chartSeries = [
+  const priorityChartSeries = [
     {
       name: 'Opened',
       data: priorityCounts.map((priorityCount) => priorityCount.opened),
@@ -31,6 +36,72 @@ const PriorityTable = ({ priorityCounts }) => {
       name: 'Acknowledged',
       data: priorityCounts.map((priorityCount) => priorityCount.acknowledged),
     },
+  ];
+
+
+  const lineData = [];
+  const columnData = [];
+  trendData.forEach(data => {
+    const date = new Date(data.date);
+    const dayOfWeek = date.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      columnData.push({
+        x: data.date,
+        y: data.count
+      });
+    } 
+     lineData.push({
+        x: data.date,
+        y: data.count
+      });
+    }
+  );
+
+  // ApexCharts options
+  const trendOptions = {
+    chart: {
+      type: 'line',
+      stacked: false,
+      height: 400,
+    },
+    stroke: {
+      width: [2, 2],
+    },
+    title: {
+      text: 'Trend Data',
+      align: 'left',
+      style: {
+        fontSize: '16px',
+        color: '#666'
+      },
+    },
+    xaxis: {
+      type: 'datetime'
+    },
+    yaxis: {
+      title: {
+        text: 'Count'
+      }
+    },
+    tooltip: {
+      shared: true,
+      intersect: false,
+    },
+  };
+
+  // ApexCharts series
+  const trendSeries = [
+    {
+      name: 'Weekends',
+      type: 'column',
+      data: columnData
+    },
+    {
+      name: 'Weekdays',
+      type: 'line',
+      data: lineData,
+      showInLegend: false 
+    }
   ];
 
   return (
@@ -57,20 +128,39 @@ const PriorityTable = ({ priorityCounts }) => {
           ))}
         </tbody>
       </table>
-      <button className='Analyze-btn' onClick={togglePopup}>
-        View Chart
+      <div style={{display: 'flex', flexDirection: 'row'}}>
+        <button className='Analyze-btn' onClick={() => togglePopup('Priority Chart')}>
+        Priority Chart
+      </button>
+      <button className='Analyze-btn' onClick={() => togglePopup('View Trend')}>
+        View Trend
+      </button>
+      <button className='Analyze-btn' onClick={() => togglePopup('Priority Trend')}>
+        Priority Trend
       </button>
 
+      </div>
+
+
       {isPopupOpen && (
-        <div className="popup-container">
-          <div className="popup">
-            <span className="close" onClick={togglePopup}>
-              &times;
-            </span>
-            <Chart options={chartOptions} series={chartSeries} type="bar" height={400} width={700} />
-          </div>
-        </div>
+  <div className="popup-container">
+    <div className="popup">
+      <span className="close" onClick={togglePopup}>
+        &times;
+      </span>
+      {clickedBtn && (
+        clickedBtn === 'Priority Chart' ? (
+          <Chart options={priorityChartOptions} series={priorityChartSeries} type="bar" height={400} width={700} />
+        ) : clickedBtn === 'View Trend' ? (
+          <Chart options={trendOptions} series={trendSeries} type="line" height={400} width={700} />
+        ) : (
+          <Chart options={priorityChartOptions} series={priorityChartSeries} type="bar" height={400} width={700} />
+        )
       )}
+    </div>
+  </div>
+)}
+
     </>
   );
 };

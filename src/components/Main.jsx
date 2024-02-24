@@ -193,8 +193,9 @@ import SideContainer from './SideContainer';
 import AlertsTable from './AlertsTable';
 import Title from './Title';
 import NewDashboard from './NewDashboard';
+import OlympusNonOlympus from './OlympusNonOlympus';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [activeTab, setActiveTab] = useState('Alerts');
   // const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
@@ -250,12 +251,22 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
 
   return (
     <div>
-      <Title alertData={alertData} selectedResponder={selectedResponder} />
+      <Title alertData={alertData} selectedResponder={selectedResponder} activeTab={activeTab} />
       <div className="tabs">
           <div className={activeTab === 'Alerts' ? 'active' : ''} onClick={() => handleTabClick('Alerts')}>Alerts</div>
-          <div className={activeTab === 'Dashboard' ? 'active' : ''} onClick={() => {
-            handleTabClick('Dashboard')
-            }}>Dashboard</div>
+          <div 
+    className={activeTab === 'Dashboard' ? 'active' : ''} 
+    style={{
+        borderLeft: '1px solid gray',
+        borderRight: '1px solid gray'
+    }} 
+    onClick={() => { handleTabClick('Dashboard')}}
+>
+    Dashboard
+</div>
+
+          <div className={activeTab === 'Olympus' ? 'active' : ''} onClick={() => handleTabClick('Olympus')}>Olympus/Non-Olympus</div>
+
         </div>
       <div id='mainContainer'>
       
@@ -289,6 +300,12 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               setSelectedStatus={setSelectedStatus}
               handleRefresh={handleRefresh}
               handleSearch={handleSearch}
+              selectedResponder={selectedResponder}
+              activeTab={activeTab}
+              olympusData={olympusData}
+              nonOlympusData={nonOlympusData}
+              category={category}
+
             
             />
           </div>
@@ -301,6 +318,45 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
 
            
           />
+        )}
+          {activeTab === 'Olympus' && (
+          <div id='alerttable-count'>
+            <OlympusNonOlympus
+              loading={loading}
+              olympusData={olympusData}
+              nonOlympusData={nonOlympusData}
+              selectedStatus={selectedStatus}
+              setSelectedStatus={setSelectedStatus}
+            
+              responders={responders}
+              selectedResponder={selectedResponder}
+              onResponderChange={onResponderChange}
+
+              category={category}
+              onCategoryChange={onCategoryChange}
+
+              // selZone={selZone}
+              // selectedPriority={selectedPriority}
+              // Dashboardstatus={status}
+            />
+            <SideContainer
+              onStartDateChange={onStartDateChange}
+              onEndDateChange={onEndDateChange}
+              start={start}
+              end={end}
+              loading={loading}
+              alertData={alertData}
+              olympusData={olympusData}
+              nonOlympusData={nonOlympusData}
+              selectedStatus={selectedStatus}
+              setSelectedStatus={setSelectedStatus}
+              handleRefresh={handleRefresh}
+              handleSearch={handleSearch}
+              activeTab={activeTab}
+              category={category}
+
+            />
+          </div>
         )}
       </div>
     </div>

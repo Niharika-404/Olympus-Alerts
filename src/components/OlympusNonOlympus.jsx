@@ -9,7 +9,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder }) => {
+const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, onCategoryChange, olympusData, nonOlympusData, category }) => {
 
   // console.log(selZone, selectedPriority, Dashboardstatus);
 
@@ -36,7 +36,6 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     zone: [],
     priority: [],
     status: [],
-    responder: ['olympus_middleware_sre'], // Initialize with the default responder
   });
 
   // State variables to hold unique values for checkboxes
@@ -52,6 +51,8 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
   const handleDownloadData = () => {
     setDownload(true);
   };
+
+  const alertData = category === 'Olympus' ? olympusData: nonOlympusData;
 
   // useEffect to fetch unique values for checkboxes
   useEffect(() => {
@@ -474,7 +475,6 @@ useEffect(() => {
                 <p onClick={() => handleFilterSelection('Priority')} style={getFilterStyle('Priority')}>Priority</p>
                 <p onClick={() => handleFilterSelection('Status')} style={getFilterStyle('Status')}>Status</p>
                 <p onClick={() => handleFilterSelection('Zone')} style={getFilterStyle('Zone')}>Zone</p>
-                <p onClick={() => handleFilterSelection('Responder')} style={getFilterStyle('Responder')}>Responder</p>
 
               </div>
             )}
@@ -573,11 +573,10 @@ useEffect(() => {
         />
         <label htmlFor="nonOlympus">Non-Olympus</label> */}
 
-        {/* <select name="category" id="" onChange={(event) => onCategoryChange(event.target.value)}>
-          <option value="None">None</option>
+        <select name="category" id="" onChange={(event) => onCategoryChange(event.target.value)}>
           <option value="Olympus">Olympus</option>
           <option value="Non-Olympus">Non-Olympus</option>
-        </select> */}
+        </select>
 
       </div>
 
@@ -612,5 +611,5 @@ useEffect(() => {
   );
 };
 
-export default AlertsTable;
+export default OlympusNonOlympus;
 

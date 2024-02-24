@@ -32,7 +32,7 @@
 
 import React from 'react';
 
-const Title = ({ alertData, selectedResponder }) => {
+const Title = ({ alertData, selectedResponder, activeTab }) => {
 
   // const todayDate = new Date().toISOString().split('T')[0];
   const primaryResponderEmails = new Set();
@@ -55,11 +55,14 @@ const Title = ({ alertData, selectedResponder }) => {
     <div id='title-container'>
       <div className='title-date'>
         <h2>Olympus Alerts Dashboard</h2>
-       <div className='responder-oncall'>
+        {
+          activeTab!=="Olympus" &&     <div className='responder-oncall'>
           <strong>{selectedResponder}</strong>
          
 
        </div>
+        }
+   
       </div>
     </div>
   );

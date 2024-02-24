@@ -10,7 +10,7 @@ import { faSync,faCalendarAlt,faSearch } from '@fortawesome/free-solid-svg-icons
 import PriorityTable from './PriorityTable';
 import Report from './Report';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -25,7 +25,7 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
 
 
     const [isPopupOpen, setPopupOpen] = useState(false);
-
+  console.log('SideContainer - ',activeTab);
   const togglePopup = () => {
     setPopupOpen(!isPopupOpen);
   };
@@ -96,7 +96,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
 
         try {
         
-          const alerts= alertData;
+          const alerts= activeTab==='Alerts'? alertData : activeTab==='Olympus' && category==='Olympus'? olympusData: nonOlympusData;
          
 
           const totalOpenedCount = alerts.filter((alert)=>alert?.Status === 'open').length;
@@ -138,7 +138,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
       // fetchData();
   
 
-    }, [ alertData, loading]);
+    }, [ alertData, loading, category, olympusData, nonOlympusData]);
 
   
 
@@ -325,7 +325,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
               &times;
             </span>
            
-            <Report alertData={alertData} startTemp={startTemp} endTemp={endTemp}/>
+            <Report alertData={alertData} olympusData={olympusData} nonOlympusData={nonOlympusData} startTemp={startTemp} endTemp={endTemp} activeTab={activeTab} selectedResponder={selectedResponder}/>
           </div>
         </div>
       )}

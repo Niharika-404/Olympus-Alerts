@@ -23,12 +23,16 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const [alertData, setAlertData] = useState([]);
+  const [olympusData, setOlympusData] = useState([]);
+  const [nonOlympusData, setNonOlympusData] = useState([]);
+
+
   const [refresh, setRefresh] = useState(false);
 
   const [responders, setResponders] = useState([]);
 
 
-  const [category, setCategory] = useState('None');
+  const [category, setCategory] = useState('Olympus');
 
 // const handleCategoryChange = (category)=>{
 
@@ -42,11 +46,7 @@ function App() {
 
 // Modify the handleCategoryChange function to handle category selection
 const handleCategoryChange = (category) => {
-  if (category !== 'None') {
-    // If a category other than 'None' is selected, update the category to 'None'
-    setCategory('None');
-  }
-  // Update the category
+
   setCategory(category);
 };
 
@@ -93,24 +93,69 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
     }
     console.log('API call');
     // Update your API call to use startFormatted and endFormatted
-    const response = await axios.get('http://localhost:5000/alerts', {
-      params: {
-        responder_name: selectedResponder,
-        start_date: formatDate(startFormatted.date),
-        end_date: formatDate(endFormatted.date),
-        start_time: startFormatted.time,
-        end_time: endFormatted.time,
-      },
-    });
+
+    const baseURL = 'http://localhost:5000/alerts';
+    const params = {
+      start_date: formatDate(startFormatted.date),
+      end_date: formatDate(endFormatted.date),
+      start_time: startFormatted.time,
+      end_time: endFormatted.time,
+    };
+       // Define URLs for each type of data to be fetched
+       const urls = [
+        `${baseURL}`, // General alerts
+        `${baseURL}/olympus`, // Olympus-specific alerts
+        `${baseURL}/non_olympus`, // Non-Olympus-specific alerts
+      ];
+      const requests = urls.map(url => 
+        axios.get(url, { params: url === baseURL ? { ...params, responder_name: selectedResponder } : params })
+      );
+
+      const [generalResponse, olyResponse, nonOlyResponse] = await Promise.all(requests);
+
+    // const response = await axios.get('http://localhost:5000/alerts', {
+    //   params: {
+    //     responder_name: selectedResponder,
+    //     start_date: formatDate(startFormatted.date),
+    //     end_date: formatDate(endFormatted.date),
+    //     start_time: startFormatted.time,
+    //     end_time: endFormatted.time,
+    //   },
+    // });
+
+    // const olyRes = await axios.get(`http://localhost:5000/alerts/olympus`, {
+    //   params: {
+    //     start_date: formatDate(startFormatted.date),
+    //     end_date: formatDate(endFormatted.date),
+    //     start_time: startFormatted.time,
+    //     end_time: endFormatted.time,
+    //   },
+    // });
+
+    // const nonOlyRes = await axios.get(`http://localhost:5000/alerts/non_olympus`, {
+    //   params: {
+    //     start_date: formatDate(startFormatted.date),
+    //     end_date: formatDate(endFormatted.date),
+    //     start_time: startFormatted.time,
+    //     end_time: endFormatted.time,
+    //   },
+    // });
 
     // Your existing logic to handle the response
-    setAlertData(response.data.data);
+    setAlertData(generalResponse.data.data);
+    setOlympusData(olyResponse.data.data);
+    setNonOlympusData(nonOlyResponse.data.data);
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
     setLoading(false);
   }
 }, [selectedResponder]);
+
+
+
+
+
 
   useEffect(() => {
     const fetchResponderNames = async () => {
@@ -226,7 +271,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} 
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange}/>}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData}/>}
           />
           <Route
             path="/dashboard"
