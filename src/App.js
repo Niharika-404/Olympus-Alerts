@@ -280,7 +280,11 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
   useEffect(()=>{
     const fetchTrendData = async ()=>{
       try {
-        const trendResponse = await axios.get('http://localhost:5000/trend');
+        const trendResponse = await axios.get('http://localhost:5000/trend', {
+          params: {
+            responder_name: selectedResponder
+          },
+        });
         console.log(trendResponse.data);
         setTrendData(trendResponse.data)
       } catch (error) {
