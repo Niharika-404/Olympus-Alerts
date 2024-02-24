@@ -30,6 +30,7 @@ function App() {
   const [refresh, setRefresh] = useState(false);
 
   const [responders, setResponders] = useState([]);
+  const [trendData, setTrendData] = useState([]);
 
 
   const [category, setCategory] = useState('Olympus');
@@ -94,34 +95,34 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
     console.log('API call');
     // Update your API call to use startFormatted and endFormatted
 
-    const baseURL = 'http://localhost:5000/alerts';
-    const params = {
-      start_date: formatDate(startFormatted.date),
-      end_date: formatDate(endFormatted.date),
-      start_time: startFormatted.time,
-      end_time: endFormatted.time,
-    };
-       // Define URLs for each type of data to be fetched
-       const urls = [
-        `${baseURL}`, // General alerts
-        `${baseURL}/olympus`, // Olympus-specific alerts
-        `${baseURL}/non_olympus`, // Non-Olympus-specific alerts
-      ];
-      const requests = urls.map(url => 
-        axios.get(url, { params: url === baseURL ? { ...params, responder_name: selectedResponder } : params })
-      );
+    // const baseURL = 'http://localhost:5000/alerts';
+    // const params = {
+    //   start_date: formatDate(startFormatted.date),
+    //   end_date: formatDate(endFormatted.date),
+    //   start_time: startFormatted.time,
+    //   end_time: endFormatted.time,
+    // };
+    //    // Define URLs for each type of data to be fetched
+    //    const urls = [
+    //     `${baseURL}`, // General alerts
+    //     `${baseURL}/olympus`, // Olympus-specific alerts
+    //     `${baseURL}/non_olympus`, // Non-Olympus-specific alerts
+    //   ];
+    //   const requests = urls.map(url => 
+    //     axios.get(url, { params: url === baseURL ? { ...params, responder_name: selectedResponder } : params })
+    //   );
 
-      const [generalResponse, olyResponse, nonOlyResponse] = await Promise.all(requests);
+    //   const [generalResponse, olyResponse, nonOlyResponse] = await Promise.all(requests);
 
-    // const response = await axios.get('http://localhost:5000/alerts', {
-    //   params: {
-    //     responder_name: selectedResponder,
-    //     start_date: formatDate(startFormatted.date),
-    //     end_date: formatDate(endFormatted.date),
-    //     start_time: startFormatted.time,
-    //     end_time: endFormatted.time,
-    //   },
-    // });
+    const response = await axios.get('http://localhost:5000/alerts', {
+      params: {
+        responder_name: selectedResponder,
+        start_date: formatDate(startFormatted.date),
+        end_date: formatDate(endFormatted.date),
+        start_time: startFormatted.time,
+        end_time: endFormatted.time,
+      },
+    });
 
     // const olyRes = await axios.get(`http://localhost:5000/alerts/olympus`, {
     //   params: {
@@ -142,9 +143,9 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
     // });
 
     // Your existing logic to handle the response
-    setAlertData(generalResponse.data.data);
-    setOlympusData(olyResponse.data.data);
-    setNonOlympusData(nonOlyResponse.data.data);
+    setAlertData(response.data.data);
+    // setOlympusData(olyResponse.data.data);
+    // setNonOlympusData(nonOlyResponse.data.data);
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
@@ -154,8 +155,101 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
 
 
 
+const fetchOlympusData = useCallback(async (startParam = start, endParam=end) => {
+  try {
+    setLoading(true);
 
+    // Convert startParam to the required format for your API call
+    const startObj = new Date(startParam);
+    const startFormatted = {
+      date: startObj.toLocaleString().split(',')[0], // Date part
+      time: startObj.toLocaleString().split(',')[1].trim() // Time part
+    };
 
+    // Convert endParam to the required format for your API call
+    let endFormatted;
+    if (endParam) {
+      const endObj = new Date(endParam);
+      endFormatted = {
+        date: endObj.toLocaleString().split(',')[0], // Date part
+        time: endObj.toLocaleString().split(',')[1].trim() // Time part
+      };
+    } else {
+      // Use current date and time if endParam is not provided
+      const endObj = new Date();
+      endFormatted = {
+        date: endObj.toLocaleString().split(',')[0],
+        time: endObj.toLocaleString().split(',')[1].trim()
+      };
+    }
+    console.log('API call');
+   
+
+    const olyResponse = await axios.get(`http://localhost:5000/alerts/olympus`, {
+      params: {
+        start_date: formatDate(startFormatted.date),
+        end_date: formatDate(endFormatted.date),
+        start_time: startFormatted.time,
+        end_time: endFormatted.time,
+      },
+    });
+
+   
+    setOlympusData(olyResponse.data.data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  } finally {
+    setLoading(false);
+  }
+});
+
+const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end) => {
+  try {
+    setLoading(true);
+
+    // Convert startParam to the required format for your API call
+    const startObj = new Date(startParam);
+    const startFormatted = {
+      date: startObj.toLocaleString().split(',')[0], // Date part
+      time: startObj.toLocaleString().split(',')[1].trim() // Time part
+    };
+
+    // Convert endParam to the required format for your API call
+    let endFormatted;
+    if (endParam) {
+      const endObj = new Date(endParam);
+      endFormatted = {
+        date: endObj.toLocaleString().split(',')[0], // Date part
+        time: endObj.toLocaleString().split(',')[1].trim() // Time part
+      };
+    } else {
+      // Use current date and time if endParam is not provided
+      const endObj = new Date();
+      endFormatted = {
+        date: endObj.toLocaleString().split(',')[0],
+        time: endObj.toLocaleString().split(',')[1].trim()
+      };
+    }
+    console.log('API call');
+   
+
+    const nonOlyResponse = await axios.get(`http://localhost:5000/alerts/non_olympus`, {
+      params: {
+        start_date: formatDate(startFormatted.date),
+        end_date: formatDate(endFormatted.date),
+        start_time: startFormatted.time,
+        end_time: endFormatted.time,
+      },
+    });
+
+   
+    setNonOlympusData(nonOlyResponse.data.data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  } finally {
+    setLoading(false);
+  }
+});
 
   useEffect(() => {
     const fetchResponderNames = async () => {
@@ -175,19 +269,29 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
 
   useEffect(() => {
     fetchData();
-    // if (refresh) {
-    //   const defaultStart = new Date().setHours(0, 0, 0, 0); // Default start date
-    //   const defaultEnd = new Date(); // Default end date
-  
-    //   // setStart(defaultStart); // Reset start to default value
-    //   // setEnd(defaultEnd); // Reset end to default value
-  
-    //   fetchData(defaultStart, defaultEnd); // API call with default start and end dates
-  
-    //   setRefresh(false); // Reset refresh state after handling it
-    // }
   }, [fetchData]);
+
+  useEffect(()=>{
+    fetchOlympusData();
+  },[fetchOlympusData]);
+
+  useEffect(()=>{
+    fetchNonOlympusData();
+  },[fetchNonOlympusData]);
   
+  useEffect(()=>{
+    const fetchTrendData = async ()=>{
+      try {
+        const trendResponse = await axios.get('http://localhost:5000/trend');
+        console.log(trendResponse.data);
+        setTrendData(trendResponse.data)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchTrendData()
+  },[])
   
 
 
@@ -270,8 +374,8 @@ useEffect(() => {
           <Route
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
-            onEndDateChange={handleEndDateChange} end={end} 
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData}/>}
+            onEndDateChange={handleEndDateChange} end={end} trendData={trendData}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} />}
           />
           <Route
             path="/dashboard"

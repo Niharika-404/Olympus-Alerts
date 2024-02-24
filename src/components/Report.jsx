@@ -10,19 +10,19 @@ const zones = ['hbl-aws-aps1-zeta-1-uat-eks', 'aws-ow-mumbai', 'hbl-aws-aps1-zet
 
       const alertCounts = {
         P1: {
-          total: alertData.filter((alert) => alert.Priority === 'P1').length,
-          closed: alertData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'closed' && alert['TimeToClose']<=10).length,
-          acked: alertData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'acknowledged' && alert['TimeToAck']<=10).length,
+          total: alertData.filter((alert) => alert.Priority === 'P1' && zones.includes(alert.Zone)).length,
+          closed: alertData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'closed' && alert['TimeToClose']<=10 && zones.includes(alert.Zone)).length,
+          acked: alertData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'acknowledged' && alert['TimeToAck']<=10 && zones.includes(alert.Zone)).length,
         },
         P2: {
-          total: alertData.filter((alert) => alert.Priority === 'P2').length,
-          closed: alertData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'closed' && alert['TimeToClose']<=20).length,
-          acked: alertData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'acknowledged' && alert['TimeToAck']<=20).length,
+          total: alertData.filter((alert) => alert.Priority === 'P2' && zones.includes(alert.Zone)).length,
+          closed: alertData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'closed' && alert['TimeToClose']<=20 && zones.includes(alert.Zone)).length,
+          acked: alertData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'acknowledged' && alert['TimeToAck']<=20 && zones.includes(alert.Zone)).length,
         },
         P3: {
-          total: alertData.filter((alert) => alert.Priority === 'P3').length,
-          closed: alertData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'closed' && alert['TimeToClose']<=60).length,
-          acked: alertData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'acknowledged' && alert['TimeToAck']<=60).length,
+          total: alertData.filter((alert) => alert.Priority === 'P3' && zones.includes(alert.Zone)).length,
+          closed: alertData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'closed' && alert['TimeToClose']<=60 && zones.includes(alert.Zone)).length,
+          acked: alertData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'acknowledged' && alert['TimeToAck']<=60 && zones.includes(alert.Zone)).length,
         },
     };
 
@@ -45,19 +45,19 @@ const zones = ['hbl-aws-aps1-zeta-1-uat-eks', 'aws-ow-mumbai', 'hbl-aws-aps1-zet
 
       const OlympusAlertCounts = {
         P1: {
-          total: olympusData.filter((alert) => alert.Priority === 'P1').length,
-          closed: olympusData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'closed' && alert['TimeToClose']<=10).length,
-          acked: olympusData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'acknowledged' && alert['TimeToAck']<=10).length,
+          total: olympusData.filter((alert) => alert.Priority === 'P1' && zones.includes(alert.Zone)).length,
+          closed: olympusData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'closed' && alert['TimeToClose']<=10 && zones.includes(alert.Zone)).length,
+          acked: olympusData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'acknowledged' && alert['TimeToAck']<=10 && zones.includes(alert.Zone)).length,
         },
         P2: {
-          total: olympusData.filter((alert) => alert.Priority === 'P2').length,
-          closed: olympusData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'closed' && alert['TimeToClose']<=20).length,
-          acked: olympusData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'acknowledged' && alert['TimeToAck']<=20).length,
+          total: olympusData.filter((alert) => alert.Priority === 'P2' && zones.includes(alert.Zone)).length,
+          closed: olympusData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'closed' && alert['TimeToClose']<=20 && zones.includes(alert.Zone)).length,
+          acked: olympusData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'acknowledged' && alert['TimeToAck']<=20 && zones.includes(alert.Zone)).length,
         },
         P3: {
-          total: olympusData.filter((alert) => alert.Priority === 'P3').length,
-          closed: olympusData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'closed' && alert['TimeToClose']<=60).length,
-          acked: olympusData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'acknowledged' && alert['TimeToAck']<=60).length,
+          total: olympusData.filter((alert) => alert.Priority === 'P3' && zones.includes(alert.Zone)).length,
+          closed: olympusData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'closed' && alert['TimeToClose']<=60 && zones.includes(alert.Zone)).length,
+          acked: olympusData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'acknowledged' && alert['TimeToAck']<=60 && zones.includes(alert.Zone)).length,
         },
     };
 
@@ -79,19 +79,19 @@ const zones = ['hbl-aws-aps1-zeta-1-uat-eks', 'aws-ow-mumbai', 'hbl-aws-aps1-zet
 
       const nonOlympusAlertCounts = {
         P1: {
-          total: nonOlympusData.filter((alert) => alert.Priority === 'P1').length,
-          closed: nonOlympusData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'closed' && alert['TimeToClose']<=10).length,
-          acked: nonOlympusData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'acknowledged' && alert['TimeToAck']<=10).length,
+          total: nonOlympusData.filter((alert) => alert.Priority === 'P1' && zones.includes(alert.Zone)).length,
+          closed: nonOlympusData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'closed' && alert['TimeToClose']<=10 && zones.includes(alert.Zone)).length,
+          acked: nonOlympusData.filter((alert) => alert.Priority === 'P1' && alert.Status === 'acknowledged' && alert['TimeToAck']<=10 && zones.includes(alert.Zone)).length,
         },
         P2: {
-          total: nonOlympusData.filter((alert) => alert.Priority === 'P2').length,
-          closed: nonOlympusData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'closed' && alert['TimeToClose']<=20).length,
-          acked: nonOlympusData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'acknowledged' && alert['TimeToAck']<=20).length,
+          total: nonOlympusData.filter((alert) => alert.Priority === 'P2' && zones.includes(alert.Zone)).length,
+          closed: nonOlympusData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'closed' && alert['TimeToClose']<=20 && zones.includes(alert.Zone)).length,
+          acked: nonOlympusData.filter((alert) => alert.Priority === 'P2' && alert.Status === 'acknowledged' && alert['TimeToAck']<=20 && zones.includes(alert.Zone)).length,
         },
         P3: {
-          total: nonOlympusData.filter((alert) => alert.Priority === 'P3').length,
-          closed: nonOlympusData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'closed' && alert['TimeToClose']<=60).length,
-          acked: nonOlympusData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'acknowledged' && alert['TimeToAck']<=60).length,
+          total: nonOlympusData.filter((alert) => alert.Priority === 'P3' && zones.includes(alert.Zone)).length,
+          closed: nonOlympusData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'closed' && alert['TimeToClose']<=60 && zones.includes(alert.Zone)).length,
+          acked: nonOlympusData.filter((alert) => alert.Priority === 'P3' && alert.Status === 'acknowledged' && alert['TimeToAck']<=60 && zones.includes(alert.Zone)).length,
         },
     };
 

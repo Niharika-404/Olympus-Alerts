@@ -195,7 +195,7 @@ import Title from './Title';
 import NewDashboard from './NewDashboard';
 import OlympusNonOlympus from './OlympusNonOlympus';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [activeTab, setActiveTab] = useState('Alerts');
   // const [isNavMenuOpen, setIsNavMenuOpen] = useState(true);
@@ -305,7 +305,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               olympusData={olympusData}
               nonOlympusData={nonOlympusData}
               category={category}
-
+              trendData={trendData}
             
             />
           </div>
@@ -354,7 +354,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               handleSearch={handleSearch}
               activeTab={activeTab}
               category={category}
-
+              trendData={trendData}
             />
           </div>
         )}

@@ -10,7 +10,7 @@ import { faSync,faCalendarAlt,faSearch } from '@fortawesome/free-solid-svg-icons
 import PriorityTable from './PriorityTable';
 import Report from './Report';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -224,7 +224,16 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
       if (startDate >= endDate) {
         alert('Start date must be less than end date.');
         return; // Stop further execution
+
+
       }
+
+
+        // Check if active tab is Olympus and time difference is greater than 24 hours
+  if (activeTab === 'Olympus' && differenceInDays > 1) {
+    alert('Please select a date range within 24 hours for the Olympus tab.');
+    return; // Stop further execution
+  }
       console.log(toLocaleConversion(startTemp), toLocaleConversion(endTemp));
       handleSearch(toLocaleConversion(startTemp), toLocaleConversion(endTemp));
       // Pass the temporary start and end dates to the actual start and end date states
@@ -314,7 +323,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 <strong>{totalAck}</strong>
               </div>
             </div>
-            <PriorityTable priorityCounts={priorityCounts} />
+            <PriorityTable priorityCounts={priorityCounts} trendData={trendData} activeTab={activeTab}/>
             <button className='Analyze-btn' onClick={togglePopup}>
               View Report
             </button>

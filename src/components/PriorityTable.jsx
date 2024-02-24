@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Chart from 'react-apexcharts'; // Install this library using: npm install react-apexcharts apexcharts
-import { trendData } from './trendData.js';
+// import { trendData } from './trendData.js';
 
-const PriorityTable = ({ priorityCounts }) => {
+const PriorityTable = ({ priorityCounts, trendData, activeTab }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [clickedBtn, setClickedBtn] = useState('');
 
@@ -128,18 +128,31 @@ const PriorityTable = ({ priorityCounts }) => {
           ))}
         </tbody>
       </table>
-      <div style={{display: 'flex', flexDirection: 'row'}}>
-        <button className='Analyze-btn' onClick={() => togglePopup('Priority Chart')}>
-        Priority Chart
-      </button>
-      <button className='Analyze-btn' onClick={() => togglePopup('View Trend')}>
-        View Trend
-      </button>
-      <button className='Analyze-btn' onClick={() => togglePopup('Priority Trend')}>
-        Priority Trend
-      </button>
 
-      </div>
+      {
+        activeTab==='Alerts' ?(
+          <div style={{display: 'flex', flexDirection: 'row'}}>
+          <button className='Analyze-btn' onClick={() => togglePopup('Priority Chart')}>
+          Priority Chart
+        </button>
+        <button className='Analyze-btn' onClick={() => togglePopup('View Trend')}>
+          View Trend
+        </button>
+        <button className='Analyze-btn' onClick={() => togglePopup('Priority Trend')}>
+          Priority Trend
+        </button>
+  
+        </div>
+        ):(
+          <div style={{display: 'flex', flexDirection: 'row'}}>
+          <button className='Analyze-btn' onClick={() => togglePopup('Priority Chart')}>
+          Priority Chart
+        </button>
+  
+        </div>
+        )
+      }
+
 
 
       {isPopupOpen && (
