@@ -648,7 +648,7 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
                   <td>{alert?.Zone ?? 'N/A'}</td>
                   <td>{alert?.Cluster ?? 'N/A'}</td>
                   <td>{alert?.Priority ?? 'N/A'}</td>
-                  <td>{alert?.Acknowledged ?? 'false'}</td>
+                  <td>{alert?.Acknowledged ?? ''}</td>
                   <td>{alert?.['CreatedAtTime'] ?? 'N/A'}</td>
                   <td>{alert?.['UpdatedAtTime'] ?? 'N/A'}</td>
                   <td>{alert?.['AckBy'] ?? 'N/A'}</td>

@@ -14,6 +14,20 @@ CORS(app)
 
 es_backend = ElasticsearchBackend(["http://apm-logging-es.internal.olympus-world.zetaapps.in:9200"])
 
+@app.route('/')
+def home():
+    return "API is working!"
+
+@app.route('/trend', methods=['GET'])
+def trend():
+    responder_name = request.args.get('responder_name', default='olympus_middleware_sre', type=str)
+    try:
+        trends = es_backend.trend_analysis(responder_name)
+        return jsonify(trends)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route('/alerts', methods=['GET'])
 def fetch_alerts():
     processing_start_time = time()

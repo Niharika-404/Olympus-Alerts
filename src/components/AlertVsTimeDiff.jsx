@@ -17,7 +17,7 @@ const AlertVsTimeDiffTable = ({ alertData, selectedZone }) => {
   useEffect(() => {
     const generateTableData = () => {
       const filteredAlerts = alertData.filter(
-        (alert) => alert?.['TimeToClose'] && parseFloat(alert['TimeToClose']) > 5.016666666666667 && alert?.Zone === selectedZone && alert?.Status === 'closed'
+        (alert) => alert?.['TimeToClose'] && parseFloat(alert['TimeToClose']) > 5.02 && alert?.Zone === selectedZone && alert?.Status === 'closed'
       );
 
       const tableRows = filteredAlerts.map((alert) => ({

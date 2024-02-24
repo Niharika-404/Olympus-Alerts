@@ -15,11 +15,11 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
         return (
           alert?.Zone === selectedZone &&
           alert?.Status === 'closed' &&
-          Boolean(alert?.Acknowledged) === false &&
+          alert?.Acknowledged === 'false' &&
           alert?.ClosedBy === 'Alert API'
         );
       });
-      
+      console.log("Auto alerts",typeof(alert?.Acknowledged))
       const tableRows = filteredAlerts.map((alert) => ({
         alertName: alert['AlertName'],
 

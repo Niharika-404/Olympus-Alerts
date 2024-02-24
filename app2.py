@@ -5,8 +5,6 @@ import logging
 from abc import ABC, abstractmethod
 import pytz
 
-
-
 class ElasticsearchBackend(ABC):
     def __init__(self, hosts):
         self.es = self.connect_to_elasticsearch(hosts)
@@ -31,6 +29,62 @@ class ElasticsearchBackend(ABC):
     @abstractmethod
     def get_unique_responder_names(self):
         pass
+    
+    @abstractmethod
+    def trend_analysis(self):
+        pass
+    
+    # @abstractmethod
+    # def trend_analysis_priority_based(self):
+    #     pass
+
+    
+    def trend_analysis(self, responder_name):
+        # Calculate the date range for the last two months from today, in IST
+        ist = pytz.timezone('Asia/Kolkata')
+        end_date = datetime.now(ist)
+        start_date = end_date - timedelta(days=60)
+        
+        # Convert start and end dates to UTC, as Elasticsearch stores dates in UTC
+        # Ensure that the format matches the one expected by your Elasticsearch index
+        start_date_utc = start_date.astimezone(pytz.utc).strftime('%Y/%m/%d %H:%M:%S')
+        end_date_utc = end_date.astimezone(pytz.utc).strftime('%Y/%m/%d %H:%M:%S')
+
+        query = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {"term": {"parsedMessage.attributes.responders.name.keyword": responder_name}},
+                        {"range": {
+                            "parsedMessage.attributes.createdAtTime": {
+                                "gte": start_date_utc,
+                                "lt": end_date_utc
+                            }
+                        }}
+                    ]
+                }
+            },
+            "size": 0,  
+            "aggs": {
+                "alerts_per_day": {
+                    "date_histogram": {
+                        "field": "parsedMessage.attributes.createdAtTime",
+                        "calendar_interval": "day",
+                        "format": "yyyy-MM-dd"  # Output format of the date
+                    }
+                }
+            }
+        }
+
+        try:
+            response = self.es.search(index="entity.alert", body=query)
+            # Process the response to extract and format the trend data
+            buckets = response.get('aggregations', {}).get('alerts_per_day', {}).get('buckets', [])
+            trend_data = [{"date": bucket['key_as_string'], "count": bucket['doc_count']} for bucket in buckets]
+            return trend_data
+        except Exception as e:
+            logging.error(f"Error performing trend analysis: {e}")
+            return []
 
     def get_unique_responder_names(self):
         query = {
@@ -228,28 +282,25 @@ class ElasticsearchBackend(ABC):
             'parsedMessage_attributes_updatedAtTime': 'UpdatedAtTime',
         }
 
-        # Map direct fields
         for key, value in flattened_alert.items():
             new_key = direct_mappings.get(key)
             if new_key:
                 readable_alert[new_key] = value
-        
+
+        # Process responder fields
         responder_fields = [
-             ('parsedMessage_attributes_responders_0_onCalls_0_contacts_0_emailId', 'PrimaryResponderEmail'),
-             ('parsedMessage_attributes_responders_0_onCalls_1_contacts_0_emailId', 'SecondaryResponderEmail'),
+            ('parsedMessage_attributes_responders_0_onCalls_0_contacts_0_emailId', 'PrimaryResponderEmail'),
+            ('parsedMessage_attributes_responders_0_onCalls_1_contacts_0_emailId', 'SecondaryResponderEmail'),
         ]
 
         for field_key, readable_key in responder_fields:
             if field_key in flattened_alert:
                 readable_alert[readable_key] = flattened_alert[field_key]
+                
         
 
-        # # Special handling for timestamps and durations
-        # if 'parsedMessage_attributes_alertAckTime' in flattened_alert and 'parsedMessage_attributes_alertCloseTime' in flattened_alert:
-        #     readable_alert['AlertAckTime'] = self.convert_milliseconds_to_datetime(flattened_alert['parsedMessage_attributes_alertAckTime'])
-        #     readable_alert['AlertCloseTime'] = self.convert_milliseconds_to_datetime(flattened_alert['parsedMessage_attributes_alertCloseTime'])
+      
         
-        readable_alert = {new_key: value for key, value in flattened_alert.items() if (new_key := direct_mappings.get(key))}
     
         # Example heuristic for AlertAckTime when not explicitly available
         if readable_alert.get('Acknowledged') == 'true' and 'UpdatedAtTime' in readable_alert:
@@ -279,6 +330,8 @@ class ElasticsearchBackend(ABC):
         # Construct AlertURL if AlertID is present
         if alert_id := readable_alert.get('AlertID'):
             readable_alert['AlertURL'] = f"https://zeta.app.opsgenie.com/alert/detail/{alert_id}/details"
+        
+
 
         return readable_alert
 
@@ -293,13 +346,16 @@ if __name__ == "__main__":
     
 
     responder_name = "olympus_middleware_sre" 
-    start_date = "2024-02-22"  
-    end_date = "2024-02-22"
-    start_time = "00:00:00"  
-    end_time = "23:59:59"
+    # start_date = "2024-02-22"  
+    # end_date = "2024-02-22"
+    # start_time = "00:00:00"  
+    # end_time = "23:59:59"
 
 
-    alerts = es_backend.get_alerts(responder_name, start_date, end_date, start_time, end_time)
-    a = [es_backend.map_field_names(es_backend.flatten_json(alert)) for alert in alerts]
+    # alerts = es_backend.get_alerts(responder_name, start_date, end_date, start_time, end_time)
+    # a = [es_backend.map_field_names(es_backend.flatten_json(alert)) for alert in alerts]
+    trend_data = es_backend.trend_analysis(responder_name)
+    print(trend_data)
 
-    print(a)
+
+
