@@ -10,7 +10,7 @@ import { faSync,faCalendarAlt,faSearch } from '@fortawesome/free-solid-svg-icons
 import PriorityTable from './PriorityTable';
 import Report from './Report';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -323,7 +323,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 <strong>{totalAck}</strong>
               </div>
             </div>
-            <PriorityTable priorityCounts={priorityCounts} trendData={trendData} activeTab={activeTab}/>
+            <PriorityTable priorityCounts={priorityCounts} trendData={trendData} priorityTrendData={priorityTrendData} activeTab={activeTab}/>
             <button className='Analyze-btn' onClick={togglePopup}>
               View Report
             </button>

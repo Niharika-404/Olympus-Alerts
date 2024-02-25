@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Chart from 'react-apexcharts'; // Install this library using: npm install react-apexcharts apexcharts
 // import { trendData } from './trendData.js';
+// import { priorityTrendData } from './priorityTrenData';
 
-const PriorityTable = ({ priorityCounts, trendData, activeTab }) => {
+const PriorityTable = ({ priorityCounts, trendData, activeTab, priorityTrendData }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [clickedBtn, setClickedBtn] = useState('');
 
@@ -11,7 +12,6 @@ const PriorityTable = ({ priorityCounts, trendData, activeTab }) => {
     setPopupOpen(!isPopupOpen);
   };
   
-  console.log(trendData);
 
   const priorityChartOptions = {
     chart: {
@@ -104,6 +104,36 @@ const PriorityTable = ({ priorityCounts, trendData, activeTab }) => {
     }
   ];
 
+
+  const priorityTrendSeries = priorityTrendData.map((priorityData) => ({
+    name: `Priority ${priorityData.key}`,
+    data: priorityData.alerts_per_day.buckets.map((bucket) => ({
+      x: new Date(bucket.key_as_string).getTime(),
+      y: bucket.doc_count
+    }))
+  }));
+
+  const priorityTrendOptions = {
+    chart: {
+      type: 'line',
+      height: 400,
+    },
+    xaxis: {
+      type: 'datetime',
+    },
+    yaxis: {
+      title: {
+        text: 'Count'
+      }
+    },
+    tooltip: {
+      shared: true,
+      intersect: false,
+    },
+  };
+
+
+
   return (
     <>
       <table id='priority-wise-count'>
@@ -167,7 +197,18 @@ const PriorityTable = ({ priorityCounts, trendData, activeTab }) => {
         ) : clickedBtn === 'View Trend' ? (
           <Chart options={trendOptions} series={trendSeries} type="line" height={400} width={700} />
         ) : (
-          <Chart options={priorityChartOptions} series={priorityChartSeries} type="bar" height={400} width={700} />
+          // <Chart options={priorityChartOptions} series={priorityChartSeries} type="bar" height={400} width={700} />
+          // <Chart options={priorityTrendOptions} series={priorityTrendSeries} type="line" height={350} width={700} />
+          <>
+            <Chart
+           options={priorityTrendOptions}
+            series={priorityTrendSeries}
+            type="line"
+            height={400}
+            width={700}
+          />
+          </>
+
         )
       )}
     </div>

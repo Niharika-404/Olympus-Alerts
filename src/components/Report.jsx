@@ -218,34 +218,55 @@ const data = [
     },
   ]
 
-  const downloadReportAsCSV = () => {
 
 
-    const isSameDate = startDate === endDate;
 
-    // Include start and end dates in the file name if they are different
-    let fileName = isSameDate ? `Report for ${startDate}.csv` : `Report from ${startDate} to ${endDate}.csv`;
+const downloadReportAsCSV = () => {
 
-    // Initialize CSV string with headers
-    let csv = 'Severity,SLO,Category,Total,Closed,Acked,SLO Achieved,SLO Breached\n';
+  const isSameDate = startDate === endDate;
 
-    // Loop through data array and subRows to construct CSV rows
-    data.forEach(item => {
-        item.subRows.forEach(subItem => {
-            csv += `${item.severity},${item.slo},${subItem.category},${subItem.total},${subItem.closed},${subItem.acked},${subItem.sloAchieved},${subItem.sloBreached}\n`;
-        });
+  let dataToDownload;
+  let fileName;
+
+  if (activeTab === 'Olympus') {
+      dataToDownload = data;
+      fileName =isSameDate ? `Olympus/NonOlympus Report for ${startDate}.csv` : `Olympus/NonOlympus Report from ${startDate} to ${endDate}.csv`;
+
+      
+  } else if (activeTab === 'Alerts') {
+      dataToDownload = alertsReport;
+      fileName = isSameDate ? `Alerts Report for ${startDate}.csv` : `Alerts Report from ${startDate} to ${endDate}.csv`;
+  } else {
+      // Handle other cases or return early if needed
+      return;
+  }
+
+  // Initialize CSV string with headers
+  let csv = 'Severity,SLO,Category,Total,Closed,Acked,SLO Achieved,SLO Breached\n';
+
+  // Loop through data array to construct CSV rows
+
+  activeTab==='Alerts'? 
+  dataToDownload.forEach(item => {
+      csv += `${item.severity},${item.slo},${item.responder || ''},${item.total},${item.closed},${item.acked},${item.sloAchieved},${item.sloBreached}\n`;
+  }):
+
+// Loop through data array and subRows to construct CSV rows
+dataToDownload.forEach(item => {
+    item.subRows.forEach(subItem => {
+        csv += `${item.severity},${item.slo},${subItem.category},${subItem.total},${subItem.closed},${subItem.acked},${subItem.sloAchieved},${subItem.sloBreached}\n`;
     });
+});
+  // Create Blob object
+  const blob = new Blob([csv], { type: 'text/csv' });
 
-    // Create Blob object
-    const blob = new Blob([csv], { type: 'text/csv' });
+  // Create temporary link element
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = fileName;
 
-    // Create temporary link element
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-
-    // Simulate click event on the link to trigger download
-    link.click();
+  // Simulate click event on the link to trigger download
+  link.click();
 };
 
   return (

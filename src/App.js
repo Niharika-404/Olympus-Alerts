@@ -20,6 +20,7 @@ function App() {
 
   const [selectedResponder, setSelectedResponder] = useState('olympus_middleware_sre');
 
+  const [activeTab, setActiveTab] = useState('Alerts');
 
   const [loading, setLoading] = useState(true);
   const [alertData, setAlertData] = useState([]);
@@ -32,18 +33,15 @@ function App() {
   const [responders, setResponders] = useState([]);
   const [trendData, setTrendData] = useState([]);
 
+  const [priorityTrendData, setPriorityTrendData] = useState([]);
+
+
 
   const [category, setCategory] = useState('Olympus');
 
-// const handleCategoryChange = (category)=>{
-
-//   if (category !== 'None') {
-//     setSelectedResponder('');
-//   }
-
-//   setCategory(category);
-
-// }
+const handleTabChange  = (tab) =>{
+  setActiveTab(tab);
+}
 
 // Modify the handleCategoryChange function to handle category selection
 const handleCategoryChange = (category) => {
@@ -293,7 +291,25 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
     }
 
     fetchTrendData()
-  },[])
+  },[selectedResponder])
+
+  useEffect(()=>{
+    const fetchPriorityTrendData = async ()=>{
+      try {
+        const priorityTrendResponse = await axios.get('http://localhost:5000/priority', {
+          params: {
+            responder_name: selectedResponder
+          },
+        });
+        console.log(priorityTrendResponse.data);
+        setPriorityTrendData(priorityTrendResponse.data)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchPriorityTrendData()
+  },[selectedResponder])
   
 
 
@@ -339,12 +355,16 @@ useEffect(() => {
     const startInitial = new Date(today);
     startInitial.setHours(0, 0, 0, 0);
     const endInitial = new Date();
-    fetchData(startInitial, endInitial); // Or any other actions that need to occur on refresh
+
+    activeTab==='Alerts'?
+    fetchData(startInitial, endInitial) : category==='Olympus'? fetchOlympusData(startInitial, endInitial) : fetchNonOlympusData(startInitial, endInitial)
 
     // Then reset the `refresh` state
     setRefresh(false);
   }
 }, [refresh]); // This effect runs whenever `refresh` changes
+
+console.log('Active tab from app.js - ',activeTab);
 
 
 
@@ -376,8 +396,8 @@ useEffect(() => {
           <Route
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
-            onEndDateChange={handleEndDateChange} end={end} trendData={trendData}
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} />}
+            onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} />}
           />
           <Route
             path="/dashboard"
