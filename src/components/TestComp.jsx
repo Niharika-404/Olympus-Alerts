@@ -525,6 +525,11 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
     applyFilters();
   }, [selectedDate, alertData, loading, filters, searchTerm]);
 
+    // Effect to reset page when filtered data changes
+    useEffect(() => {
+      setPage(0);
+    }, [filteredData]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -552,8 +557,8 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
         'Cluster',
         'Priority',
         'Acknowledged',
-        'CreatedAt',
-        'UpdatedAt',
+        'CreatedAtTime',
+        'UpdatedAtTime',
         'AckBy',
         'AlertAckTime',
         'Tags',

@@ -22,7 +22,9 @@ function App() {
 
   const [activeTab, setActiveTab] = useState('Alerts');
 
+  const [alertsLoading, setAlertsLoading] = useState(true);
   const [loading, setLoading] = useState(true);
+
   const [alertData, setAlertData] = useState([]);
   const [olympusData, setOlympusData] = useState([]);
   const [nonOlympusData, setNonOlympusData] = useState([]);
@@ -67,7 +69,7 @@ const formatDate = (date) => {
 
 const fetchData = useCallback(async (startParam = start, endParam=end) => {
   try {
-    setLoading(true);
+    setAlertsLoading(true);
 
     // Convert startParam to the required format for your API call
     const startObj = new Date(startParam);
@@ -149,7 +151,8 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
-    setLoading(false);
+    setAlertsLoading(false);
+    
   }
 }, [selectedResponder]);
 
@@ -358,15 +361,22 @@ useEffect(() => {
     startInitial.setHours(0, 0, 0, 0);
     const endInitial = new Date();
 
-    activeTab==='Alerts'?
-    fetchData(startInitial, endInitial) : category==='Olympus'? fetchOlympusData(startInitial, endInitial) : fetchNonOlympusData(startInitial, endInitial)
+    if (activeTab === 'Alerts') {
+      fetchData(startInitial, endInitial);
+    } else if(activeTab === 'Olympus'){
+        if ( category === 'Olympus') {
+          fetchOlympusData(startInitial, endInitial);
+        } else {
+          fetchNonOlympusData(startInitial, endInitial);
+        }
+    }
 
     // Then reset the `refresh` state
     setRefresh(false);
   }
 }, [refresh]); // This effect runs whenever `refresh` changes
 
-console.log('Active tab from app.js - ',activeTab);
+// console.log('Active tab from app.js - ',activeTab);
 
 
 
@@ -399,7 +409,7 @@ console.log('Active tab from app.js - ',activeTab);
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} />}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} />}
           />
           <Route
             path="/dashboard"

@@ -7,7 +7,7 @@ import Title from './Title';
 import NewDashboard from './NewDashboard';
 import OlympusNonOlympus from './OlympusNonOlympus';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   // const [activeTab, setActiveTab] = useState('Alerts');
 
@@ -45,7 +45,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
         {activeTab === 'Alerts' && (
           <div id='alerttable-count'>
             <AlertsTable
-              loading={loading}
+              loading={alertsLoading}
               alertData={alertData}
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
@@ -66,7 +66,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               onEndDateChange={onEndDateChange}
               start={start}
               end={end}
-              loading={loading}
+              loading={alertsLoading}
               alertData={alertData}
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
