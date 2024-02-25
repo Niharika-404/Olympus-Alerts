@@ -150,7 +150,16 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
 
 
 const handleFilterSelection = (filter) => {
-    setSelectedFilter((prevFilter) => (prevFilter === filter ? null : filter));
+    // setSelectedFilter((prevFilter) => (prevFilter === filter ? null : filter));
+    setSelectedFilter((prevFilter) => {
+      if (prevFilter === filter) {
+          return null;
+      } else {
+          // Clear the search input value when changing the filter category
+          setOptionSearchTerm('');
+          return filter;
+      }
+  });
     // setDropdownVisibility(false);
   };
   
