@@ -7,7 +7,7 @@ import Title from './Title';
 import NewDashboard from './NewDashboard';
 import OlympusNonOlympus from './OlympusNonOlympus';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrenData, activeTab, handleTabChange }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   // const [activeTab, setActiveTab] = useState('Alerts');
 
@@ -78,7 +78,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               nonOlympusData={nonOlympusData}
               category={category}
               trendData={trendData}
-              priorityTrenData={priorityTrenData}
+              priorityTrendData={priorityTrendData}
             
             />
           </div>
@@ -128,7 +128,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               activeTab={activeTab}
               category={category}
               trendData={trendData}
-              priorityTrenData={priorityTrenData}
+              priorityTrendData={priorityTrendData}
             />
           </div>
         )}

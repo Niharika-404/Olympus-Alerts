@@ -54,15 +54,15 @@ const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedS
 
   const alertData = category === 'Olympus' ? olympusData: category==='Non-Olympus' ? nonOlympusData: '';
 
-// if(alertData){
-//     console.log(category);
-//     if(category==='Olympus'){
-//         console.log('alert data is olympus data');
-//     }
-//     else if(category==='Non-Olympus'){
-//         console.log('alert data is non olympus data');
-//     }
-// }
+if(alertData){
+    console.log(category);
+    if(category==='Olympus'){
+        console.log('alert data is olympus data');
+    }
+    else if(category==='Non-Olympus'){
+        console.log('alert data is non olympus data');
+    }
+}
 
   // useEffect to fetch unique values for checkboxes
   useEffect(() => {

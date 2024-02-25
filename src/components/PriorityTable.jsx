@@ -12,6 +12,7 @@ const PriorityTable = ({ priorityCounts, trendData, activeTab, priorityTrendData
     setPopupOpen(!isPopupOpen);
   };
   
+  console.log(typeof(priorityTrendData));
 
   const priorityChartOptions = {
     chart: {
@@ -104,8 +105,8 @@ const PriorityTable = ({ priorityCounts, trendData, activeTab, priorityTrendData
     }
   ];
 
-
-  const priorityTrendSeries = priorityTrendData.map((priorityData) => ({
+  const priorityTrendSeries = priorityTrendData.map((priorityData) => (
+    {
     name: `Priority ${priorityData.key}`,
     data: priorityData.alerts_per_day.buckets.map((bucket) => ({
       x: new Date(bucket.key_as_string).getTime(),

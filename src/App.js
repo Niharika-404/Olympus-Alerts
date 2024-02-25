@@ -41,6 +41,8 @@ function App() {
 
 const handleTabChange  = (tab) =>{
   setActiveTab(tab);
+  if (tab==='Olympus')
+    setCategory('Olympus')
 }
 
 // Modify the handleCategoryChange function to handle category selection
