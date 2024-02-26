@@ -345,7 +345,18 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
     // setStart(new Date(startTemp));
     // setEnd(new Date(endTemp));
     // Trigger fetchData or any other necessary actions
-    fetchData(selectedStart, selectedEnd)
+    if(activeTab==='Alerts'){
+      fetchData(selectedStart, selectedEnd)
+
+    }
+    else if(activeTab==='Olympus'){
+      if(category==='Olympus'){
+        fetchOlympusData(selectedStart, selectedEnd)
+      }
+      else{
+        fetchNonOlympusData(selectedStart, selectedEnd)
+      }
+    }
   };
 // Remove the immediate check for `refresh` within `onRefresh`
 const onRefresh = () => {
@@ -387,7 +398,7 @@ useEffect(() => {
 //       }
 //       const csv = await response.text(); // Extract CSV content
 //       const parsedData = Papa.parse(csv, { header: true }).data; // Parse CSV using Papaparse
-//       setAlertData(parsedData);
+//       setNonOlympusData(parsedData);
 
 //       setResponders(['olympus_middleware_sre', 'Data_Commons_DevOps_Team', 'Metis_Dev_Team', 'Commons_DevOps', 'olympus_dbre_team', 'Prod_Ops'])
 // },[])
