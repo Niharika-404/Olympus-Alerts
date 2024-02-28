@@ -19,7 +19,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
 
 
   
- console.log(dashboardData);
+ console.log('Dashboard data - ',dashboardData);
 
   return (
     <div>

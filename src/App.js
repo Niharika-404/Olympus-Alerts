@@ -49,6 +49,8 @@ function App() {
 
 const handleTabChange  = (tab) =>{
   setActiveTab(tab);
+  if(tab!=='Olympus')
+    setDashboardData('Alerts');
   if (tab==='Olympus')
     setCategory('Olympus')
 }
