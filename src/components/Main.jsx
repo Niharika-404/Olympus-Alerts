@@ -7,7 +7,7 @@ import Title from './Title';
 import NewDashboard from './NewDashboard';
 import OlympusNonOlympus from './OlympusNonOlympus';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
   // const [activeTab, setActiveTab] = useState('Alerts');
 
@@ -19,11 +19,11 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
 
 
   
- 
+ console.log(dashboardData);
 
   return (
     <div>
-      <Title alertData={alertData} selectedResponder={selectedResponder} activeTab={activeTab} />
+      <Title alertData={alertData} selectedResponder={selectedResponder} activeTab={activeTab} handleDashboardData={handleDashboardData} />
       <div className="tabs">
           <div className={activeTab === 'Alerts' ? 'active' : ''} onClick={() => handleTabClick('Alerts')}>Alerts</div>
           <div 
@@ -83,14 +83,10 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
             />
           </div>
         )}
-        {activeTab === 'Dashboard' && (
-          <NewDashboard
-            alertData={alertData}
-            // onChartSelection={handleChartSelection} // New prop
-          
-
-           
-          />
+        {activeTab === 'Dashboard' && ( dashboardData==='Alerts' ? 
+          <NewDashboard alertData={alertData} /> : dashboardData==='Olympus' ? 
+          <NewDashboard alertData={olympusData} /> : dashboardData==='Non-Olympus'?
+          <NewDashboard alertData={nonOlympusData} /> : ''
         )}
           {activeTab === 'Olympus' && (
           <div id='alerttable-count'>

@@ -41,6 +41,12 @@ function App() {
 
   const [category, setCategory] = useState('Olympus');
 
+  const [dashboardData, setDashboardData] = useState('Alerts');
+
+  const handleDashboardData = (dashboardData) => {
+    setDashboardData(dashboardData)
+  }
+
 const handleTabChange  = (tab) =>{
   setActiveTab(tab);
   if (tab==='Olympus')
@@ -420,7 +426,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} />}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData}/>}
           />
           <Route
             path="/dashboard"

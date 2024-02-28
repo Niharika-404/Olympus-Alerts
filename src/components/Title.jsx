@@ -32,7 +32,7 @@
 
 import React from 'react';
 
-const Title = ({ alertData, selectedResponder, activeTab }) => {
+const Title = ({ alertData, selectedResponder, activeTab, handleDashboardData }) => {
 
   // const todayDate = new Date().toISOString().split('T')[0];
   const primaryResponderEmails = new Set();
@@ -56,11 +56,18 @@ const Title = ({ alertData, selectedResponder, activeTab }) => {
       <div className='title-date'>
         <h2>Olympus Alerts Dashboard</h2>
         {
-          activeTab!=="Olympus" &&     <div className='responder-oncall'>
+          activeTab==="Alerts" &&     <div className='responder-oncall'>
           <strong>{selectedResponder}</strong>
-         
-
-       </div>
+         </div>
+        }{
+          activeTab === 'Dashboard' && 
+          <div className='dashboard-data'>
+            <select onChange={(event) => handleDashboardData(event.target.value)}>
+              <option value="Alerts">{selectedResponder}</option>
+              <option value="Olympus">Olympus</option>
+              <option value="Non-Olympus">Non-Olympus</option>
+            </select>
+          </div>
         }
    
       </div>

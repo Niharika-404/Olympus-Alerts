@@ -791,3 +791,8 @@ body{
   height: 500px;
   overflow-y: scroll;
 }
+
+.dashboard-data select{
+  padding: 15px;
+  outline: none;
+}

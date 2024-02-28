@@ -34,7 +34,7 @@ const NewDashboard = ({alertData}) => {
 
   const [sortOrder, setSortOrder] = useState('desc'); // 'asc' or 'desc'
 
-
+  
 
   useEffect(() => {
     
@@ -190,11 +190,11 @@ const renderPriorities = (alertName) => {
         alert?.Priority === clickedData.category && alert?.Zone === selectedZone && alert?.Status === 'open'
       );
   
-      // Log the selected priority and zone
-      console.log('Selected Priority:', clickedData.category);
-      console.log('Selected Zone:', selectedZone);
-      // Log the open alerts for the selected priority and zone
-      console.log('Open Alerts:', openAlerts);
+      // // Log the selected priority and zone
+      // console.log('Selected Priority:', clickedData.category);
+      // console.log('Selected Zone:', selectedZone);
+      // // Log the open alerts for the selected priority and zone
+      // console.log('Open Alerts:', openAlerts);
 
 
       setOpenAlerts(openAlerts);
