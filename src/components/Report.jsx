@@ -2,7 +2,7 @@ import React from 'react';
 import Papa from 'papaparse';
 
 
-const Report = ({alertData,olympusData, nonOlympusData, startTemp, endTemp, activeTab, selectedResponder}) => {
+const Report = ({alertData,olympusData, nonOlympusData, startTemp, endTemp, activeTab, selectedResponder, category}) => {
 
 const zones = ['hbl-aws-aps1-zeta-1-uat-eks', 'aws-ow-mumbai', 'hbl-aws-aps1-zeta-1-prod-eks', 'aws-common-prod-mumbai', 'aws-sodexo-prod-london', 'zeta-aws-use2-cprod-eks-01'];
 
@@ -269,13 +269,99 @@ dataToDownload.forEach(item => {
   link.click();
 };
 
+
+function downloadData() {
+
+  const fileName = activeTab==='Alerts'? 'Alerts_Zonewise_Data.csv' :activeTab==='Olympus' ? category==='Olympus'?'Olympus_Zonewise_Data.csv' : 'NonOlympus_Zonewise_Data.csv' :'';
+
+  // Initialize CSV string with headers
+  let csvHeader = 'Alert Name,Cluster,Priority,Overall Count,Comments,Tickets';
+  const data = activeTab==='Alerts'? alertData : activeTab==='Olympus' ? category==='Olympus' ? olympusData : nonOlympusData : '';
+  // Gather all unique zone names from alertData
+  const uniqueZones = new Set();
+  data.forEach(alert => {
+    if (alert.Zone !== 'Tickets') {
+      uniqueZones.add(alert.Zone);
+    }
+  });
+
+  // Add each unique zone name as a separate column header
+  uniqueZones.forEach(zone => {
+    csvHeader += `,${zone}`;
+  });
+
+  let csv = csvHeader + '\n';
+
+  // Aggregate alerts by alert name
+  const alertCounts = {};
+  data.forEach(alert => {
+    const { AlertName, Cluster, Priority, Comments, Tickets, Zone } = alert;
+
+    // Increment count for this alert in alertCounts
+    if (!alertCounts[AlertName]) {
+      alertCounts[AlertName] = { clusters: new Set(), priorities: new Set(), overallCount: 0, zoneCounts: {} };
+    }
+    alertCounts[AlertName].clusters.add(Cluster);
+    alertCounts[AlertName].priorities.add(Priority);
+    alertCounts[AlertName].overallCount++;
+    if (!alertCounts[AlertName].zoneCounts[Zone]) {
+      alertCounts[AlertName].zoneCounts[Zone] = 0;
+    }
+    alertCounts[AlertName].zoneCounts[Zone]++;
+  });
+
+  // Loop through the aggregated data to construct CSV rows
+  Object.entries(alertCounts).forEach(([alertName, data]) => {
+    const clusterString = Array.from(data.clusters).join(';');
+    const priorityString = Array.from(data.priorities).join(';');
+    let overallCount = data.overallCount;
+    let zoneData = '';
+    uniqueZones.forEach(zone => {
+        const count = data.zoneCounts[zone] || 0;
+        zoneData += `${count},`; // Add count for each zone except Tickets
+      
+    });
+    csv += `${alertName},${clusterString},${priorityString},${overallCount},,,${zoneData}\n`; // Include zone counts
+  });
+
+  // Create Blob object
+  const blob = new Blob([csv], { type: 'text/csv' });
+
+  // Create temporary link element
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = fileName;
+
+  // Simulate click event on the link to trigger download
+  link.click();
+}
+
+
   return (
     <div>
 
     <div className='report-download'>
     <h1>Report Data</h1>
+    <div className='report-dwnld-btns'>
+    <button className='reportDownload-btn' title='Report Data Download' onClick={downloadReportAsCSV}>Download Report</button>
+    {
+         
+          activeTab ==='Alerts'? 
+          <button className='reportDownload-btn' onClick={downloadData} >Download Alert Data</button>  :
+          activeTab==='Olympus'&& category==='Olympus' ? 
+          <button className='reportDownload-btn' onClick={downloadData} >Download Olympus Data</button> :
+          activeTab==='Olympus' && category==='Non-Olympus'? 
+          <button className='reportDownload-btn' onClick={downloadData} >Download Non-Olympus Data</button> : ''
+    
+    
+    
+        
+    }
+       
 
-        <button className='reportDownload-btn' onClick={downloadReportAsCSV}>Download</button>
+    </div>
+        
+
     </div>
 {activeTab && (
  activeTab==='Olympus' ? (

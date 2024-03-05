@@ -642,6 +642,7 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
                 <th>STATUS</th>
                 <th>ALERT LINK</th>
                 <th>RUNBOOK</th>
+                <th>CATEGORY</th>
               </tr>
             </thead>
             <tbody>
@@ -668,11 +669,15 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
                   <td>{alert?.['AlertCloseTime'] ?? 'N/A'}</td>
                   <td>{alert?.['ClosedBy'] ?? 'N/A'}</td>
                   <td>{alert?.Status ?? 'N/A'}</td>
+
                   <td>
                     <button onClick={() => handleShowAlert(alert?.['AlertURL'])}>Show Alert</button>
                   </td>
                   <td>
                     <button onClick={() => handleRunbook(alert?.['RunbookUrl'])}>Run Book</button>
+                  </td>
+                  <td>
+                    {alert?.['Category']??'N/A'}
                   </td>
                 </tr>
               ))}

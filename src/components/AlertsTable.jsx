@@ -9,7 +9,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder }) => {
+const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, selectedCategory, setSelectedCategory }) => {
 
   // console.log(selZone, selectedPriority, Dashboardstatus);
 
@@ -36,6 +36,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     zone: [],
     priority: [],
     status: [],
+    category: [],
     responder: ['olympus_middleware_sre'], // Initialize with the default responder
   });
 
@@ -45,6 +46,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
   const [uniqueAlertNames, setUniqueAlertNames] = useState([]);
   const [uniqueZones, setUniqueZones] = useState([]);
   const [uniqueStatus, setUniqueStatus] = useState([]);
+  const [uniqueCategories, setUniqueCategories] = useState([]);
   const [uniquePriorities, setUniquePriorities] = useState([]);
 
 
@@ -64,6 +66,7 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
       setUniqueZones(getUnique('Zone'));
       setUniqueStatus(getUnique('Status'));
       setUniquePriorities(getUnique('Priority'));
+      setUniqueCategories(getUnique('Category'));
     };
 
     getUniqueValues();
@@ -121,7 +124,12 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
   }, [selectedStatus]);
 
  
-
+  useEffect(() => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      category: selectedCategory ? [selectedCategory] : [],
+    }));
+  }, [selectedCategory]);
 
 
   const handleResetFilters = () => {
@@ -132,10 +140,12 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
       zone: [],
       priority: [],
       status: [],
+      category:[],
       responder: ['olympus_middleware_sre'], // Initialize with the default responder
 
     });
     setSelectedStatus('')
+    setSelectedCategory('')
     setDropdownVisibility(false)
   };
 
@@ -194,6 +204,7 @@ const handleCheckboxChangeAll = (filter) => {
         return uniqueZones;
       case 'cluster':
         return uniqueClusters;
+     
       
       // case 'status':
       //   return uniqueStatus;
@@ -226,6 +237,9 @@ const generateOptions = () => {
   
       case 'Zone':
         return generateOptionsForFilterWithAll(uniqueZones, 'zone');
+
+      case 'Category':
+        return generateOptionsForFilter(uniqueCategories, 'category')
   
       case 'Status':
         return generateOptionsForFilter(uniqueStatus, 'status');
@@ -238,25 +252,6 @@ const generateOptions = () => {
     }
   };
   
-  // const generateOptionsForFilter = (values, filter) => {
-  //   const filteredValues = values.filter(value =>
-  //       value?.toLowerCase().includes(optionSearchTerm.toLowerCase())
-  //     );
-  //   return filteredValues.map((value) => (
-  //     <div key={value} className="checkbox-option">
-  //       <input
-  //         type="checkbox"
-  //         value={value}
-  //         checked={filters[filter]?.includes(value)}
-  //         onChange={(event) => {
-  //              // Prevent the event from reaching handleClickOutside
-  //         event.stopPropagation();
-  //           handleCheckboxChange(filter, value)}}
-  //       />
-  //       {value}
-  //     </div>
-  //   ));
-  // };
 
  
 
@@ -412,6 +407,9 @@ const clearFilter = (filterName) => {
           case 'status':
             addFilter('status', value);
             break;
+          case 'category':
+            addFilter('category', value);
+            break;
             // case 'responder':
             //   addFilter('responder', value);
             //   break;
@@ -448,19 +446,7 @@ useEffect(() => {
   };
 }, [dropdownSearchRef, setIsOpen]);
 
-  // // const responders = [...new Set(alertData.map((alert) => alert.Team))];
-  // useEffect(() => {
-  //   if (category !== 'None') {
-  //     // Category is selected, clear the responder filter
-  //     onResponderChange('');
-  //   } else {
-  //     // Category is 'None', check if a responder is selected
-  //     if (selectedResponder === '') {
-  //       // No responder selected, set the default responder
-  //       onResponderChange('olympus_middleware_sre');
-  //     }
-  //   }
-  // }, [category, selectedResponder, onResponderChange]);
+
   
   
 
@@ -483,6 +469,8 @@ useEffect(() => {
                 <p onClick={() => handleFilterSelection('Priority')} style={getFilterStyle('Priority')}>Priority</p>
                 <p onClick={() => handleFilterSelection('Status')} style={getFilterStyle('Status')}>Status</p>
                 <p onClick={() => handleFilterSelection('Zone')} style={getFilterStyle('Zone')}>Zone</p>
+                <p onClick={() => handleFilterSelection('Category')} style={getFilterStyle('Category')}>Category</p>
+
                 <p onClick={() => handleFilterSelection('Responder')} style={getFilterStyle('Responder')}>Responder</p>
 
               </div>
@@ -518,75 +506,14 @@ useEffect(() => {
         <div className='reset-download-buttons'>
 
     
-            {/* <select 
-              id='team-select' 
-              value={selectedResponder} 
-              onChange={(e) => onResponderChange(e.target.value)} 
-              placeholder="Select Responder"
-            >
-              {responders?.map((responder, index) => (
-                <option key={index} value={responder}>
-                  {responder}
-                </option>
-              ))}
-            </select>  */}
+     
 
           
 
-{/* <div className="searchable-dropdown" ref={dropdownSearchRef}>
-      <input
-        type="text"
-        value={selectedResponder || 'olympus_middleware_sre'}
-        onChange={() => {}}
-        onClick={() => setIsOpen(!isOpen)}
-        // placeholder="Select an option..."
-        readOnly
-      />
-    {isOpen && (
-        <div className='options'>
-          <input
-            type="search"
-            value={searchResTerm}
-            onChange={e => setSearchResTerm(e.target.value)}
-            placeholder="Search..."
-          />
-          {filteredResOptions.map(option => (
-            <div key={option} onClick={() => {
-              onResponderChange(option);
-              setIsOpen(false);
-              setSearchResTerm('');
-            }}>{option}</div>
-          ))}
-        </div>
-      )}
-      
-    </div> */}
+
 
     <div>
-        {/* <input
-          type="radio"
-          id="olympus"
-          name="category"
-          value="olympus"
-          checked={category==='Olympus'}
-          onChange={() => onCategoryChange('Olympus')}
-        />
-        <label htmlFor="olympus">Olympus</label>
-        <input
-          type="radio"
-          id="nonOlympus"
-          name="category"
-          value="non olympus"
-          checked={category==='Non-Olympus'}
-          onChange={() =>onCategoryChange('Non-Olympus')}
-        />
-        <label htmlFor="nonOlympus">Non-Olympus</label> */}
-
-        {/* <select name="category" id="" onChange={(event) => onCategoryChange(event.target.value)}>
-          <option value="None">None</option>
-          <option value="Olympus">Olympus</option>
-          <option value="Non-Olympus">Non-Olympus</option>
-        </select> */}
+      
 
       </div>
 

@@ -63,7 +63,7 @@ body{
 
 
 
- .openCloseCount{
+ .openCloseCount, .normalRareCount{
     display: flex;
     flex-direction: row;
     /* justify-content: space-between; */
@@ -74,44 +74,82 @@ body{
     text-align: center;
  }
 
- .openCloseCount div{
+ .openCloseCount div, .normalRareCount div{
     padding: 20px 3px;
     flex: 0 0 25%;
     cursor: pointer;
  }
- .openCloseCount strong{
+ .openCloseCount strong, .normalRareCount strong{
     display: block;
     text-align: center;
  }
- #open-alerts{
+ .normalRareCount div{
+  position: relative;
+ }
+ .normalRareCount div small{
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  border: 1px solid black;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  font-size: 0.5rem;
+ }
+ #open-alerts,#normal-alerts{
     color: red;
     background-color: rgb(245, 225, 225);
     border-radius: 5px;
     border: 1px solid red;
 
  }
- #close-alerts{
+ #normal-alerts .info-icon{
+  color: red;
+  border-color: red;
+ }
+ #close-alerts, #rare-alerts{
     color: green;
     background-color: rgb(244, 248, 244);
     border-radius: 5px;
     border: 1px solid green;
  }
- #ack-alerts{
+ #rare-alerts .info-icon{
+  color: green;
+  border-color: green;
+ }
+ #ack-alerts, #anomaly-alerts{
     color: blue;
     background-color: rgb(222, 222, 241);
     border-radius: 5px;
     border: 1px solid blue;
  }
+ #anomaly-alerts .info-icon{
+  color: blue;
+  border-color: blue;
+ }
 
- #open-alerts:hover{
+
+ #open-alerts:hover, #normal-alerts:hover{
     background-color: red;
     color: white;
  }
- #close-alerts:hover{
+ #normal-alerts:hover .info-icon{
+  color: white;
+  border-color: white;
+ }
+ #rare-alerts:hover .info-icon{
+  color: white;
+  border-color: white;
+ }
+ #anomaly-alerts:hover .info-icon{
+  color: white;
+  border-color: white;
+ }
+ #close-alerts:hover, #rare-alerts:hover{
     background-color: green;
     color: white;
  }
- #ack-alerts:hover{
+ #ack-alerts:hover, #anomaly-alerts:hover{
     background-color: blue;
     color: white;
  }
@@ -795,4 +833,55 @@ body{
 .dashboard-data select{
   padding: 15px;
   outline: none;
+}
+
+#home-page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 300px;
+  text-decoration: none;
+}
+#home{
+  background-color: #0E2951;
+  color: white;
+  padding: 50px;
+  box-sizing: border-box;
+  text-align: center;
+  width: 300px;
+}
+
+#home:hover{
+  background-color: green;
+}
+
+.report-dwnld-btns{
+  display: flex;
+  
+  gap: 1rem;
+}
+
+.normalRareCount div .info-icon{
+  display:'block';
+  text-align:'center';
+  border:'1px solid red';
+  width:'15px';
+  height:'15px'; 
+  margin:'20px auto';
+  padding: '1px'; 
+  border-radius: '50%';
+  color: black;
+}
+
+
+#info{
+  font-size: x-small;
+  border: 1px solid black;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  padding-bottom: 1px;
+  cursor: pointer;
+
 }

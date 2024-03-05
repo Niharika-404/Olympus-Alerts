@@ -18,6 +18,9 @@ import { faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 // import Papa from 'papaparse';
 import OpenAlertsModal from './OpenAlertsModal.jsx';
+import NormalAlerts from './NormalAlerts.jsx';
+import RareAlerts from './RareAlerts.jsx';
+import AnomalyAlerts from './AnomalyAlerts.jsx';
 
 
 const NewDashboard = ({alertData}) => {
@@ -351,6 +354,15 @@ const renderPriorities = (alertName) => {
             <AlertVsTimeDiffTable alertData={alertData} selectedZone={selectedZone}/>
             <NoiseAlertsTable alertData={alertData} selectedZone={selectedZone} />
             <AutoAlertsTable alertData={alertData} selectedZone={selectedZone}/>
+
+        </div>
+
+        <div className='charts' >
+            {/* <AlertVsTimeDiff alertData={alertData} selectedZone={selectedZone}/> */}
+            {/* <NoiseAlerts alertData={alertData} selectedZone={selectedZone}/> */}
+            <NormalAlerts alertData={alertData} selectedZone={selectedZone}/>
+            <RareAlerts alertData={alertData} selectedZone={selectedZone} />
+            <AnomalyAlerts alertData={alertData} selectedZone={selectedZone}/>
 
         </div>
        

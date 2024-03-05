@@ -9,6 +9,8 @@ import OlympusNonOlympus from './OlympusNonOlympus';
 
 const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
+
+  const [selectedCategory, setSelectedCategory] = useState('');
   // const [activeTab, setActiveTab] = useState('Alerts');
 
   
@@ -49,7 +51,8 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               alertData={alertData}
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
-            
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
               responders={responders}
               selectedResponder={selectedResponder}
               onResponderChange={onResponderChange}
@@ -70,6 +73,8 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               alertData={alertData}
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
               handleRefresh={handleRefresh}
               handleSearch={handleSearch}
               selectedResponder={selectedResponder}
@@ -96,12 +101,13 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               nonOlympusData={nonOlympusData}
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
-            
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
               responders={responders}
               selectedResponder={selectedResponder}
               onResponderChange={onResponderChange}
 
-              category={category}
+              dataCategory={category}
               onCategoryChange={onCategoryChange}
 
               // selZone={selZone}
@@ -119,6 +125,8 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               nonOlympusData={nonOlympusData}
               selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
               handleRefresh={handleRefresh}
               handleSearch={handleSearch}
               activeTab={activeTab}

@@ -2,10 +2,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Main from './components/Main';
-import NewDashboard from './components/NewDashboard';
+// import NewDashboard from './components/NewDashboard';
 import axios from 'axios';
 
 import Papa from 'papaparse';
+// import Home from './components/Home';
 
 
 function App() {
@@ -399,22 +400,22 @@ useEffect(() => {
 
 
 
-// const DataFetchFromCSV = useCallback(async()=>{
-//   const response = await fetch('/AlertsData.csv'); // Update the path
-//       if (!response.ok) {
-//         throw new Error('Failed to fetch CSV file');
-//       }
-//       const csv = await response.text(); // Extract CSV content
-//       const parsedData = Papa.parse(csv, { header: true }).data; // Parse CSV using Papaparse
-//       setNonOlympusData(parsedData);
+const DataFetchFromCSV = useCallback(async()=>{
+  const response = await fetch('/AlertsData.csv'); // Update the path
+      if (!response.ok) {
+        throw new Error('Failed to fetch CSV file');
+      }
+      const csv = await response.text(); // Extract CSV content
+      const parsedData = Papa.parse(csv, { header: true }).data; // Parse CSV using Papaparse
+      setAlertData(parsedData);
 
-//       setResponders(['olympus_middleware_sre', 'Data_Commons_DevOps_Team', 'Metis_Dev_Team', 'Commons_DevOps', 'olympus_dbre_team', 'Prod_Ops'])
-// },[])
+      setResponders(['olympus_middleware_sre', 'Data_Commons_DevOps_Team', 'Metis_Dev_Team', 'Commons_DevOps', 'olympus_dbre_team', 'Prod_Ops'])
+},[])
 
-// useEffect(() => {
-//   // Initial API call on component mount
-//   DataFetchFromCSV();
-// }, [DataFetchFromCSV]);
+useEffect(() => {
+  // Initial API call on component mount
+  DataFetchFromCSV();
+}, [DataFetchFromCSV]);
 
 // console.log(`Start - ${startFormatted.date}, ${startFormatted.time}; End - ${endFormatted.date}, ${endFormatted.time};`);
 // console.log(start, end);
@@ -430,10 +431,10 @@ useEffect(() => {
             onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
             start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData}/>}
           />
-          <Route
-            path="/dashboard"
-            element={<NewDashboard alertData={alertData} />}
-          />
+          {/* <Route
+            path="/"
+            element={<Home/>}
+          /> */}
         </Routes>
       </div>
     </Router>

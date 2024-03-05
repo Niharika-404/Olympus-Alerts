@@ -6,11 +6,13 @@ import { Oval } from 'react-loader-spinner';
 // import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSync,faCalendarAlt,faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faInfo } from '@fortawesome/free-solid-svg-icons';
+
 
 import PriorityTable from './PriorityTable';
 import Report from './Report';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -74,6 +76,9 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
 
     const handleStatusClick = (status) => {
       setSelectedStatus(status);
+    };
+    const handleCategoryClick = (category) => {
+      setSelectedCategory(category);
     };
   
     const refreshData = () => {
@@ -323,6 +328,28 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 <strong>{totalAck}</strong>
               </div>
             </div>
+
+            <div className="normalRareCount">
+
+              <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
+              <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
+                Normal <br />
+                <strong>{totalOpened}</strong>
+              </div>
+              <div id="rare-alerts"  onClick={()=>handleCategoryClick('rare')}>                                                
+              <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
+
+                Rare <br />
+                <strong>{totalClosed}</strong>
+              </div>
+              <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
+              <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version"  /></small>
+
+                Anomaly <br />
+                <strong>{totalAck}</strong>
+              </div>
+              </div>
+          
             <PriorityTable priorityCounts={priorityCounts} trendData={trendData} priorityTrendData={priorityTrendData} activeTab={activeTab}/>
             <button className='Analyze-btn' onClick={togglePopup}>
               View Report
@@ -334,7 +361,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
               &times;
             </span>
            
-            <Report alertData={alertData} olympusData={olympusData} nonOlympusData={nonOlympusData} startTemp={startTemp} endTemp={endTemp} activeTab={activeTab} selectedResponder={selectedResponder}/>
+            <Report alertData={alertData} olympusData={olympusData} nonOlympusData={nonOlympusData} startTemp={startTemp} endTemp={endTemp} activeTab={activeTab} selectedResponder={selectedResponder} category={category}/>
           </div>
         </div>
       )}

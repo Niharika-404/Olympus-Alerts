@@ -9,7 +9,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, onCategoryChange, olympusData, nonOlympusData, category }) => {
+const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, onCategoryChange, olympusData, nonOlympusData, dataCategory, selectedCategory, setSelectedCategory }) => {
 
   // console.log(selZone, selectedPriority, Dashboardstatus);
 
@@ -36,6 +36,7 @@ const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedS
     zone: [],
     priority: [],
     status: [],
+    category:[]
   });
 
   // State variables to hold unique values for checkboxes
@@ -44,6 +45,8 @@ const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedS
   const [uniqueAlertNames, setUniqueAlertNames] = useState([]);
   const [uniqueZones, setUniqueZones] = useState([]);
   const [uniqueStatus, setUniqueStatus] = useState([]);
+  const [uniqueCategories, setUniqueCategories] = useState([]);
+
   const [uniquePriorities, setUniquePriorities] = useState([]);
 
 
@@ -52,14 +55,14 @@ const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedS
     setDownload(true);
   };
 
-  const alertData = category === 'Olympus' ? olympusData: category==='Non-Olympus' ? nonOlympusData: '';
+  const alertData = dataCategory === 'Olympus' ? olympusData: dataCategory==='Non-Olympus' ? nonOlympusData: '';
 
 if(alertData){
-    console.log(category);
-    if(category==='Olympus'){
+    console.log(dataCategory);
+    if(dataCategory==='Olympus'){
         console.log('alert data is olympus data');
     }
-    else if(category==='Non-Olympus'){
+    else if(dataCategory==='Non-Olympus'){
         console.log('alert data is non olympus data');
     }
 }
@@ -75,6 +78,7 @@ if(alertData){
       setUniqueZones(getUnique('Zone'));
       setUniqueStatus(getUnique('Status'));
       setUniquePriorities(getUnique('Priority'));
+      setUniqueCategories(getUnique('Category'))
     };
 
     getUniqueValues();
@@ -132,7 +136,12 @@ if(alertData){
   }, [selectedStatus]);
 
  
-
+  useEffect(() => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      category: selectedCategory ? [selectedCategory] : [],
+    }));
+  }, [selectedCategory]);
 
 
   const handleResetFilters = () => {
@@ -143,10 +152,12 @@ if(alertData){
       zone: [],
       priority: [],
       status: [],
-      responder: ['olympus_middleware_sre'], // Initialize with the default responder
+      category:[],
+    //   responder: ['olympus_middleware_sre'], // Initialize with the default responder
 
     });
     setSelectedStatus('')
+    setSelectedCategory('')
     setDropdownVisibility(false)
   };
 
@@ -240,6 +251,8 @@ const generateOptions = () => {
   
       case 'Status':
         return generateOptionsForFilter(uniqueStatus, 'status');
+        case 'Category':
+        return generateOptionsForFilter(uniqueCategories, 'category');
 
       case 'Responder':
         return generateOptionsForFilter(responders, 'responder')
@@ -379,6 +392,9 @@ const clearFilter = (filterName) => {
    if (filterName === 'status') {
     setSelectedStatus('');
   }
+  if (filterName === 'category') {
+    setSelectedCategory('');
+  }
 };
 
 
@@ -422,6 +438,9 @@ const clearFilter = (filterName) => {
             break;
           case 'status':
             addFilter('status', value);
+            break;
+        case 'category':
+            addFilter('category', value);
             break;
             // case 'responder':
             //   addFilter('responder', value);
@@ -493,6 +512,8 @@ useEffect(() => {
                 <p onClick={() => handleFilterSelection('AlertName')} style={getFilterStyle('AlertName')}>Alert Name</p>
                 <p onClick={() => handleFilterSelection('Priority')} style={getFilterStyle('Priority')}>Priority</p>
                 <p onClick={() => handleFilterSelection('Status')} style={getFilterStyle('Status')}>Status</p>
+                <p onClick={() => handleFilterSelection('Category')} style={getFilterStyle('Category')}>Category</p>
+
                 <p onClick={() => handleFilterSelection('Zone')} style={getFilterStyle('Zone')}>Zone</p>
 
               </div>
