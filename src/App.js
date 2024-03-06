@@ -117,17 +117,19 @@ const classifyAlerts = useCallback(async () => {
       }
     );
     
+    const responseData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+
 
     // Handle the response as needed
     if(activeTab==='Alerts'){
-      setAlertModelData(response.data)
+      setAlertModelData(responseData)
     }
     else if(activeTab==='Olympus'){
       if(category==='Olympus'){
-        setOlympusModelData(response.data)
+        setOlympusModelData(responseData)
       }
       else if(category==='Non-Olympus'){
-        setNonOlympusModelData(response.data)
+        setNonOlympusModelData(responseData)
       }
     }
     console.log('Classification response:', response.data);
