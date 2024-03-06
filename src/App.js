@@ -30,6 +30,10 @@ function App() {
   const [olympusData, setOlympusData] = useState([]);
   const [nonOlympusData, setNonOlympusData] = useState([]);
 
+  const [alertModelData, setAlertModelData] = useState([]);
+  const [olympusModelData, setOlympusModelData] = useState([]);
+  const [nonOlympusModelData, setNonOlympusModelData] = useState([]);
+
 
   const [refresh, setRefresh] = useState(false);
 
@@ -83,20 +87,47 @@ const formatDate = (date) => {
   return formattedDate;
 };
 
-const classifyAlerts = async () => {
+
+
+const classifyAlerts = useCallback(async () => {
   try {
     // Make an API POST call to the /predict endpoint
+    let dataToBeSent;
+    if(activeTab==='Alerts'){
+      dataToBeSent = alertData;
+    }
+    else if(activeTab==='Olympus'){
+      if(category==='Olympus'){
+        dataToBeSent = olympusData
+      }
+      else if(category==='Non-Olympus'){
+        dataToBeSent = nonOlympusData
+      }
+    }
     const response = await axios.post('http://localhost:5000/predict', {
       // Pass the necessary data to the endpoint, such as alertData, olympusData, or nonOlympusData
-      data: activeTab === 'Alerts' ? alertData : (category === 'Olympus' ? olympusData : nonOlympusData)
+      data: dataToBeSent
+    
     });
 
     // Handle the response as needed
+    if(activeTab==='Alerts'){
+      setAlertModelData(response.data)
+    }
+    else if(activeTab==='Olympus'){
+      if(category==='Olympus'){
+        setOlympusModelData(response.data)
+      }
+      else if(category==='Non-Olympus'){
+        setNonOlympusModelData(response.data)
+      }
+    }
     console.log('Classification response:', response.data);
   } catch (error) {
     console.error('Error classifying alerts:', error);
   }
-};
+},[alertData, olympusData, nonOlympusData, activeTab, category]);
+ 
 
 const fetchData = useCallback(async (startParam = start, endParam=end) => {
   try {
@@ -378,14 +409,20 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
     // Trigger fetchData or any other necessary actions
     if(activeTab==='Alerts'){
       fetchData(selectedStart, selectedEnd)
+      setShowClassifyButton(true)
+
 
     }
     else if(activeTab==='Olympus'){
       if(category==='Olympus'){
         fetchOlympusData(selectedStart, selectedEnd)
+        setShowClassifyButton(true)
+
       }
       else{
         fetchNonOlympusData(selectedStart, selectedEnd)
+        setShowClassifyButton(true)
+
       }
     }
   };
@@ -452,7 +489,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick}/>}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick} alertModelData={alertModelData} olympusModelData={olympusModelData} nonOlympusModelData={nonOlympusModelData}/>}
           />
           {/* <Route
             path="/"

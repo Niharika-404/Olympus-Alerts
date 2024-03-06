@@ -12,7 +12,7 @@ import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import PriorityTable from './PriorityTable';
 import Report from './Report';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory, showClassifyButton, handleClassifyClick}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -106,16 +106,17 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
         try {
         
           const alerts= activeTab==='Alerts'? alertData : activeTab==='Olympus' && category==='Olympus'? olympusData: nonOlympusData;
-         
+
+          const modelData = activeTab==='Alerts'? alertModelData : activeTab==='Olympus' && category==='Olympus'? olympusModelData: nonOlympusModelData;         
 
           const totalOpenedCount = alerts.filter((alert)=>alert?.Status === 'open').length;
           const totalClosedCount = alerts.filter((alert)=>alert?.Status === 'closed').length;
           const totalAckCount = alerts.filter((alert)=>alert?.Status === 'acknowledged').length;
 
 
-          const totalNormalCount = alerts.filter((alert)=>alert?.Category === 'Normal').length;
-          const totalRareCount = alerts.filter((alert)=>alert?.Category === 'rare').length;
-          const totalAnomalyCount = alerts.filter((alert)=>alert?.Category === 'Anomaly').length;
+          const totalNormalCount = modelData.filter((alert)=>alert?.Category === 'Normal').length;
+          const totalRareCount = modelData.filter((alert)=>alert?.Category === 'rare').length;
+          const totalAnomalyCount = modelData.filter((alert)=>alert?.Category === 'Anomaly').length;
 
   
           const priorities = ['P1', 'P2', 'P3', 'P4', 'P5'];
@@ -345,6 +346,8 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                             <button className='Analyze-btn' onClick={handleClassifyClick} >Classify Alerts</button>
                         </div>
                     )}
+
+         
             {
               !showClassifyButton && (
                 <div className="normalRareCount">

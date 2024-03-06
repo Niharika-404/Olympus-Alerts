@@ -7,7 +7,7 @@ import Title from './Title';
 import NewDashboard from './NewDashboard';
 import OlympusNonOlympus from './OlympusNonOlympus';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData, showClassifyButton, handleClassifyClick }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
 
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -59,6 +59,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
 
               category={category}
               onCategoryChange={onCategoryChange}
+              alertModelData={alertModelData}
 
               // selZone={selZone}
               // selectedPriority={selectedPriority}
@@ -86,6 +87,10 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               priorityTrendData={priorityTrendData}
               showClassifyButton={showClassifyButton}
               handleClassifyClick={handleClassifyClick}
+              olympusModelData={olympusModelData}
+              nonOlympusModelData={nonOlympusModelData}
+              alertModelData={alertModelData}
+
             
             />
           </div>
@@ -111,6 +116,8 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
 
               dataCategory={category}
               onCategoryChange={onCategoryChange}
+              olympusModelData={olympusModelData}
+              nonOlympusModelData={nonOlympusModelData}
 
               // selZone={selZone}
               // selectedPriority={selectedPriority}
@@ -137,6 +144,10 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               priorityTrendData={priorityTrendData}
               showClassifyButton={showClassifyButton}
               handleClassifyClick={handleClassifyClick}
+              olympusModelData={olympusModelData}
+              nonOlympusModelData={nonOlympusModelData}
+              alertModelData={alertModelData}
+
             />
           </div>
         )}

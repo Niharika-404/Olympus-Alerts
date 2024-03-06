@@ -9,7 +9,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, selectedCategory, setSelectedCategory }) => {
+const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, selectedCategory, setSelectedCategory, alertModelData }) => {
 
   // console.log(selZone, selectedPriority, Dashboardstatus);
 
@@ -542,6 +542,7 @@ useEffect(() => {
           download={download}
           setDownload={setDownload}
           searchTerm={searchTerm} 
+          alertModelData={alertModelData}
         />
       </div>
     </div>

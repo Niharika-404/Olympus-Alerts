@@ -7,10 +7,15 @@ import { Oval } from 'react-loader-spinner';
 import Papa from 'papaparse';
 import { TablePagination } from '@mui/material';
 
-const Test = ({ selectedDate, alertData, loading, filters, download, setDownload, searchTerm }) => {
+const Test = ({ selectedDate, alertData, loading, filters, download, setDownload, searchTerm, alertModelData }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const getCategory = (alertId) => {
+    const matchedAlert = alertModelData.find(alert => alert.alertid === alertId);
+    return matchedAlert ? matchedAlert.category : 'N/A';
+  };
 
   React.useEffect(() => {
     const applyFilters = () => {
@@ -192,8 +197,8 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
                     <button onClick={() => handleRunbook(alert?.['RunbookUrl'])}>Run Book</button>
                   </td>
                   <td>
-                    {alert?.['Category']??'N/A'}
-                  </td>
+                      {getCategory(alert?.['AlertID'])}
+                    </td>
                 </tr>
               ))}
             </tbody>

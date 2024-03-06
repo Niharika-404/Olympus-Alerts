@@ -9,7 +9,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, onCategoryChange, olympusData, nonOlympusData, dataCategory, selectedCategory, setSelectedCategory }) => {
+const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, onCategoryChange, olympusData, nonOlympusData, dataCategory, selectedCategory, setSelectedCategory, olympusModelData, nonOlympusModelData }) => {
 
   // console.log(selZone, selectedPriority, Dashboardstatus);
 
@@ -56,6 +56,8 @@ const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedS
   };
 
   const alertData = dataCategory === 'Olympus' ? olympusData: dataCategory==='Non-Olympus' ? nonOlympusData: '';
+  const alertModelData = dataCategory === 'Olympus' ? olympusModelData : dataCategory === 'Non-Olympus' ? nonOlympusModelData : '';
+
 
 if(alertData){
     console.log(dataCategory);
@@ -645,6 +647,7 @@ useEffect(() => {
           download={download}
           setDownload={setDownload}
           searchTerm={searchTerm} 
+          alertModelData={alertModelData}
         />
       </div>
     </div>
