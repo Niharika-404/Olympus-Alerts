@@ -104,11 +104,19 @@ const classifyAlerts = useCallback(async () => {
         dataToBeSent = nonOlympusData
       }
     }
-    const response = await axios.post('http://localhost:5000/predict', {
-      // Pass the necessary data to the endpoint, such as alertData, olympusData, or nonOlympusData
-      data: dataToBeSent
+    const response = await axios.post(
+      'http://localhost:5000/predict',
+      {
+        // Pass the necessary data to the endpoint, such as alertData, olympusData, or nonOlympusData
+        data: dataToBeSent
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
     
-    });
 
     // Handle the response as needed
     if(activeTab==='Alerts'){
