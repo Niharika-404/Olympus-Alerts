@@ -15,7 +15,7 @@ const AnomalyAlerts = ({ alertData, selectedZone }) => {
   useEffect(() => {
     const generateTableData = () => {
       const filteredAlerts = alertData.filter(
-        (alert) =>  alert?.Zone === selectedZone && alert?.Cluster === 'Anomaly'
+        (alert) =>  alert?.Zone === selectedZone && alert?.Category === 'Anomaly'
       );
 
       const tableRows = filteredAlerts.map((alert) => ({

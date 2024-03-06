@@ -15,7 +15,7 @@ const NormalAlerts = ({ alertData, selectedZone }) => {
   useEffect(() => {
     const generateTableData = () => {
       const filteredAlerts = alertData.filter(
-        (alert) =>  alert?.Zone === selectedZone && alert?.Cluster === 'Normal'
+        (alert) =>  alert?.Zone === selectedZone && alert?.Category === 'Normal'
       );
 
       const tableRows = filteredAlerts.map((alert) => ({

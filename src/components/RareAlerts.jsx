@@ -15,7 +15,7 @@ const RareAlerts = ({ alertData, selectedZone }) => {
   useEffect(() => {
     const generateTableData = () => {
       const filteredAlerts = alertData.filter(
-        (alert) =>  alert?.Zone === selectedZone && alert?.Cluster === 'rare'
+        (alert) =>  alert?.Zone === selectedZone && alert?.Category === 'rare'
       );
 
       const tableRows = filteredAlerts.map((alert) => ({
