@@ -16,6 +16,9 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
+    const [totalNormal, setTotalNormal] = useState(0);
+    const [totalRare, setTotalRare] = useState(0);
+    const [totalAnomaly, setTotalAnomaly] = useState(0);
     const [dateRange, setDateRange] = useState(false); // State to track if date range is selected
 
 
@@ -109,6 +112,10 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
           const totalAckCount = alerts.filter((alert)=>alert?.Status === 'acknowledged').length;
 
 
+          const totalNormalCount = alerts.filter((alert)=>alert?.Category === 'Normal').length;
+          const totalRareCount = alerts.filter((alert)=>alert?.Category === 'rare').length;
+          const totalAnomalyCount = alerts.filter((alert)=>alert?.Category === 'Anomaly').length;
+
   
           const priorities = ['P1', 'P2', 'P3', 'P4', 'P5'];
           const priorityCounts = priorities.map((priority) => ({
@@ -123,6 +130,9 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
           setTotalOpened(totalOpenedCount);
           setTotalClosed(totalClosedCount);
           setTotalAck(totalAckCount);
+          setTotalNormal(totalNormalCount);
+          setTotalRare(totalRareCount);
+          setTotalAnomaly(totalAnomalyCount);
           setPriorityCounts(priorityCounts);
 
           // console.log('After fetchData:', { loading,  alertData });
@@ -334,19 +344,19 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
               <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
               <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
                 Normal <br />
-                <strong>{totalOpened}</strong>
+                <strong>{totalNormal}</strong>
               </div>
               <div id="rare-alerts"  onClick={()=>handleCategoryClick('rare')}>                                                
               <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
 
                 Rare <br />
-                <strong>{totalClosed}</strong>
+                <strong>{totalRare}</strong>
               </div>
               <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
               <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version"  /></small>
 
                 Anomaly <br />
-                <strong>{totalAck}</strong>
+                <strong>{totalAnomaly}</strong>
               </div>
               </div>
           
