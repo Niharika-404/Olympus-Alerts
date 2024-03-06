@@ -12,7 +12,7 @@ import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import PriorityTable from './PriorityTable';
 import Report from './Report';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory, showClassifyButton, handleClassifyClick}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -23,6 +23,7 @@ const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, o
 
 
     const [priorityCounts, setPriorityCounts] = useState([]);
+
 
    
     // const[start, setStart] = useState('');
@@ -339,26 +340,36 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
               </div>
             </div>
 
-            <div className="normalRareCount">
+            {showClassifyButton && (
+                        <div>
+                            <button className='Analyze-btn' onClick={handleClassifyClick} >Classify Alerts</button>
+                        </div>
+                    )}
+            {
+              !showClassifyButton && (
+                <div className="normalRareCount">
 
-              <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
-              <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
-                Normal <br />
-                <strong>{totalNormal}</strong>
+                <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
+                <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
+                  Normal <br />
+                  <strong>{totalNormal}</strong>
+                </div>
+                <div id="rare-alerts"  onClick={()=>handleCategoryClick('rare')}>                                                
+                <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
+  
+                  Rare <br />
+                  <strong>{totalRare}</strong>
+                </div>
+                <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
+                <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version"  /></small>
+  
+                  Anomaly <br />
+                  <strong>{totalAnomaly}</strong>
+                </div>
               </div>
-              <div id="rare-alerts"  onClick={()=>handleCategoryClick('rare')}>                                                
-              <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
-
-                Rare <br />
-                <strong>{totalRare}</strong>
-              </div>
-              <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
-              <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version"  /></small>
-
-                Anomaly <br />
-                <strong>{totalAnomaly}</strong>
-              </div>
-              </div>
+              )
+            }
+          
           
             <PriorityTable priorityCounts={priorityCounts} trendData={trendData} priorityTrendData={priorityTrendData} activeTab={activeTab}/>
             <button className='Analyze-btn' onClick={togglePopup}>

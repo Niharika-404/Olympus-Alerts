@@ -92,15 +92,17 @@ const AnomalyAlerts = ({ alertData, selectedZone }) => {
     // </div>
 
     <div>
-        <div id='info'>
-    <FontAwesomeIcon icon={faInfo} title='This is beta version'/>
+        <div id='info' className='tooltip'>
+            <FontAwesomeIcon icon={faInfo}/>
+            <span className="tooltiptext">This is beta version</span>
 
-    </div>
-  <div className='alerts-time-table' style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '1' }}>
-    <h3>Anomaly Alerts</h3>
-    <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
 
-  </div>
+        </div>
+        <div className='alerts-time-table' style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '1' }}>
+            <h3>Anomaly Alerts<sup>BETA</sup></h3>
+            <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
+
+        </div>
 
   <div id='alert-vs-time-diff-table' style={{ overflowY: 'auto', maxHeight: '400px' }}>
     {tableData.length > 0 ? (

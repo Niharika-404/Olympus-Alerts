@@ -43,7 +43,14 @@ function App() {
   const [category, setCategory] = useState('Olympus');
 
   const [dashboardData, setDashboardData] = useState('Alerts');
+  const [showClassifyButton, setShowClassifyButton] = useState(true); // State to track the visibility of "Classify Alerts" button
 
+
+  const handleClassifyClick = () => {
+    setShowClassifyButton(false); // Hide the "Classify Alerts" button
+    classifyAlerts();
+  };
+  
   const handleDashboardData = (dashboardData) => {
     setDashboardData(dashboardData)
   }
@@ -74,6 +81,21 @@ const formatDate = (date) => {
   const formattedDate = `${year}-${month}-${day}`;
 
   return formattedDate;
+};
+
+const classifyAlerts = async () => {
+  try {
+    // Make an API POST call to the /predict endpoint
+    const response = await axios.post('http://localhost:5000/predict', {
+      // Pass the necessary data to the endpoint, such as alertData, olympusData, or nonOlympusData
+      data: activeTab === 'Alerts' ? alertData : (category === 'Olympus' ? olympusData : nonOlympusData)
+    });
+
+    // Handle the response as needed
+    console.log('Classification response:', response.data);
+  } catch (error) {
+    console.error('Error classifying alerts:', error);
+  }
 };
 
 const fetchData = useCallback(async (startParam = start, endParam=end) => {
@@ -370,6 +392,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
 // Remove the immediate check for `refresh` within `onRefresh`
 const onRefresh = () => {
   setRefresh(true); // Simply set `refresh` to true
+  setShowClassifyButton(true)
 };
 
 // Use an effect to react to changes in `refresh`
@@ -429,7 +452,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData}/>}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick}/>}
           />
           {/* <Route
             path="/"

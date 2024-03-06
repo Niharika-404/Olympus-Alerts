@@ -92,12 +92,14 @@ const RareAlerts = ({ alertData, selectedZone }) => {
     // </div>
 
     <div>
-        <div id='info'>
-    <FontAwesomeIcon icon={faInfo} title='This is beta version'/>
+          <div id='info' className='tooltip'>
+            <FontAwesomeIcon icon={faInfo}/>
+            <span className="tooltiptext">This is beta version</span>
 
-    </div>
+
+        </div>
   <div className='alerts-time-table' style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '1' }}>
-    <h3>Rare Alerts</h3>
+    <h3>Rare Alerts <sup>BETA</sup></h3>
     <FontAwesomeIcon icon={faCircleDown} onClick={handleDownload} />
 
   </div>
