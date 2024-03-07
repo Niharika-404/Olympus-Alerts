@@ -55,11 +55,17 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     setDownload(true);
   };
 
-  // useEffect to fetch unique values for checkboxes
   useEffect(() => {
     const getUniqueValues = () => {
       // Function to get unique values from alertData
-      const getUnique = (key) => [...new Set(alertData.map((alert) => alert[key]))];
+      const getUnique = (key) => {
+        if (key !== 'Category') {
+          return [...new Set(alertData.map((alert) => alert[key]))];
+        } else {
+          return [...new Set(alertModelData.map((alert) => alert[key]))];
+        }
+      };
+  
       setUniqueClusters(getUnique('Cluster'));
       // setUniqueNamespaces(getUnique('Namespace'));
       setUniqueAlertNames(getUnique('AlertName'));
@@ -68,12 +74,10 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
       setUniquePriorities(getUnique('Priority'));
       setUniqueCategories(getUnique('Category'));
     };
-
+  
     getUniqueValues();
-
-    
-
-  }, [alertData]);
+  }, [alertData, alertModelData]);
+  
   
   const handleCheckboxChange = (filterKey, value) => {
 

@@ -508,6 +508,12 @@ useEffect(() => {
 
 // console.log('Active tab from app.js - ',activeTab);
 
+useEffect(() => {
+  // Whenever there's a change in the tab or any change in alertData, olympusData, or nonOlympusData,
+  // show the "Classify Alerts" button
+  setShowClassifyButton(true);
+}, [activeTab, alertData, olympusData, nonOlympusData]);
+
 
 
 // const DataFetchFromCSV = useCallback(async()=>{

@@ -23,7 +23,7 @@ import RareAlerts from './RareAlerts.jsx';
 import AnomalyAlerts from './AnomalyAlerts.jsx';
 
 
-const NewDashboard = ({alertData}) => {
+const NewDashboard = ({alertData, alertModelData}) => {
   const [data, setData] = useState([]);
   const [zoneOptions, setZoneOptions] = useState([]);
   const [uniqueAlerts, setUniqueAlerts] = useState([]);
@@ -360,9 +360,9 @@ const renderPriorities = (alertName) => {
         <div className='charts' >
             {/* <AlertVsTimeDiff alertData={alertData} selectedZone={selectedZone}/> */}
             {/* <NoiseAlerts alertData={alertData} selectedZone={selectedZone}/> */}
-            <NormalAlerts alertData={alertData} selectedZone={selectedZone}/>
-            <RareAlerts alertData={alertData} selectedZone={selectedZone} />
-            <AnomalyAlerts alertData={alertData} selectedZone={selectedZone}/>
+            <NormalAlerts alertData={alertData} alertModelData={alertModelData} selectedZone={selectedZone}/>
+            <RareAlerts alertData={alertData} alertModelData={alertModelData} selectedZone={selectedZone} />
+            <AnomalyAlerts alertData={alertData} alertModelData={alertModelData} selectedZone={selectedZone}/>
 
         </div>
        

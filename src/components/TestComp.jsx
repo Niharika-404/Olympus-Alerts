@@ -18,8 +18,32 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
   };
 
   React.useEffect(() => {
+    // const applyFilters = () => {
+    //   if (Array.isArray(alertData)) {
+    //     const filteredAlerts = alertData.filter((alert) => {
+    //       return (
+    //         (!filters.cluster?.length || (alert.Cluster && filters.cluster.some((value) => alert.Cluster.includes(value)))) &&
+    //         (!filters.alertName?.length || (alert.AlertName && filters.alertName.some((value) => alert.AlertName.includes(value)))) &&
+    //         (!filters.zone?.length || (alert.Zone && filters.zone.some((value) => alert.Zone.includes(value)))) &&
+    //         (!filters.priority?.length || (alert.Priority && filters.priority.some((value) => alert.Priority.includes(value)))) &&
+    //         (!filters.status?.length || (alert.Status && filters.status.some((value) => alert.Status.includes(value)))) &&
+    //         (!filters.category?.length || (alert.Category && filters.category.some((value) => alert.Category.includes(value)))) &&
+    //         (!searchTerm ||
+    //           Object.values(alert).some(
+    //             (value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase())
+    //           ))
+    //       );
+    //     });
+
+    //     setFilteredData(filteredAlerts);
+    //   } else {
+    //     console.error("alertData is not an array:", alertData);
+    //     setFilteredData([]);
+    //   }
+    // };
+
     const applyFilters = () => {
-      if (Array.isArray(alertData)) {
+      if (Array.isArray(alertData) && Array.isArray(alertModelData)) {
         const filteredAlerts = alertData.filter((alert) => {
           return (
             (!filters.cluster?.length || (alert.Cluster && filters.cluster.some((value) => alert.Cluster.includes(value)))) &&
@@ -27,23 +51,32 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
             (!filters.zone?.length || (alert.Zone && filters.zone.some((value) => alert.Zone.includes(value)))) &&
             (!filters.priority?.length || (alert.Priority && filters.priority.some((value) => alert.Priority.includes(value)))) &&
             (!filters.status?.length || (alert.Status && filters.status.some((value) => alert.Status.includes(value)))) &&
-            (!filters.category?.length || (alert.Category && filters.category.some((value) => alert.Category.includes(value)))) &&
             (!searchTerm ||
               Object.values(alert).some(
                 (value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase())
               ))
           );
         });
-
-        setFilteredData(filteredAlerts);
+    
+        // Get the selected category from the filters
+        const selectedCategory = filters.category[0]; // Assuming only one category can be selected at a time
+    
+        // Filter the alerts based on the selected category
+        const categoryFilteredAlerts = filteredAlerts.filter(alert => {
+          const matchedAlert = alertModelData.find(modelAlert => modelAlert.AlertID === alert.AlertID);
+          return matchedAlert && matchedAlert.Category === selectedCategory;
+        });
+    
+        setFilteredData(categoryFilteredAlerts);
       } else {
-        console.error("alertData is not an array:", alertData);
+        console.error("alertData or alertModelData is not an array:", alertData, alertModelData);
         setFilteredData([]);
       }
     };
+    
 
     applyFilters();
-  }, [selectedDate, alertData, loading, filters, searchTerm]);
+  }, [selectedDate, alertData, loading, filters, searchTerm, alertModelData]);
 
     // Effect to reset page when filtered data changes
     useEffect(() => {

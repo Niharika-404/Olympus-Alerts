@@ -96,9 +96,9 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
           </div>
         )}
         {activeTab === 'Dashboard' && ( dashboardData==='Alerts' ? 
-          <NewDashboard alertData={alertData} /> : dashboardData==='Olympus' ? 
-          <NewDashboard alertData={olympusData} /> : dashboardData==='Non-Olympus'?
-          <NewDashboard alertData={nonOlympusData} /> : ''
+          <NewDashboard alertData={alertData} alertModelData={alertModelData}/> : dashboardData==='Olympus' ? 
+          <NewDashboard alertData={olympusData} alertModelData={olympusModelData}/> : dashboardData==='Non-Olympus'?
+          <NewDashboard alertData={nonOlympusData} alertModelData={nonOlympusModelData}/> : ''
         )}
           {activeTab === 'Olympus' && (
           <div id='alerttable-count'>
