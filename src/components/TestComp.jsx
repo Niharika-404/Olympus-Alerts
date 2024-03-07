@@ -13,8 +13,8 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const getCategory = (alertId) => {
-    const matchedAlert = alertModelData.find(alert => alert.alertid === alertId);
-    return matchedAlert ? matchedAlert.category : 'N/A';
+    const matchedAlert = alertModelData.find(alert => alert.AlertID === alertId);
+    return matchedAlert ? matchedAlert.Category : 'N/A';
   };
 
   React.useEffect(() => {

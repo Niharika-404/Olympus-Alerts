@@ -87,56 +87,96 @@ const formatDate = (date) => {
   return formattedDate;
 };
 
-
-
 const classifyAlerts = useCallback(async () => {
   try {
-    // Make an API POST call to the /predict endpoint
-    let dataToBeSent;
+    let dataToBeSent = {}; // Default to an empty object
+    // Determine the data to be sent based on the active tab and category
     if(activeTab==='Alerts'){
       dataToBeSent = alertData;
     }
     else if(activeTab==='Olympus'){
-      if(category==='Olympus'){
-        dataToBeSent = olympusData
-      }
-      else if(category==='Non-Olympus'){
-        dataToBeSent = nonOlympusData
-      }
+      dataToBeSent = category==='Olympus' ? olympusData : nonOlympusData;
     }
-    const response = await axios.post(
-      'http://localhost:5000/predict',
-      {
-        // Pass the necessary data to the endpoint, such as alertData, olympusData, or nonOlympusData
-        data: dataToBeSent
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+    console.log('Sending data to server:', dataToBeSent); 
     
-    const responseData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
 
+    const response = await axios.post('http://localhost:5000/predict', {data: dataToBeSent}, {headers: {'Content-Type': 'application/json'}});
 
-    // Handle the response as needed
+    // Assuming response.data is the correct format
+    console.log("Data type :" , typeof(response.data))
+    const safeResponseData = response.data.replace(/\bNaN\b/g, "null");
+    const parsedData = JSON.parse(safeResponseData);
+    console.log("Parsed data type:", typeof(parsedData));
+    console.log('Parsed classification response:', parsedData);
+    
+    console.log('Classification response:', response);
     if(activeTab==='Alerts'){
-      setAlertModelData(responseData)
+      setAlertModelData(parsedData);
     }
     else if(activeTab==='Olympus'){
       if(category==='Olympus'){
-        setOlympusModelData(responseData)
+        setOlympusModelData(parsedData);
       }
       else if(category==='Non-Olympus'){
-        setNonOlympusModelData(responseData)
+        setNonOlympusModelData(parsedData);
       }
     }
-    console.log('Classification response:', response.data);
   } catch (error) {
     console.error('Error classifying alerts:', error);
   }
-},[alertData, olympusData, nonOlympusData, activeTab, category]);
+}, [alertData, olympusData, nonOlympusData, activeTab, category]);
+
+
+// const classifyAlerts = useCallback(async () => {
+//   try {
+//     // Make an API POST call to the /predict endpoint
+//     let dataToBeSent;
+//     if(activeTab==='Alerts'){
+//       dataToBeSent = alertData;
+//     }
+//     else if(activeTab==='Olympus'){
+//       if(category==='Olympus'){
+//         dataToBeSent = olympusData
+//       }
+//       else if(category==='Non-Olympus'){
+//         dataToBeSent = nonOlympusData
+//       }
+//     }
+//     const response = await axios.post(
+//       'http://localhost:5000/predict',
+//       {
+//         // Pass the necessary data to the endpoint, such as alertData, olympusData, or nonOlympusData
+//         data: dataToBeSent
+//       },
+//       {
+//         headers: {
+//           'Content-Type': 'application/json'
+//         }
+//       }
+//     );
+
+    
+    
+    
+
+
+//     // Handle the response as needed
+//     if(activeTab==='Alerts'){
+//       setAlertModelData(response.data)
+//     }
+//     else if(activeTab==='Olympus'){
+//       if(category==='Olympus'){
+//         setOlympusModelData(response.data)
+//       }
+//       else if(category==='Non-Olympus'){
+//         setNonOlympusModelData(response.data)
+//       }
+//     }
+//     console.log('Classification response:', response.data);
+//   } catch (error) {
+//     console.error('Error classifying alerts:', error);
+//   }
+// },[alertData, olympusData, nonOlympusData, activeTab, category]);
  
 
 const fetchData = useCallback(async (startParam = start, endParam=end) => {
