@@ -48,10 +48,16 @@ function App() {
 
   const [dashboardData, setDashboardData] = useState('Alerts');
   const [showClassifyButton, setShowClassifyButton] = useState(true); // State to track the visibility of "Classify Alerts" button
+  const [showClassifyButtonForOly, setShowClassifyButtonForOly] = useState(true); // State to track the visibility of "Classify Alerts" button
 
 
   const handleClassifyClick = () => {
     setShowClassifyButton(false); // Hide the "Classify Alerts" button
+    classifyAlerts();
+  };
+
+  const handleClassifyOlyClick = () => {
+    setShowClassifyButtonForOly(false); // Hide the "Classify Alerts" button
     classifyAlerts();
   };
   
@@ -512,26 +518,36 @@ useEffect(() => {
   // Whenever there's a change in the tab or any change in alertData, olympusData, or nonOlympusData,
   // show the "Classify Alerts" button
   setShowClassifyButton(true);
-}, [activeTab, alertData, olympusData, nonOlympusData, category]);
+}, [ alertData]);
+
+useEffect(() => {
+  // Whenever there's a change in the tab or any change in alertData, olympusData, or nonOlympusData,
+  // show the "Classify Alerts" button
+  setShowClassifyButtonForOly(true);
+}, [ olympusData, nonOlympusData, category]);
 
 
-
-// const DataFetchFromCSV = useCallback(async()=>{
-//   const response = await fetch('/AlertsData.csv'); // Update the path
-//       if (!response.ok) {
-//         throw new Error('Failed to fetch CSV file');
-//       }
-//       const csv = await response.text(); // Extract CSV content
-//       const parsedData = Papa.parse(csv, { header: true }).data; // Parse CSV using Papaparse
-//       setAlertData(parsedData);
-
-//       setResponders(['olympus_middleware_sre', 'Data_Commons_DevOps_Team', 'Metis_Dev_Team', 'Commons_DevOps', 'olympus_dbre_team', 'Prod_Ops'])
-// },[])
+// const DataFetchFromCSV = useCallback(async () => {
+//   try {
+//     const response = await fetch('/AlertsData.csv'); // Update the path
+//     if (!response.ok) {
+//       throw new Error('Failed to fetch CSV file');
+//     }
+//     const csv = await response.text(); // Extract CSV content
+//     const parsedData = Papa.parse(csv, { header: true }).data; // Parse CSV using Papaparse
+//     setAlertData(parsedData);
+//     setResponders(['olympus_middleware_sre', 'Data_Commons_DevOps_Team', 'Metis_Dev_Team', 'Commons_DevOps', 'olympus_dbre_team', 'Prod_Ops']);
+//   } catch (error) {
+//     console.error('Error fetching CSV data:', error);
+//   }
+// }, []);
 
 // useEffect(() => {
 //   // Initial API call on component mount
 //   DataFetchFromCSV();
 // }, [DataFetchFromCSV]);
+
+
 
 // console.log(`Start - ${startFormatted.date}, ${startFormatted.time}; End - ${endFormatted.date}, ${endFormatted.time};`);
 // console.log(start, end);
@@ -545,7 +561,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick} alertModelData={alertModelData} olympusModelData={olympusModelData} nonOlympusModelData={nonOlympusModelData}/>}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick} alertModelData={alertModelData} olympusModelData={olympusModelData} nonOlympusModelData={nonOlympusModelData} showClassifyButtonForOly={showClassifyButtonForOly} handleClassifyOlyClick={handleClassifyOlyClick}/>}
           />
           {/* <Route
             path="/"

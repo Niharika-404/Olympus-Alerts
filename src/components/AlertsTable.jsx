@@ -367,6 +367,9 @@ const clearFilter = (filterName) => {
    if (filterName === 'status') {
     setSelectedStatus('');
   }
+  if (filterName === 'category') {
+    setSelectedCategory('');
+  }
 };
 
 

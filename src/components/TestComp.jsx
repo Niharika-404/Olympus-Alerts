@@ -18,19 +18,19 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
   };
 
   React.useEffect(() => {
+    console.log(alertData);
     const applyFilters = () => {
       if (Array.isArray(alertData)) {
         let filteredAlerts = [...alertData];
-  
-        if (Array.isArray(alertModelData)) {
-          // If alertModelData is available, filter alerts based on category
-          const selectedCategory = filters.category[0]; // Assuming only one category can be selected at a time
+    
+        if (Array.isArray(alertModelData) && filters.category.length > 0) {
+          // If alertModelData is available and categories are selected, filter alerts based on categories
           filteredAlerts = filteredAlerts.filter(alert => {
             const matchedAlert = alertModelData.find(modelAlert => modelAlert.AlertID === alert.AlertID);
-            return matchedAlert && matchedAlert.Category === selectedCategory;
+            return matchedAlert && filters.category.includes(matchedAlert.Category);
           });
         }
-  
+    
         // Apply other filters
         filteredAlerts = filteredAlerts.filter((alert) => (
           (!filters.cluster?.length || (alert.Cluster && filters.cluster.some((value) => alert.Cluster.includes(value)))) &&
@@ -43,14 +43,14 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
               (value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase())
             ))
         ));
-  
+    
         setFilteredData(filteredAlerts);
       } else {
         console.error("alertData is not an array:", alertData);
         setFilteredData([]);
       }
     };
-  
+    
     applyFilters();
   }, [selectedDate, alertData, loading, filters, searchTerm, alertModelData]);
   
