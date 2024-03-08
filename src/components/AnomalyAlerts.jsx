@@ -53,7 +53,7 @@ const AnomalyAlerts = ({ alertData, selectedZone, alertModelData }) => {
     <div>
       <div id='info' className='tooltip'>
         <FontAwesomeIcon icon={faInfo}/>
-        <span className="tooltiptext">This is beta version</span>
+        <span className="tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
       </div>
       <div className='alerts-time-table' style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '1' }}>
         <h3>Anomaly Alerts <sup>BETA</sup></h3>

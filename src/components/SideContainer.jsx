@@ -115,7 +115,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
 
 
           const totalNormalCount = modelData.filter((alert)=>alert?.Category === 'Normal').length;
-          const totalRareCount = modelData.filter((alert)=>alert?.Category === 'rare').length;
+          const totalRareCount = modelData.filter((alert)=>alert?.Category === 'Rare').length;
           const totalAnomalyCount = modelData.filter((alert)=>alert?.Category === 'Anomaly').length;
 
   
@@ -357,7 +357,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                   Normal <br />
                   <strong>{totalNormal}</strong>
                 </div>
-                <div id="rare-alerts"  onClick={()=>handleCategoryClick('rare')}>                                                
+                <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
                 <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
 
                   Rare <br />
@@ -390,7 +390,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                   Normal <br />
                   <strong>{totalNormal}</strong>
                 </div>
-                <div id="rare-alerts"  onClick={()=>handleCategoryClick('rare')}>                                                
+                <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
                 <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This is a beta version" /></small>
 
                   Rare <br />

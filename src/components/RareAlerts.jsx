@@ -13,7 +13,7 @@ const RareAlerts = ({ alertData, selectedZone, alertModelData }) => {
       // Filter further based on category 'Normal' from alertModelData
       const rareAlerts = filteredAlerts.filter(alert => {
         const matchedModelAlert = alertModelData.find(modelAlert => modelAlert.AlertID === alert.AlertID);
-        return matchedModelAlert && matchedModelAlert.Category === 'rare';
+        return matchedModelAlert && matchedModelAlert.Category === 'Rare';
       });
       // Map filtered alerts to table rows
       const tableRows = rareAlerts.map(alert => ({
@@ -53,7 +53,7 @@ const RareAlerts = ({ alertData, selectedZone, alertModelData }) => {
     <div>
       <div id='info' className='tooltip'>
         <FontAwesomeIcon icon={faInfo}/>
-        <span className="tooltiptext">This is beta version</span>
+        <span className="tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
       </div>
       <div className='alerts-time-table' style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '1' }}>
         <h3>Rare Alerts <sup>BETA</sup></h3>

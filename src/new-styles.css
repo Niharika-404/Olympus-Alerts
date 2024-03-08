@@ -902,15 +902,15 @@ sup{
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
+  width: 250px;
+  background-color: #c1d1e8;
+  color: black;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 5px;
   position: absolute;
   z-index: 1;
-  top: -100%;
+  top: -250%;
   left: 120%;
 }
 
@@ -922,7 +922,7 @@ sup{
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent black transparent transparent;
+  border-color: transparent #c1d1e8 transparent transparent;
 }
 .tooltip:hover .tooltiptext {
   visibility: visible;
