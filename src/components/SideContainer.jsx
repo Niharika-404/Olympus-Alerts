@@ -353,18 +353,24 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 <div className="normalRareCount">
 
                 <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
-                <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" /></small>
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
+                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                </small>
                   Normal <br />
                   <strong>{totalNormal}</strong>
                 </div>
                 <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
-                <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" /></small>
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
+                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                </small>
 
                   Rare <br />
                   <strong>{totalRare}</strong>
                 </div>
                 <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
-                <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal"  /></small>
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
+                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                </small>
 
                   Anomaly <br />
                   <strong>{totalAnomaly}</strong>
@@ -386,18 +392,25 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 <div className="normalRareCount">
 
                 <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
-                <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" /></small>
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
+                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                </small>
+           
                   Normal <br />
                   <strong>{totalNormal}</strong>
                 </div>
                 <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
-                <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" /></small>
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
+                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                </small>
 
                   Rare <br />
                   <strong>{totalRare}</strong>
                 </div>
                 <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
-                <small className='info-icon'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal"  /></small>
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
+                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                </small>
 
                   Anomaly <br />
                   <strong>{totalAnomaly}</strong>
