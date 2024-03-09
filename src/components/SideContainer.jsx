@@ -12,7 +12,7 @@ import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import PriorityTable from './PriorityTable';
 import Report from './Report';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick, totalAnomaly, totalNormal, totalRare}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick, totalAnomaly, totalNormal, totalRare, countLoading, countLoadingOly}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -359,7 +359,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 <span className="alerts-tooltiptext">Normal alerts are labeled as such due to their frequency being typical compared to other zones and clusters.</span>
                 </small>
                   Normal <br />
-                  <strong>{totalNormal}</strong>
+                  <strong>{countLoading? 'Loading...': totalNormal}</strong>
                 </div>
                 <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} />
@@ -367,7 +367,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 </small>
 
                   Rare <br />
-                  <strong>{totalRare}</strong>
+                  <strong>{countLoading? 'Loading...': totalRare}</strong>
                 </div>
                 <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo}/>
@@ -375,7 +375,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 </small>
 
                   Anomaly <br />
-                  <strong>{totalAnomaly}</strong>
+                  <strong>{countLoading? 'Loading...': totalAnomaly}</strong>
                 </div>
               </div>
               )
@@ -401,7 +401,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 </small>
            
                   Normal <br />
-                  <strong>{totalNormal}</strong>
+                  <strong>{countLoadingOly? 'Loading...': totalNormal}</strong>
                 </div>
                 <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo}  />
@@ -409,7 +409,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 </small>
 
                   Rare <br />
-                  <strong>{totalRare}</strong>
+                  <strong>{countLoadingOly? 'Loading...': totalRare}</strong>
                 </div>
                 <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} />
@@ -417,7 +417,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 </small>
 
                   Anomaly <br />
-                  <strong>{totalAnomaly}</strong>
+                  <strong>{countLoadingOly? 'Loading...': totalAnomaly}</strong>
                 </div>
               </div>
               )

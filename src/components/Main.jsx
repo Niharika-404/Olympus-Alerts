@@ -7,7 +7,7 @@ import Title from './Title';
 import NewDashboard from './NewDashboard';
 import OlympusNonOlympus from './OlympusNonOlympus';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick, totalNormal, totalAnomaly, totalRare }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick, totalNormal, totalAnomaly, totalRare, countLoading, countLoadingOly }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
 
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -95,6 +95,8 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               totalAnomaly={totalAnomaly}
               totalNormal={totalNormal}
               totalRare={totalRare}
+              countLoading={countLoading}
+              countLoadingOly={countLoadingOly}
             
             />
           </div>
@@ -157,6 +159,8 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               totalAnomaly={totalAnomaly}
               totalNormal={totalNormal}
               totalRare={totalRare}
+              countLoading={countLoading}
+              countLoadingOly={countLoadingOly}
             />
           </div>
         )}

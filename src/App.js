@@ -5,7 +5,7 @@ import Main from './components/Main';
 // import NewDashboard from './components/NewDashboard';
 import axios from 'axios';
 
-import Papa from 'papaparse';
+import Papa, { parse } from 'papaparse';
 // import Home from './components/Home';
 
 
@@ -56,20 +56,26 @@ function App() {
   const [totalRare, setTotalRare] = useState(0);
   const [totalAnomaly, setTotalAnomaly] = useState(0);
 
+  const [countLoading, setcountLoading] = useState(false);
+  const [countLoadingOly, setcountLoadingOly] = useState(false)
+
+
   const handleClassifyClick = () => {
     setShowClassifyButton(false); // Hide the "Classify Alerts" button
+    setcountLoading(true)
     setTotalAnomaly(0);
     setTotalNormal(0);
     setTotalRare(0);
-    classifyAlerts();
+    classifyAlerts('Alerts');
   };
 
   const handleClassifyOlyClick = () => {
     setShowClassifyButtonForOly(false); // Hide the "Classify Alerts" button
+    setcountLoadingOly(true)
     setTotalAnomaly(0);
     setTotalNormal(0);
     setTotalRare(0);
-    classifyAlerts();
+    classifyAlerts('Olympus');
   };
   
   const handleDashboardData = (dashboardData) => {
@@ -104,30 +110,15 @@ const formatDate = (date) => {
   return formattedDate;
 };
 
-const classifyAlerts = useCallback(async () => {
+const classifyAlerts = useCallback(async (activetab) => {
   try {
     let dataToBeSent = {}; // Default to an empty object
     // Determine the data to be sent based on the active tab and category
-    if(activeTab==='Alerts'){
+    if(activetab==='Alerts'){
       dataToBeSent = alertData;
-    }
-    else if(activeTab==='Olympus'){
-      dataToBeSent = category==='Olympus' ? olympusData : nonOlympusData;
-    }
-    // console.log('Sending data to server:', dataToBeSent); 
-    
-
-    const response = await axios.post('http://localhost:5000/predict', {data: dataToBeSent}, {headers: {'Content-Type': 'application/json'}});
-
-    // Assuming response.data is the correct format
-    // console.log("Data type :" , typeof(response.data))
-    const safeResponseData = response.data.replace(/\bNaN\b/g, "null");
-    const parsedData = JSON.parse(safeResponseData);
-    // console.log("Parsed data type:", typeof(parsedData));
-    // console.log('Parsed classification response:', parsedData);
-    
-    // console.log('Classification response:', response);
-    if(activeTab==='Alerts'){
+      const response = await axios.post('http://localhost:5000/predict', {data: dataToBeSent}, {headers: {'Content-Type': 'application/json'}});
+      const safeResponseData = response.data.replace(/\bNaN\b/g, "null");
+      const parsedData = JSON.parse(safeResponseData);
       setAlertModelData(parsedData);
       const totalNormalCount = parsedData.filter((alert)=>alert?.Category === 'Normal').length;
       const totalRareCount = parsedData.filter((alert)=>alert?.Category === 'Rare').length;
@@ -135,31 +126,36 @@ const classifyAlerts = useCallback(async () => {
       setTotalAnomaly(totalAnomalyCount);
       setTotalNormal(totalNormalCount);
       setTotalRare(totalRareCount);
+      setcountLoading(false)
+
     }
-    else if(activeTab==='Olympus'){
+    else if(activetab==='Olympus'){
+      dataToBeSent = category==='Olympus' ? olympusData : nonOlympusData;
+      const response = await axios.post('http://localhost:5000/predict', {data: dataToBeSent}, {headers: {'Content-Type': 'application/json'}});
+      const safeResponseData = response.data.replace(/\bNaN\b/g, "null");
+      const parsedData = JSON.parse(safeResponseData);
       if(category==='Olympus'){
-        setOlympusModelData(parsedData);
-        const totalNormalCount = parsedData.filter((alert)=>alert?.Category === 'Normal').length;
-        const totalRareCount = parsedData.filter((alert)=>alert?.Category === 'Rare').length;
-        const totalAnomalyCount = parsedData.filter((alert)=>alert?.Category === 'Anomaly').length;
-        setTotalAnomaly(totalAnomalyCount);
-        setTotalNormal(totalNormalCount);
-        setTotalRare(totalRareCount);
+        setOlympusModelData(parsedData)
       }
-      else if(category==='Non-Olympus'){
-        setNonOlympusModelData(parsedData);
-        const totalNormalCount = parsedData.filter((alert)=>alert?.Category === 'Normal').length;
-        const totalRareCount = parsedData.filter((alert)=>alert?.Category === 'Rare').length;
-        const totalAnomalyCount = parsedData.filter((alert)=>alert?.Category === 'Anomaly').length;
-        setTotalAnomaly(totalAnomalyCount);
-        setTotalNormal(totalNormalCount);
-        setTotalRare(totalRareCount);
+      else{
+        setNonOlympusModelData(parsedData)
       }
+      const totalNormalCount = parsedData.filter((alert)=>alert?.Category === 'Normal').length;
+      const totalRareCount = parsedData.filter((alert)=>alert?.Category === 'Rare').length;
+      const totalAnomalyCount = parsedData.filter((alert)=>alert?.Category === 'Anomaly').length;
+      setTotalAnomaly(totalAnomalyCount);
+      setTotalNormal(totalNormalCount);
+      setTotalRare(totalRareCount);
+      setcountLoadingOly(false)
+
+
     }
+    
+    
   } catch (error) {
     console.error('Error classifying alerts:', error);
   }
-}, [alertData, olympusData, nonOlympusData, activeTab, category]);
+}, [alertData, olympusData, nonOlympusData, category]);
 
 
 
@@ -598,7 +594,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick} alertModelData={alertModelData} olympusModelData={olympusModelData} nonOlympusModelData={nonOlympusModelData} showClassifyButtonForOly={showClassifyButtonForOly} handleClassifyOlyClick={handleClassifyOlyClick} totalAnomaly={totalAnomaly} totalNormal={totalNormal} totalRare={totalRare}/>}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick} alertModelData={alertModelData} olympusModelData={olympusModelData} nonOlympusModelData={nonOlympusModelData} showClassifyButtonForOly={showClassifyButtonForOly} handleClassifyOlyClick={handleClassifyOlyClick} totalAnomaly={totalAnomaly} totalNormal={totalNormal} totalRare={totalRare} countLoading={countLoading} countLoadingOly={countLoadingOly}/>}
           />
           {/* <Route
             path="/"
