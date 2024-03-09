@@ -9,7 +9,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, onCategoryChange, olympusData, nonOlympusData, dataCategory, selectedCategory, setSelectedCategory, olympusModelData, nonOlympusModelData }) => {
+const OlympusNonOlympus = ({ selectedDate, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, onCategoryChange, olympusData, nonOlympusData, dataCategory, selectedCategory, setSelectedCategory, olympusModelData, nonOlympusModelData, activeTab }) => {
 
   // console.log(selZone, selectedPriority, Dashboardstatus);
 
@@ -167,7 +167,9 @@ if(alertData){
     setDropdownVisibility(false)
   };
 
-
+  useEffect(() => {
+    handleResetFilters();
+  }, [olympusData, nonOlympusData, activeTab]);
 
   const toggleDropdown = () => {
     setDropdownVisibility(!isDropdownVisible);

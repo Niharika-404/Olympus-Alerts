@@ -51,13 +51,24 @@ function App() {
   const [showClassifyButtonForOly, setShowClassifyButtonForOly] = useState(true); // State to track the visibility of "Classify Alerts" button
 
 
+
+  const [totalNormal, setTotalNormal] = useState(0);
+  const [totalRare, setTotalRare] = useState(0);
+  const [totalAnomaly, setTotalAnomaly] = useState(0);
+
   const handleClassifyClick = () => {
     setShowClassifyButton(false); // Hide the "Classify Alerts" button
+    setTotalAnomaly(0);
+    setTotalNormal(0);
+    setTotalRare(0);
     classifyAlerts();
   };
 
   const handleClassifyOlyClick = () => {
     setShowClassifyButtonForOly(false); // Hide the "Classify Alerts" button
+    setTotalAnomaly(0);
+    setTotalNormal(0);
+    setTotalRare(0);
     classifyAlerts();
   };
   
@@ -118,13 +129,31 @@ const classifyAlerts = useCallback(async () => {
     console.log('Classification response:', response);
     if(activeTab==='Alerts'){
       setAlertModelData(parsedData);
+      const totalNormalCount = alertModelData.filter((alert)=>alert?.Category === 'Normal').length;
+      const totalRareCount = alertModelData.filter((alert)=>alert?.Category === 'Rare').length;
+      const totalAnomalyCount = alertModelData.filter((alert)=>alert?.Category === 'Anomaly').length;
+      setTotalAnomaly(totalAnomalyCount);
+      setTotalNormal(totalNormalCount);
+      setTotalRare(totalRareCount);
     }
     else if(activeTab==='Olympus'){
       if(category==='Olympus'){
         setOlympusModelData(parsedData);
+        const totalNormalCount = olympusModelData.filter((alert)=>alert?.Category === 'Normal').length;
+        const totalRareCount = olympusModelData.filter((alert)=>alert?.Category === 'Rare').length;
+        const totalAnomalyCount = olympusModelData.filter((alert)=>alert?.Category === 'Anomaly').length;
+        setTotalAnomaly(totalAnomalyCount);
+        setTotalNormal(totalNormalCount);
+        setTotalRare(totalRareCount);
       }
       else if(category==='Non-Olympus'){
         setNonOlympusModelData(parsedData);
+        const totalNormalCount = nonOlympusModelData.filter((alert)=>alert?.Category === 'Normal').length;
+        const totalRareCount = nonOlympusModelData.filter((alert)=>alert?.Category === 'Rare').length;
+        const totalAnomalyCount = nonOlympusModelData.filter((alert)=>alert?.Category === 'Anomaly').length;
+        setTotalAnomaly(totalAnomalyCount);
+        setTotalNormal(totalNormalCount);
+        setTotalRare(totalRareCount);
       }
     }
   } catch (error) {
@@ -485,7 +514,13 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
 // Remove the immediate check for `refresh` within `onRefresh`
 const onRefresh = () => {
   setRefresh(true); // Simply set `refresh` to true
-  setShowClassifyButton(true)
+  if(activeTab==='Alerts'){
+    setShowClassifyButton(true)
+
+  }
+  else if(activeTab==='Olympus'){
+    setShowClassifyButtonForOly(true)
+  }
 };
 
 // Use an effect to react to changes in `refresh`
@@ -561,7 +596,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick} alertModelData={alertModelData} olympusModelData={olympusModelData} nonOlympusModelData={nonOlympusModelData} showClassifyButtonForOly={showClassifyButtonForOly} handleClassifyOlyClick={handleClassifyOlyClick}/>}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick} alertModelData={alertModelData} olympusModelData={olympusModelData} nonOlympusModelData={nonOlympusModelData} showClassifyButtonForOly={showClassifyButtonForOly} handleClassifyOlyClick={handleClassifyOlyClick} totalAnomaly={totalAnomaly} totalNormal={totalNormal} totalRare={totalRare}/>}
           />
           {/* <Route
             path="/"

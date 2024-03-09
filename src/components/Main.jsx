@@ -7,7 +7,7 @@ import Title from './Title';
 import NewDashboard from './NewDashboard';
 import OlympusNonOlympus from './OlympusNonOlympus';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick, totalNormal, totalAnomaly, totalRare }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
 
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -60,6 +60,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               category={category}
               onCategoryChange={onCategoryChange}
               alertModelData={alertModelData}
+              activeTab={activeTab}
 
               // selZone={selZone}
               // selectedPriority={selectedPriority}
@@ -92,7 +93,9 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               alertModelData={alertModelData}
               showClassifyButtonForOly={showClassifyButtonForOly}
               handleClassifyOlyClick={handleClassifyOlyClick}
-
+              totalAnomaly={totalAnomaly}
+              totalNormal={totalNormal}
+              totalRare={totalRare}
             
             />
           </div>
@@ -120,6 +123,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               onCategoryChange={onCategoryChange}
               olympusModelData={olympusModelData}
               nonOlympusModelData={nonOlympusModelData}
+              activeTab={activeTab}
 
               // selZone={selZone}
               // selectedPriority={selectedPriority}
@@ -151,6 +155,9 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               alertModelData={alertModelData}
               showClassifyButtonForOly={showClassifyButtonForOly}
               handleClassifyOlyClick={handleClassifyOlyClick}
+              totalAnomaly={totalAnomaly}
+              totalNormal={totalNormal}
+              totalRare={totalRare}
             />
           </div>
         )}

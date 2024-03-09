@@ -53,7 +53,7 @@ const RareAlerts = ({ alertData, selectedZone, alertModelData }) => {
     <div>
       <div id='info' className='tooltip'>
         <FontAwesomeIcon icon={faInfo}/>
-        <span className="tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+        <span className="tooltiptext">Rare alerts denote occurrences that are infrequent within a given zone and cluster.</span>
       </div>
       <div className='alerts-time-table' style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '1' }}>
         <h3>Rare Alerts <sup>BETA</sup></h3>

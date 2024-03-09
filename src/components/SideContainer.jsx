@@ -12,13 +12,13 @@ import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import PriorityTable from './PriorityTable';
 import Report from './Report';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick}) => {
+const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick, totalAnomaly, totalNormal, totalRare}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
-    const [totalNormal, setTotalNormal] = useState(0);
-    const [totalRare, setTotalRare] = useState(0);
-    const [totalAnomaly, setTotalAnomaly] = useState(0);
+    // const [totalNormal, setTotalNormal] = useState(0);
+    // const [totalRare, setTotalRare] = useState(0);
+    // const [totalAnomaly, setTotalAnomaly] = useState(0);
     const [dateRange, setDateRange] = useState(false); // State to track if date range is selected
 
 
@@ -114,9 +114,9 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
           const totalAckCount = alerts.filter((alert)=>alert?.Status === 'acknowledged').length;
 
 
-          const totalNormalCount = modelData.filter((alert)=>alert?.Category === 'Normal').length;
-          const totalRareCount = modelData.filter((alert)=>alert?.Category === 'Rare').length;
-          const totalAnomalyCount = modelData.filter((alert)=>alert?.Category === 'Anomaly').length;
+          // const totalNormalCount = modelData.filter((alert)=>alert?.Category === 'Normal').length;
+          // const totalRareCount = modelData.filter((alert)=>alert?.Category === 'Rare').length;
+          // const totalAnomalyCount = modelData.filter((alert)=>alert?.Category === 'Anomaly').length;
 
   
           const priorities = ['P1', 'P2', 'P3', 'P4', 'P5'];
@@ -132,9 +132,9 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
           setTotalOpened(totalOpenedCount);
           setTotalClosed(totalClosedCount);
           setTotalAck(totalAckCount);
-          setTotalNormal(totalNormalCount);
-          setTotalRare(totalRareCount);
-          setTotalAnomaly(totalAnomalyCount);
+          // setTotalNormal(totalNormalCount);
+          // setTotalRare(totalRareCount);
+          // setTotalAnomaly(totalAnomalyCount);
           setPriorityCounts(priorityCounts);
 
           // console.log('After fetchData:', { loading,  alertData });
@@ -343,25 +343,27 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
             {
               activeTab==='Alerts' && showClassifyButton && (
                 <div>
-                    <button className='Analyze-btn' onClick={()=>handleClassifyClick()} >Classify Alerts</button>
+                   
+                    <button className='Analyze-btn'  style={{marginBottom:'2px'}} onClick={()=>handleClassifyClick()} >Classify Alerts</button>
+                    <small style={{marginTop:'0'}}>*** This feature utilizes a machine learning model to categorize alerts into three distinct groups: Anomaly, Rare, and Normal.</small>
                 </div>
             )}
 
  
             {
               activeTab==='Alerts' && !showClassifyButton && (
-                <div className="normalRareCount">
+                <div className="normalRareCount"> 
 
                 <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
-                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                <span className="alerts-tooltiptext">Normal alerts are labeled as such due to their frequency being typical compared to other zones and clusters.</span>
                 </small>
                   Normal <br />
                   <strong>{totalNormal}</strong>
                 </div>
                 <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
-                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                <span className="alerts-tooltiptext">Rare alerts denote occurrences that are infrequent within a given zone and cluster.</span>
                 </small>
 
                   Rare <br />
@@ -369,7 +371,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 </div>
                 <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
-                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                <span className="alerts-tooltiptext">Anomaly alerts, encompassing false positives, outliers, and noise, are classified based on their anomalous nature.</span>
                 </small>
 
                   Anomaly <br />
@@ -382,7 +384,9 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
   {
               activeTab==='Olympus' && showClassifyButtonForOly && (
                 <div>
-                    <button className='Analyze-btn' onClick={()=>handleClassifyOlyClick()} >Classify Alerts</button>
+                   
+                    <button className='Analyze-btn' style={{marginBottom:'2px'}} onClick={()=>handleClassifyOlyClick()} >Classify Alerts</button>
+                    <small style={{marginTop:'0'}}>*** This feature utilizes a machine learning model to categorize alerts into three distinct groups: Anomaly, Rare, and Normal.</small>
                 </div>
             )}
 
@@ -393,7 +397,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
 
                 <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
-                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                <span className="alerts-tooltiptext">Normal alerts are labeled as such due to their frequency being typical compared to other zones and clusters.</span>
                 </small>
            
                   Normal <br />
@@ -401,7 +405,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 </div>
                 <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
-                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                <span className="alerts-tooltiptext">Rare alerts denote occurrences that are infrequent within a given zone and cluster.</span>
                 </small>
 
                   Rare <br />
@@ -409,7 +413,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 </div>
                 <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
                 <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} title="This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal" />
-                <span className="alerts-tooltiptext">This new feature is designed to enhance monitoring capabilities by categorizing alerts into three main types: anomaly, rare, and normal</span>
+                <span className="alerts-tooltiptext">Anomaly alerts, encompassing false positives, outliers, and noise, are classified based on their anomalous nature.</span>
                 </small>
 
                   Anomaly <br />

@@ -9,7 +9,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, selectedCategory, setSelectedCategory, alertModelData }) => {
+const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSelectedStatus, responders, onResponderChange, selectedResponder, selectedCategory, setSelectedCategory, alertModelData, activeTab }) => {
 
   // console.log(selZone, selectedPriority, Dashboardstatus);
 
@@ -153,6 +153,9 @@ const AlertsTable = ({ selectedDate, alertData, loading, selectedStatus, setSele
     setDropdownVisibility(false)
   };
 
+  useEffect(() => {
+    handleResetFilters();
+  }, [alertData, activeTab]);
 
 
   const toggleDropdown = () => {
