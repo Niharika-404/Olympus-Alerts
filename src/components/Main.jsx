@@ -6,8 +6,9 @@ import AlertsTable from './AlertsTable';
 import Title from './Title';
 import NewDashboard from './NewDashboard';
 import OlympusNonOlympus from './OlympusNonOlympus';
+import OlyNonOlySideContainer from './OlyNonOlySideContainer';
 
-const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick, totalNormal, totalAnomaly, totalRare, countLoading, countLoadingOly }) => {
+const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateChange, start, end, responders, onResponderChange, selectedResponder, handleSearch, category,  onCategoryChange, olympusData, nonOlympusData, trendData, priorityTrendData, activeTab, handleTabChange, alertsLoading, handleDashboardData, dashboardData, showClassifyButton, handleClassifyClick, alertModelData, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick,  countLoading, countLoadingOly, showClassifyButtonForNonOly, countLoadingNonOly, handleClassifyNonOlyClick }) => {
   const [selectedStatus, setSelectedStatus] = useState('');
 
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -92,9 +93,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               alertModelData={alertModelData}
               showClassifyButtonForOly={showClassifyButtonForOly}
               handleClassifyOlyClick={handleClassifyOlyClick}
-              totalAnomaly={totalAnomaly}
-              totalNormal={totalNormal}
-              totalRare={totalRare}
+             
               countLoading={countLoading}
               countLoadingOly={countLoadingOly}
             
@@ -130,7 +129,7 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               // selectedPriority={selectedPriority}
               // Dashboardstatus={status}
             />
-            <SideContainer
+            <OlyNonOlySideContainer
               onStartDateChange={onStartDateChange}
               onEndDateChange={onEndDateChange}
               start={start}
@@ -156,11 +155,12 @@ const Main = ({ loading, alertData, handleRefresh, onStartDateChange, onEndDateC
               alertModelData={alertModelData}
               showClassifyButtonForOly={showClassifyButtonForOly}
               handleClassifyOlyClick={handleClassifyOlyClick}
-              totalAnomaly={totalAnomaly}
-              totalNormal={totalNormal}
-              totalRare={totalRare}
+             
               countLoading={countLoading}
               countLoadingOly={countLoadingOly}
+              showClassifyButtonForNonOly={showClassifyButtonForNonOly}
+              countLoadingNonOly={countLoadingNonOly}
+              handleClassifyNonOlyClick={handleClassifyNonOlyClick}
             />
           </div>
         )}

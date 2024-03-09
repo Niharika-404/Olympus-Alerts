@@ -76,54 +76,59 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
       const handleRunbook = (url) => {
         window.open(url, '_blank');
       };
-
-  useEffect(() => {
-    if (download) {
-      const visibleHeaders = [
-        'AlertID',
-        'AlertName',
-        'AlertType',
-        'Zone',
-        'Cluster',
-        'Priority',
-        'Acknowledged',
-        'CreatedAtTime',
-        'UpdatedAtTime',
-        'AckBy',
-        'AlertAckTime',
-        'Tags',
-        'Team',
-        'PrimaryResponderEmail',
-        'SecondaryResponderEmail',
-        'Severity',
-        'TimeToAck',
-        'TimeToClose',
-        'AlertCloseTime',
-        'ClosedBy',
-        'Status',
-        'AlertURL',
-        'RunbookUrl',
-      ];
-
-      const allCsvData = filteredData.map((alert) => {
-        const rowData = {};
-        visibleHeaders.forEach((header) => {
-          rowData[header] = alert[header] ?? 'N/A';
-        });
-        return rowData;
-      });
-
-      const csvFileName = 'alert_data.csv';
-      const csvLink = document.createElement('a');
-      csvLink.href = URL.createObjectURL(new Blob([Papa.unparse(allCsvData, { header: true })], { type: 'text/csv' }));
-      csvLink.setAttribute('download', csvFileName);
-      document.body.appendChild(csvLink);
-      csvLink.click();
-      document.body.removeChild(csvLink);
-
-      setDownload(false); // Reset download state after download logic is executed
-    }
-  }, [download, setDownload, filteredData]);
+      useEffect(() => {
+        if (download) {
+          const visibleHeaders = [
+            'AlertID',
+            'AlertName',
+            'AlertType',
+            'Zone',
+            'Cluster',
+            'Priority',
+            'Acknowledged',
+            'CreatedAtTime',
+            'UpdatedAtTime',
+            'AckBy',
+            'AlertAckTime',
+            'Tags',
+            'Team',
+            'PrimaryResponderEmail',
+            'SecondaryResponderEmail',
+            'Severity',
+            'TimeToAck',
+            'TimeToClose',
+            'AlertCloseTime',
+            'ClosedBy',
+            'Status',
+            'AlertURL',
+            'RunbookUrl',
+            'Category', // Add 'Category' to the list of visible headers
+          ];
+      
+          const allCsvData = filteredData.map((alert) => {
+            const rowData = {};
+            visibleHeaders.forEach((header) => {
+              if (header === 'Category') {
+                rowData[header] = getCategory(alert['AlertID']); // Get the category for each alert
+              } else {
+                rowData[header] = alert[header] ?? 'N/A';
+              }
+            });
+            return rowData;
+          });
+      
+          const csvFileName = 'alert_data.csv';
+          const csvLink = document.createElement('a');
+          csvLink.href = URL.createObjectURL(new Blob([Papa.unparse(allCsvData, { header: true })], { type: 'text/csv' }));
+          csvLink.setAttribute('download', csvFileName);
+          document.body.appendChild(csvLink);
+          csvLink.click();
+          document.body.removeChild(csvLink);
+      
+          setDownload(false); // Reset download state after download logic is executed
+        }
+      }, [download, setDownload, filteredData]);
+      
 
   const indexOfLastItem = (page + 1) * rowsPerPage;
   const indexOfFirstItem = indexOfLastItem - rowsPerPage;

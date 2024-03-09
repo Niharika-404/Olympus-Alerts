@@ -49,38 +49,52 @@ function App() {
   const [dashboardData, setDashboardData] = useState('Alerts');
   const [showClassifyButton, setShowClassifyButton] = useState(true); // State to track the visibility of "Classify Alerts" button
   const [showClassifyButtonForOly, setShowClassifyButtonForOly] = useState(true); // State to track the visibility of "Classify Alerts" button
+  const [showClassifyButtonForNonOly, setShowClassifyButtonForNonOly] = useState(true);
 
-
-
-  const [totalNormal, setTotalNormal] = useState(0);
-  const [totalRare, setTotalRare] = useState(0);
-  const [totalAnomaly, setTotalAnomaly] = useState(0);
 
   const [countLoading, setcountLoading] = useState(false);
-  const [countLoadingOly, setcountLoadingOly] = useState(false)
+  const [countLoadingOly, setcountLoadingOly] = useState(false);
+  const [countLoadingNonOly, setcountLoadingNonOly] = useState(false)
+
 
 
   const handleClassifyClick = () => {
     setShowClassifyButton(false); // Hide the "Classify Alerts" button
     setcountLoading(true)
-    setTotalAnomaly(0);
-    setTotalNormal(0);
-    setTotalRare(0);
     classifyAlerts('Alerts');
   };
 
   const handleClassifyOlyClick = () => {
     setShowClassifyButtonForOly(false); // Hide the "Classify Alerts" button
-    setcountLoadingOly(true)
-    setTotalAnomaly(0);
-    setTotalNormal(0);
-    setTotalRare(0);
+    setcountLoadingOly(true);
+    classifyAlerts('Olympus');
+  };
+
+  const handleClassifyNonOlyClick = () => {
+    setShowClassifyButtonForNonOly(false); // Hide the "Classify Alerts" button
+    setcountLoadingNonOly(true);
     classifyAlerts('Olympus');
   };
   
   const handleDashboardData = (dashboardData) => {
     setDashboardData(dashboardData)
   }
+
+  useEffect(() => {
+    // Whenever there's a change in alertData, show the "Classify Alerts" button
+    setShowClassifyButton(true);
+  }, [alertData]);
+  
+  useEffect(() => {
+    // Whenever there's a change in olympusData or nonOlympusData, show the "Classify Alerts" button for Olympus
+    setShowClassifyButtonForOly(true);
+  }, [olympusData]);
+
+  useEffect(() => {
+    // Whenever there's a change in olympusData or nonOlympusData, show the "Classify Alerts" button for Olympus
+    setShowClassifyButtonForNonOly(true);
+  }, [nonOlympusData]);
+  
 
 const handleTabChange  = (tab) =>{
   setActiveTab(tab);
@@ -120,12 +134,6 @@ const classifyAlerts = useCallback(async (activetab) => {
       const safeResponseData = response.data.replace(/\bNaN\b/g, "null");
       const parsedData = JSON.parse(safeResponseData);
       setAlertModelData(parsedData);
-      const totalNormalCount = parsedData.filter((alert)=>alert?.Category === 'Normal').length;
-      const totalRareCount = parsedData.filter((alert)=>alert?.Category === 'Rare').length;
-      const totalAnomalyCount = parsedData.filter((alert)=>alert?.Category === 'Anomaly').length;
-      setTotalAnomaly(totalAnomalyCount);
-      setTotalNormal(totalNormalCount);
-      setTotalRare(totalRareCount);
       setcountLoading(false)
 
     }
@@ -140,16 +148,12 @@ const classifyAlerts = useCallback(async (activetab) => {
       else{
         setNonOlympusModelData(parsedData)
       }
-      const totalNormalCount = parsedData.filter((alert)=>alert?.Category === 'Normal').length;
-      const totalRareCount = parsedData.filter((alert)=>alert?.Category === 'Rare').length;
-      const totalAnomalyCount = parsedData.filter((alert)=>alert?.Category === 'Anomaly').length;
-      setTotalAnomaly(totalAnomalyCount);
-      setTotalNormal(totalNormalCount);
-      setTotalRare(totalRareCount);
       setcountLoadingOly(false)
 
 
     }
+
+  
     
     
   } catch (error) {
@@ -499,12 +503,12 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
     else if(activeTab==='Olympus'){
       if(category==='Olympus'){
         fetchOlympusData(selectedStart, selectedEnd)
-        setShowClassifyButton(true)
+        setShowClassifyButtonForOly(true)
 
       }
       else{
         fetchNonOlympusData(selectedStart, selectedEnd)
-        setShowClassifyButton(true)
+        setShowClassifyButtonForNonOly(true)
 
       }
     }
@@ -517,7 +521,13 @@ const onRefresh = () => {
 
   }
   else if(activeTab==='Olympus'){
-    setShowClassifyButtonForOly(true)
+    if(category==='Olympus'){
+      setShowClassifyButtonForOly(true)
+
+    }
+    else{
+      setShowClassifyButtonForNonOly(true)
+    }
   }
 };
 
@@ -547,17 +557,7 @@ useEffect(() => {
 
 // console.log('Active tab from app.js - ',activeTab);
 
-useEffect(() => {
-  // Whenever there's a change in the tab or any change in alertData, olympusData, or nonOlympusData,
-  // show the "Classify Alerts" button
-  setShowClassifyButton(true);
-}, [ alertData]);
 
-useEffect(() => {
-  // Whenever there's a change in the tab or any change in alertData, olympusData, or nonOlympusData,
-  // show the "Classify Alerts" button
-  setShowClassifyButtonForOly(true);
-}, [ olympusData, nonOlympusData, category]);
 
 
 // const DataFetchFromCSV = useCallback(async () => {
@@ -594,7 +594,7 @@ useEffect(() => {
             path="/"
             element={<Main handleRefresh={onRefresh} onStartDateChange={handleStartDateChange}
             onEndDateChange={handleEndDateChange} end={end} trendData={trendData} priorityTrendData={priorityTrendData}
-            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick} alertModelData={alertModelData} olympusModelData={olympusModelData} nonOlympusModelData={nonOlympusModelData} showClassifyButtonForOly={showClassifyButtonForOly} handleClassifyOlyClick={handleClassifyOlyClick} totalAnomaly={totalAnomaly} totalNormal={totalNormal} totalRare={totalRare} countLoading={countLoading} countLoadingOly={countLoadingOly}/>}
+            start={start} loading={loading} alertData={alertData} responders={responders} selectedResponder={selectedResponder} onResponderChange={handleResponderChange} handleSearch={handleSearch} category={category} onCategoryChange={handleCategoryChange} olympusData={olympusData} nonOlympusData={nonOlympusData} handleTabChange={handleTabChange} activeTab={activeTab} alertsLoading={alertsLoading} handleDashboardData={handleDashboardData} dashboardData={dashboardData} showClassifyButton={showClassifyButton} handleClassifyClick={handleClassifyClick} alertModelData={alertModelData} olympusModelData={olympusModelData} nonOlympusModelData={nonOlympusModelData} showClassifyButtonForOly={showClassifyButtonForOly} handleClassifyOlyClick={handleClassifyOlyClick}  countLoading={countLoading} countLoadingOly={countLoadingOly} showClassifyButtonForNonOly={showClassifyButtonForNonOly} countLoadingNonOly={countLoadingNonOly} handleClassifyNonOlyClick={handleClassifyNonOlyClick}/>}
           />
           {/* <Route
             path="/"

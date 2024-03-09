@@ -12,7 +12,7 @@ import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import PriorityTable from './PriorityTable';
 import Report from './Report';
 
-const SideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory, showClassifyButton, handleClassifyClick, alertModelData, countLoading}) => {
+const OlyNonOlySideContainer = ({ setSelectedStatus, loading, alertData, handleRefresh, onDateChange, selectedDate, onStartDateChange, onEndDateChange, start, end, handleSearch, activeTab, selectedResponder, olympusData, nonOlympusData, category, trendData, priorityTrendData, setSelectedCategory, olympusModelData, nonOlympusModelData, showClassifyButtonForOly, handleClassifyOlyClick, countLoadingOly, showClassifyButtonForNonOly, countLoadingNonOly, handleClassifyNonOlyClick}) => {
     const [totalOpened, setTotalOpened] = useState(0);
     const [totalClosed, setTotalClosed] = useState(0);
     const [totalAck, setTotalAck] = useState(0);
@@ -105,9 +105,9 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
 
         try {
         
-          const alerts= alertData;
+          const alerts=  category==='Olympus'? olympusData: nonOlympusData;
 
-          const modelData =  alertModelData ;
+          const modelData = category==='Olympus'? olympusModelData: nonOlympusModelData;         
 
           const totalOpenedCount = alerts.filter((alert)=>alert?.Status === 'open').length;
           const totalClosedCount = alerts.filter((alert)=>alert?.Status === 'closed').length;
@@ -155,7 +155,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
       // fetchData();
   
 
-    }, [ alertData, loading, alertModelData]);
+    }, [ loading, category, olympusData, nonOlympusData, olympusModelData, nonOlympusModelData]);
 
   
 
@@ -340,48 +340,91 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
                 <strong>{totalAck}</strong>
               </div>
             </div>
-            {
-              activeTab==='Alerts' && showClassifyButton && (
+           
+  
+  {
+              activeTab==='Olympus'&& category==='Olympus' && showClassifyButtonForOly && (
                 <div>
                    
-                    <button className='Analyze-btn'  style={{marginBottom:'2px'}} onClick={()=>handleClassifyClick()} >Classify Alerts</button>
+                    <button className='Analyze-btn' style={{marginBottom:'2px'}} onClick={()=>handleClassifyOlyClick()} >Classify Alerts</button>
                     <small style={{marginTop:'0'}}><FontAwesomeIcon icon={faInfo} className='info-symbol'/> This feature utilizes a machine learning model to categorize alerts into three distinct groups: Anomaly, Rare, and Normal.</small>
                 </div>
             )}
 
  
             {
-              activeTab==='Alerts' && !showClassifyButton && (
-                <div className="normalRareCount"> 
+              activeTab==='Olympus' && category==='Olympus' && !showClassifyButtonForOly && (
+                <div className="normalRareCount">
 
                 <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
-                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo}/>
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo}  />
                 <span className="alerts-tooltiptext">Normal alerts are labeled as such due to their frequency being typical compared to other zones and clusters.</span>
                 </small>
+           
                   Normal <br />
-                  <strong>{countLoading? 'Loading...': totalNormal}</strong>
+                  <strong>{countLoadingOly? 'Loading...': totalNormal}</strong>
                 </div>
                 <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
-                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} />
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo}  />
                 <span className="alerts-tooltiptext">Rare alerts denote occurrences that are infrequent within a given zone and cluster.</span>
                 </small>
 
                   Rare <br />
-                  <strong>{countLoading? 'Loading...': totalRare}</strong>
+                  <strong>{countLoadingOly? 'Loading...': totalRare}</strong>
                 </div>
                 <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
-                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo}/>
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} />
                 <span className="alerts-tooltiptext">Anomaly alerts, encompassing false positives, outliers, and noise, are classified based on their anomalous nature.</span>
                 </small>
 
                   Anomaly <br />
-                  <strong>{countLoading? 'Loading...': totalAnomaly}</strong>
+                  <strong>{countLoadingOly? 'Loading...': totalAnomaly}</strong>
                 </div>
               </div>
               )
             } 
   
+  {
+              activeTab==='Olympus'&& category==='Non-Olympus' && showClassifyButtonForNonOly && (
+                <div>
+                   
+                    <button className='Analyze-btn' style={{marginBottom:'2px'}} onClick={()=>handleClassifyNonOlyClick()} >Classify Alerts</button>
+                    <small style={{marginTop:'0'}}><FontAwesomeIcon icon={faInfo} className='info-symbol'/> This feature utilizes a machine learning model to categorize alerts into three distinct groups: Anomaly, Rare, and Normal.</small>
+                </div>
+            )}
 
+ 
+            {
+              activeTab==='Olympus' && category==='Non-Olympus' && !showClassifyButtonForNonOly && (
+                <div className="normalRareCount">
+
+                <div id="normal-alerts" onClick={()=> handleCategoryClick('Normal')}>
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo}  />
+                <span className="alerts-tooltiptext">Normal alerts are labeled as such due to their frequency being typical compared to other zones and clusters.</span>
+                </small>
+           
+                  Normal <br />
+                  <strong>{countLoadingNonOly? 'Loading...': totalNormal}</strong>
+                </div>
+                <div id="rare-alerts"  onClick={()=>handleCategoryClick('Rare')}>                                                
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo}  />
+                <span className="alerts-tooltiptext">Rare alerts denote occurrences that are infrequent within a given zone and cluster.</span>
+                </small>
+
+                  Rare <br />
+                  <strong>{countLoadingNonOly? 'Loading...': totalRare}</strong>
+                </div>
+                <div id="anomaly-alerts" onClick={()=>handleCategoryClick('Anomaly')}>            
+                <small className='info-icon alerts-tooltip'><FontAwesomeIcon icon={faInfo} />
+                <span className="alerts-tooltiptext">Anomaly alerts, encompassing false positives, outliers, and noise, are classified based on their anomalous nature.</span>
+                </small>
+
+                  Anomaly <br />
+                  <strong>{countLoadingNonOly? 'Loading...': totalAnomaly}</strong>
+                </div>
+              </div>
+              )
+            } 
   
             
           
@@ -406,7 +449,7 @@ const [endTemp, setEndTemp] = useState(`${datePart}T${timePart}`); // Set end ti
     );
   };
   
-  export default SideContainer;
+  export default OlyNonOlySideContainer;
 
 
 
