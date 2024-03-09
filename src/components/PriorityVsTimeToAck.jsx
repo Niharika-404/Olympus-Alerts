@@ -61,7 +61,7 @@ const PriorityVsTimeToAck = ({ alertData, selectedZone }) => {
 
     try {
       setChartData(generateColumnChartData());
-      console.log(chartData.series[0].data);
+      // console.log(chartData.series[0].data);
     } catch (error) {
       console.error('Error generating chart data:', error);
     }

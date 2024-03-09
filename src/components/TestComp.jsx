@@ -18,7 +18,7 @@ const Test = ({ selectedDate, alertData, loading, filters, download, setDownload
   };
 
   React.useEffect(() => {
-    console.log(alertData);
+    // console.log(alertData);
     const applyFilters = () => {
       if (Array.isArray(alertData)) {
         let filteredAlerts = [...alertData];

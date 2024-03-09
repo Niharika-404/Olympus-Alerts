@@ -875,7 +875,7 @@ body{
 }
 
 
-#info{
+#info, .info-symbol{
   font-size: x-small;
   border: 1px solid black;
   width: 12px;
@@ -885,7 +885,10 @@ body{
   cursor: pointer;
 
 }
-
+.info-symbol{
+  width: 10px;
+  height: 10px;
+}
 sup{
   background-color: yellow;
   color: black;
@@ -962,3 +965,4 @@ sup{
 .alerts-tooltip:hover .alerts-tooltiptext {
   visibility: visible;
 }
+

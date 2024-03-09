@@ -19,7 +19,6 @@ const AutoAlertsTable = ({ alertData, selectedZone }) => {
           alert?.ClosedBy === 'Alert API'
         );
       });
-      console.log("Auto alerts",typeof(alert?.Acknowledged))
       const tableRows = filteredAlerts.map((alert) => ({
         alertName: alert['AlertName'],
 

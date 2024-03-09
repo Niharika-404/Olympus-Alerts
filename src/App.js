@@ -93,7 +93,7 @@ const handleCategoryChange = (category) => {
 
 
 
-console.log(category);
+// console.log(category);
 
 const formatDate = (date) => {
   const [day, month, year] = date.split('/');
@@ -114,24 +114,24 @@ const classifyAlerts = useCallback(async () => {
     else if(activeTab==='Olympus'){
       dataToBeSent = category==='Olympus' ? olympusData : nonOlympusData;
     }
-    console.log('Sending data to server:', dataToBeSent); 
+    // console.log('Sending data to server:', dataToBeSent); 
     
 
     const response = await axios.post('http://localhost:5000/predict', {data: dataToBeSent}, {headers: {'Content-Type': 'application/json'}});
 
     // Assuming response.data is the correct format
-    console.log("Data type :" , typeof(response.data))
+    // console.log("Data type :" , typeof(response.data))
     const safeResponseData = response.data.replace(/\bNaN\b/g, "null");
     const parsedData = JSON.parse(safeResponseData);
-    console.log("Parsed data type:", typeof(parsedData));
-    console.log('Parsed classification response:', parsedData);
+    // console.log("Parsed data type:", typeof(parsedData));
+    // console.log('Parsed classification response:', parsedData);
     
-    console.log('Classification response:', response);
+    // console.log('Classification response:', response);
     if(activeTab==='Alerts'){
       setAlertModelData(parsedData);
-      const totalNormalCount = alertModelData.filter((alert)=>alert?.Category === 'Normal').length;
-      const totalRareCount = alertModelData.filter((alert)=>alert?.Category === 'Rare').length;
-      const totalAnomalyCount = alertModelData.filter((alert)=>alert?.Category === 'Anomaly').length;
+      const totalNormalCount = parsedData.filter((alert)=>alert?.Category === 'Normal').length;
+      const totalRareCount = parsedData.filter((alert)=>alert?.Category === 'Rare').length;
+      const totalAnomalyCount = parsedData.filter((alert)=>alert?.Category === 'Anomaly').length;
       setTotalAnomaly(totalAnomalyCount);
       setTotalNormal(totalNormalCount);
       setTotalRare(totalRareCount);
@@ -139,18 +139,18 @@ const classifyAlerts = useCallback(async () => {
     else if(activeTab==='Olympus'){
       if(category==='Olympus'){
         setOlympusModelData(parsedData);
-        const totalNormalCount = olympusModelData.filter((alert)=>alert?.Category === 'Normal').length;
-        const totalRareCount = olympusModelData.filter((alert)=>alert?.Category === 'Rare').length;
-        const totalAnomalyCount = olympusModelData.filter((alert)=>alert?.Category === 'Anomaly').length;
+        const totalNormalCount = parsedData.filter((alert)=>alert?.Category === 'Normal').length;
+        const totalRareCount = parsedData.filter((alert)=>alert?.Category === 'Rare').length;
+        const totalAnomalyCount = parsedData.filter((alert)=>alert?.Category === 'Anomaly').length;
         setTotalAnomaly(totalAnomalyCount);
         setTotalNormal(totalNormalCount);
         setTotalRare(totalRareCount);
       }
       else if(category==='Non-Olympus'){
         setNonOlympusModelData(parsedData);
-        const totalNormalCount = nonOlympusModelData.filter((alert)=>alert?.Category === 'Normal').length;
-        const totalRareCount = nonOlympusModelData.filter((alert)=>alert?.Category === 'Rare').length;
-        const totalAnomalyCount = nonOlympusModelData.filter((alert)=>alert?.Category === 'Anomaly').length;
+        const totalNormalCount = parsedData.filter((alert)=>alert?.Category === 'Normal').length;
+        const totalRareCount = parsedData.filter((alert)=>alert?.Category === 'Rare').length;
+        const totalAnomalyCount = parsedData.filter((alert)=>alert?.Category === 'Anomaly').length;
         setTotalAnomaly(totalAnomalyCount);
         setTotalNormal(totalNormalCount);
         setTotalRare(totalRareCount);
@@ -160,6 +160,8 @@ const classifyAlerts = useCallback(async () => {
     console.error('Error classifying alerts:', error);
   }
 }, [alertData, olympusData, nonOlympusData, activeTab, category]);
+
+
 
 
 // const classifyAlerts = useCallback(async () => {
@@ -241,7 +243,7 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
         time: endObj.toLocaleString().split(',')[1].trim()
       };
     }
-    console.log('API call');
+    // console.log('API call');
     // Update your API call to use startFormatted and endFormatted
 
     // const baseURL = 'http://localhost:5000/alerts';
@@ -332,7 +334,7 @@ const fetchOlympusData = useCallback(async (startParam = start, endParam=end) =>
         time: endObj.toLocaleString().split(',')[1].trim()
       };
     }
-    console.log('API call');
+    // console.log('API call');
    
 
     const olyResponse = await axios.get(`http://localhost:5000/alerts/olympus`, {
@@ -380,7 +382,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
         time: endObj.toLocaleString().split(',')[1].trim()
       };
     }
-    console.log('API call');
+    // console.log('API call');
    
 
     const nonOlyResponse = await axios.get(`http://localhost:5000/alerts/non_olympus`, {
@@ -405,7 +407,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
     const fetchResponderNames = async () => {
       try {
         const responderNames = await axios.get('http://localhost:5000/responder_names');
-        console.log(responderNames.data.responder_names);
+        // console.log(responderNames.data.responder_names);
         setResponders(responderNames.data.responder_names);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -435,7 +437,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
             responder_name: selectedResponder
           },
         });
-        console.log(trendResponse.data);
+        // console.log(trendResponse.data);
         setTrendData(trendResponse.data)
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -453,7 +455,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
             responder_name: selectedResponder
           },
         });
-        console.log(priorityTrendResponse.data);
+        // console.log(priorityTrendResponse.data);
         setPriorityTrendData(priorityTrendResponse.data)
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -484,7 +486,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
   const handleSearch = (startTemp, endTemp) => {
     // Validation and conversion logic here
     // Update start and end state
-    console.log(startTemp,endTemp);
+    // console.log(startTemp,endTemp);
 
     const selectedStart = new Date(startTemp);
     const selectedEnd = endTemp && new Date(endTemp);
@@ -527,7 +529,7 @@ const onRefresh = () => {
 useEffect(() => {
   if (refresh) {
     // Place your logic that should run after refresh is set to true here
-    console.log("Refresh logic runs now.");
+    // console.log("Refresh logic runs now.");
     const startInitial = new Date(today);
     startInitial.setHours(0, 0, 0, 0);
     const endInitial = new Date();

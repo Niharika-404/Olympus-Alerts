@@ -12,7 +12,7 @@ const PriorityTable = ({ priorityCounts, trendData, activeTab, priorityTrendData
     setPopupOpen(!isPopupOpen);
   };
   
-  console.log(typeof(priorityTrendData));
+  // console.log(typeof(priorityTrendData));
 
   const priorityChartOptions = {
     chart: {

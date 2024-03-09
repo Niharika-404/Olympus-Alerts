@@ -185,7 +185,7 @@ const renderPriorities = (alertName) => {
      
       // onChartSelection(clickedData.category, 'open', selectedZone)
       // onChartSelection(clickedData.category, selectedZone, 'open', 'Alerts');
-      console.log(clickedData.category, selectedZone);
+      // console.log(clickedData.category, selectedZone);
 
 
 
