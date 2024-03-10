@@ -149,6 +149,7 @@ const classifyAlerts = useCallback(async (activetab) => {
         setNonOlympusModelData(parsedData)
       }
       setcountLoadingOly(false)
+      setcountLoadingNonOly(false)
 
 
     }
