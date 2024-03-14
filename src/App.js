@@ -11,6 +11,9 @@ import Papa, { parse } from 'papaparse';
 
 function App() {
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+
   const today = new Date();
   const startInitial = new Date(today);
   startInitial.setHours(0, 0, 0, 0);
@@ -130,7 +133,7 @@ const classifyAlerts = useCallback(async (activetab) => {
     // Determine the data to be sent based on the active tab and category
     if(activetab==='Alerts'){
       dataToBeSent = alertData;
-      const response = await axios.post('http://localhost:5000/predict', {data: dataToBeSent}, {headers: {'Content-Type': 'application/json'}});
+      const response = await axios.post(`${apiUrl}/predict`, {data: dataToBeSent}, {headers: {'Content-Type': 'application/json'}});
       const safeResponseData = response.data.replace(/\bNaN\b/g, "null");
       const parsedData = JSON.parse(safeResponseData);
       setAlertModelData(parsedData);
@@ -139,7 +142,7 @@ const classifyAlerts = useCallback(async (activetab) => {
     }
     else if(activetab==='Olympus'){
       dataToBeSent = category==='Olympus' ? olympusData : nonOlympusData;
-      const response = await axios.post('http://localhost:5000/predict', {data: dataToBeSent}, {headers: {'Content-Type': 'application/json'}});
+      const response = await axios.post(`${apiUrl}/predict`, {data: dataToBeSent}, {headers: {'Content-Type': 'application/json'}});
       const safeResponseData = response.data.replace(/\bNaN\b/g, "null");
       const parsedData = JSON.parse(safeResponseData);
       if(category==='Olympus'){
@@ -165,56 +168,7 @@ const classifyAlerts = useCallback(async (activetab) => {
 
 
 
-// const classifyAlerts = useCallback(async () => {
-//   try {
-//     // Make an API POST call to the /predict endpoint
-//     let dataToBeSent;
-//     if(activeTab==='Alerts'){
-//       dataToBeSent = alertData;
-//     }
-//     else if(activeTab==='Olympus'){
-//       if(category==='Olympus'){
-//         dataToBeSent = olympusData
-//       }
-//       else if(category==='Non-Olympus'){
-//         dataToBeSent = nonOlympusData
-//       }
-//     }
-//     const response = await axios.post(
-//       'http://localhost:5000/predict',
-//       {
-//         // Pass the necessary data to the endpoint, such as alertData, olympusData, or nonOlympusData
-//         data: dataToBeSent
-//       },
-//       {
-//         headers: {
-//           'Content-Type': 'application/json'
-//         }
-//       }
-//     );
 
-    
-    
-    
-
-
-//     // Handle the response as needed
-//     if(activeTab==='Alerts'){
-//       setAlertModelData(response.data)
-//     }
-//     else if(activeTab==='Olympus'){
-//       if(category==='Olympus'){
-//         setOlympusModelData(response.data)
-//       }
-//       else if(category==='Non-Olympus'){
-//         setNonOlympusModelData(response.data)
-//       }
-//     }
-//     console.log('Classification response:', response.data);
-//   } catch (error) {
-//     console.error('Error classifying alerts:', error);
-//   }
-// },[alertData, olympusData, nonOlympusData, activeTab, category]);
  
 
 const fetchData = useCallback(async (startParam = start, endParam=end) => {
@@ -244,29 +198,9 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
         time: endObj.toLocaleString().split(',')[1].trim()
       };
     }
-    // console.log('API call');
-    // Update your API call to use startFormatted and endFormatted
+  
 
-    // const baseURL = 'http://localhost:5000/alerts';
-    // const params = {
-    //   start_date: formatDate(startFormatted.date),
-    //   end_date: formatDate(endFormatted.date),
-    //   start_time: startFormatted.time,
-    //   end_time: endFormatted.time,
-    // };
-    //    // Define URLs for each type of data to be fetched
-    //    const urls = [
-    //     `${baseURL}`, // General alerts
-    //     `${baseURL}/olympus`, // Olympus-specific alerts
-    //     `${baseURL}/non_olympus`, // Non-Olympus-specific alerts
-    //   ];
-    //   const requests = urls.map(url => 
-    //     axios.get(url, { params: url === baseURL ? { ...params, responder_name: selectedResponder } : params })
-    //   );
-
-    //   const [generalResponse, olyResponse, nonOlyResponse] = await Promise.all(requests);
-
-    const response = await axios.get('http://localhost:5000/alerts', {
+    const response = await axios.get(`${apiUrl}/alerts`, {
       params: {
         responder_name: selectedResponder,
         start_date: formatDate(startFormatted.date),
@@ -276,28 +210,11 @@ const fetchData = useCallback(async (startParam = start, endParam=end) => {
       },
     });
 
-    // const olyRes = await axios.get(`http://localhost:5000/alerts/olympus`, {
-    //   params: {
-    //     start_date: formatDate(startFormatted.date),
-    //     end_date: formatDate(endFormatted.date),
-    //     start_time: startFormatted.time,
-    //     end_time: endFormatted.time,
-    //   },
-    // });
-
-    // const nonOlyRes = await axios.get(`http://localhost:5000/alerts/non_olympus`, {
-    //   params: {
-    //     start_date: formatDate(startFormatted.date),
-    //     end_date: formatDate(endFormatted.date),
-    //     start_time: startFormatted.time,
-    //     end_time: endFormatted.time,
-    //   },
-    // });
+ 
 
     // Your existing logic to handle the response
     setAlertData(response.data.data);
-    // setOlympusData(olyResponse.data.data);
-    // setNonOlympusData(nonOlyResponse.data.data);
+   
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
@@ -338,7 +255,7 @@ const fetchOlympusData = useCallback(async (startParam = start, endParam=end) =>
     // console.log('API call');
    
 
-    const olyResponse = await axios.get(`http://localhost:5000/alerts/olympus`, {
+    const olyResponse = await axios.get(`${apiUrl}/alerts/olympus`, {
       params: {
         start_date: formatDate(startFormatted.date),
         end_date: formatDate(endFormatted.date),
@@ -386,7 +303,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
     // console.log('API call');
    
 
-    const nonOlyResponse = await axios.get(`http://localhost:5000/alerts/non_olympus`, {
+    const nonOlyResponse = await axios.get(`${apiUrl}/alerts/non_olympus`, {
       params: {
         start_date: formatDate(startFormatted.date),
         end_date: formatDate(endFormatted.date),
@@ -407,7 +324,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
   useEffect(() => {
     const fetchResponderNames = async () => {
       try {
-        const responderNames = await axios.get('http://localhost:5000/responder_names');
+        const responderNames = await axios.get(`${apiUrl}/responder_names`);
         // console.log(responderNames.data.responder_names);
         setResponders(responderNames.data.responder_names);
       } catch (error) {
@@ -433,7 +350,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
   useEffect(()=>{
     const fetchTrendData = async ()=>{
       try {
-        const trendResponse = await axios.get('http://localhost:5000/trend', {
+        const trendResponse = await axios.get(`${apiUrl}/trend`, {
           params: {
             responder_name: selectedResponder
           },
@@ -451,7 +368,7 @@ const fetchNonOlympusData = useCallback(async (startParam = start, endParam=end)
   useEffect(()=>{
     const fetchPriorityTrendData = async ()=>{
       try {
-        const priorityTrendResponse = await axios.get('http://localhost:5000/priority', {
+        const priorityTrendResponse = await axios.get(`${apiUrl}/priority`, {
           params: {
             responder_name: selectedResponder
           },
@@ -556,7 +473,7 @@ useEffect(() => {
   }
 }, [refresh]); // This effect runs whenever `refresh` changes
 
-// console.log('Active tab from app.js - ',activeTab);
+
 
 
 
@@ -583,8 +500,6 @@ useEffect(() => {
 
 
 
-// console.log(`Start - ${startFormatted.date}, ${startFormatted.time}; End - ${endFormatted.date}, ${endFormatted.time};`);
-// console.log(start, end);
 
 
   return (
